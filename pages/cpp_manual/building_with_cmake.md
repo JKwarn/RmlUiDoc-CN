@@ -36,7 +36,7 @@ The following will guide you through the process of building RmlUi. This is nece
 
 - [Conan package manager](#conan)
 
-*or* 
+*or*
 
 - [Devbox package manager](#devbox)
 
@@ -130,7 +130,7 @@ If the recipe is out of date or somehow does not meet certain needs, then contri
 5. Optionally, add the CMake package globally: `devbox global add cmake`
 6. `devbox add freetype freetype.dev glfw3`
 7. `devbox shell`
-8. Build the project: 
+8. Build the project:
 ```
 cmake -B Build -S . --preset samples \
       -DRMLUI_BACKEND=GLFW_GL3 \
@@ -268,7 +268,7 @@ The following also lists any exported macros, which must be defined in the consu
 #### Common options
 
 `RMLUI_BACKEND` `auto`{:.value}
-: Choose the backend to use for the samples, based on a [supported combination](https://github.com/mikke89/RmlUi#rmlui-backends) of platform and renderer (e.g. `GLFW_GL3`{:.value}), or `auto`{:.value}.
+: Choose the backend to use for the samples, based on a [supported combination](https://github.com/mikke89/RmlUi#rmlui-backends) of platform and renderer (e.g. `GLFW_GL3`{:.value}), or `auto`{:.value}, or `native`{:.value}.
 
 `RMLUI_SAMPLES` `OFF`{:.value}
 : Enable to build the included samples.
@@ -322,6 +322,11 @@ The following also lists any exported macros, which must be defined in the consu
 `RMLUI_PRECOMPILED_HEADERS` `ON`{:.value}
 : Enables the use of precompiled headers on supported compilers for speeding up compilation times. This requires CMake version 3.16 or greater.
 
+### Sample-specific options
+
+`RMLUI_IME_SAMPLE_USE_NOTO_FONTS` `OFF`{:.value}
+: Enable to download Noto fonts at build-time for the `ime` sample. This is required to enable the sample when using SDL backends.
+
 #### Advanced customization
 
 `RMLUI_CUSTOM_CONFIGURATION` `OFF`{:.value}
@@ -333,10 +338,6 @@ The following also lists any exported macros, which must be defined in the consu
         Optionally set additional include directories that may be required by the new configuration file. E.g. `C:\MyProject\`{:.path}.
     - `RMLUI_CUSTOM_LINK_LIBRARIES`<br>
         Optionally set additional libraries to link with.
-
-`RMLUI_CUSTOM_RTTI` `OFF`{:.value}
-: When enabled, will configure RmlUi to disable all use of RTTI (e.g. dynamic_cast) and replace them by a custom solution. Does not set any compiler flags to disable RTTI or exceptions, if desired, users can do so manually for their compiler toolchain.<br>
-    *Exports macro:* `RMLUI_CUSTOM_RTTI` when `ON`{:.value}.
 
 `RMLUI_MATRIX_ROW_MAJOR` `OFF`{:.value}
 : By default, RmlUi uses a column-major matrix implementation. By enabling this option, the matrix type is changed to a row-major representation.<br>

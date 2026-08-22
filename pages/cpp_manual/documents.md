@@ -69,24 +69,31 @@ When a document is loaded into a context, it begins hidden (it has a `visibility
 // Show the document.
 // @param[in] modal_flag Flags controlling the modal state of the document, see the 'ModalFlag' description for details.
 // @param[in] focus_flag Flags controlling the focus, see the 'FocusFlag' description for details.
-void Show(ModalFlag modal_flag = ModalFlag::None, FocusFlag focus_flag = FocusFlag::Auto);
+// @param[in] scroll_flag Flag controlling scrolling, see the 'ScrollFlag' description for details.
+void Show(ModalFlag modal_flag = ModalFlag::None, FocusFlag focus_flag = FocusFlag::Auto, ScrollFlag scroll_flag = ScrollFlag::Auto);
 ```
-By default, the `Show()` function will make the document visible and switch keyboard focus to the document and if possible the first control element with an `autofocus`{:.attr} attribute set. The focus behavior as well as the modal state can be controlled with two separate flags. The flags are specified as follows:
-```cpp
-/**
-	 ModalFlag used for controlling the modal state of the document.
-		None:  Remove modal state.
-		Modal: Set modal state, other documents cannot receive focus.
-		Keep:  Modal state unchanged.
 
-	FocusFlag used for displaying the document.
-		None:     No focus.
-		Document: Focus the document.
-		Keep:     Focus the element in the document which last had focus.
-		Auto:     Focus the first tab element with the 'autofocus' attribute or else the document.
-*/
-enum class ModalFlag { None, Modal, Keep };
-enum class FocusFlag { None, Document, Keep, Auto };
+By default, the `Show()` function will make the document visible and switch keyboard focus to the document and if possible the first control element with an `autofocus`{:.attr} attribute set. The focus behavior as well as the modal state can be controlled with two separate flags. The flags are specified as follows:
+
+```cpp
+/** ModalFlag controls the modal state of the document. */
+enum class ModalFlag {
+	None,  // Remove modal state.
+	Modal, // Set modal state, other documents cannot receive focus.
+	Keep,  // Modal state unchanged.
+};
+/** FocusFlag controls the focus when showing the document. */
+enum class FocusFlag {
+	None,     // No focus.
+	Document, // Focus the document.
+	Keep,     // Focus the element in the document which last had focus.
+	Auto,     // Focus the first tab element with the 'autofocus' attribute or else the document.
+};
+/** ScrollFlag controls whether an element is scrolled into view when showing the document. */
+enum class ScrollFlag {
+	None, // Never scroll.
+	Auto, // Scroll the focused element into view, if applicable.
+};
 ```
 
 To hide a document, call `Hide()`.

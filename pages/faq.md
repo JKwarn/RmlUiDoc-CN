@@ -6,7 +6,7 @@ title: Frequently Asked Questions
 
 ### I have rendering issues or crashes, how do I solve it?
 
-Take a look at the [troubleshooting](cpp_manual/troubleshooting.html) page in the C++ manual. You are also welcome to join the [RmlUi's Gitter channel](https://gitter.im/RmlUi/community) for chatting with other users, or write a post describing your situation in the [main repository]({{page.lib_site}}).
+Take a look at the [troubleshooting](cpp_manual/troubleshooting.html) page in the C++ manual. You are also welcome to join the [RmlUi's Zulip channel](https://rmlui.zulipchat.com/) for chatting with other users, or write a post describing your situation in the [main repository]({{page.lib_site}}).
 
 
 ### How do I set up custom cursors?

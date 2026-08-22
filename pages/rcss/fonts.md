@@ -10,8 +10,111 @@ RCSS implements a simpler version of the [CSS2 font model](http://www.w3.org/TR/
 * The document renderer is fully under the control of the author, so (for example) a specific font can be assumed to exist.
 * Improved performance.
 
-Fonts are specified in a similar fashion.
-NOTE: You will need to load all ttf files via the C++ interfaces before they can be used in RCSS.
+Fonts are specified in a similar fashion to CSS. However, before a font can be used, it must be loaded into the font engine. This can be done from RCSS using the [`@font-face`](#font-face) at-rule, or from C++ using [`Rml::LoadFontFace()`](../cpp_manual/fonts.html).
+
+
+### Font face declarations: The '@font-face' at-rule
+{:#font-face}
+
+The `@font-face`{:.prop} at-rule loads one or more font files and registers them with the font engine under a given family name, so that they can be used with the `font-family`{:.prop} property. It is the RCSS equivalent of calling [`Rml::LoadFontFace()`](../cpp_manual/fonts.html) from C++.
+
+```css
+@font-face {
+	font-family: "Roboto Mono";
+	src: "assets/RobotoMono-Regular.ttf", "assets/RobotoMono-Bold.ttf";
+}
+
+@font-face {
+	font-family: "Roboto Mono";
+	src: "assets/RobotoMono-Italic.ttf", "assets/RobotoMono-BoldItalic.ttf";
+	font-style: italic;
+}
+
+body {
+	font-family: "Roboto Mono";
+}
+```
+
+Both `font-family`{:.prop} and `src`{:.prop} are required, all other descriptors are optional. A block missing either of them is ignored, and a warning is emitted to the log.
+
+The at-rule is processed as soon as the style sheet is parsed, and the resulting font faces are registered globally in the font engine. This implies they are not scoped to the style sheet or document that declared them. Declaring the same face several times is harmless, any repeat is detected as a duplicate and skipped.
+
+#### Descriptors
+
+`font-family`{:.prop#font-face-font-family}
+
+Value: | \<string\>
+Initial: | undefined
+Applies to: | `@font-face`{:.prop} blocks
+Inherited: | N/A
+Percentages: | N/A
+
+The family name to register the loaded faces under. Required.
+
+
+`src`{:.prop#font-face-src}
+
+Value: | \<string\> \[, \<string\>\]\*
+Initial: | undefined
+Applies to: | `@font-face`{:.prop} blocks
+Inherited: | N/A
+Percentages: | N/A
+
+A comma-separated list of font files to load. File names are resolved relative to the path of the current style sheet. Required.
+
+
+`font-style`{:.prop#font-face-font-style}
+
+Value: | normal \| italic
+Initial: | normal
+Applies to: | `@font-face`{:.prop} blocks
+Inherited: | N/A
+Percentages: | N/A
+Required: | No
+
+The style to register the loaded faces as. This always overrides the style declared inside the font file, thus an italic font file must be declared with `font-style: italic`{:.prop} for it to be selected by the `font-style`{:.prop} property.
+
+
+`font-weight`{:.prop#font-face-font-weight}
+
+Value: | all \| normal \| bold \| \<number \[1,1000\]\>
+Initial: | all
+Applies to: | `@font-face`{:.prop} blocks
+Inherited: | N/A
+Percentages: | N/A
+
+Values have the following meanings:
+
+`all`{:.value}
+: The weight is retrieved from the font file. If the file contains several weight variations, all of them are loaded.
+
+`normal`{:.value}
+`bold`{:.value}
+`<number>`{:.value}
+: The weight to register the font as. When the font file contains several weight variations, this selects which variation to load.
+
+
+`-rmlui-fallback-face`{:.prop#font-face-fallback-face}
+
+Value: | false \| true
+Initial: | false
+Applies to: | `@font-face`{:.prop} blocks
+Inherited: | N/A
+Percentages: | N/A
+
+When `true`{:.value}, the loaded faces are used for any characters that cannot be found in the fonts specified by the document. Several fallback faces can be declared, they are prioritized in the order they were loaded. See [loading fonts](../cpp_manual/fonts.html) for details.
+
+
+`-rmlui-face-index`{:.prop#font-face-face-index}
+
+Value: | \<number\>
+Initial: | 0
+Applies to: | `@font-face`{:.prop} blocks
+Inherited: | N/A
+Percentages: | N/A
+
+The index of the face to load within a font collection, such as a `.ttc`{:.path} file.
+
 
 ### Font specification properties
 

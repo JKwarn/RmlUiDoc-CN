@@ -181,6 +181,11 @@ h3 a:hover { text-decoration: none; }
 	color: blue;
 }
 
+a code
+{
+    border-bottom-color: #41a5d6;
+}
+
 .data-desc
 {
 	margin-bottom: 0.5em;

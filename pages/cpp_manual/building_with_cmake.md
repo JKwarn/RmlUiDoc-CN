@@ -322,7 +322,7 @@ The following also lists any exported macros, which must be defined in the consu
 `RMLUI_PRECOMPILED_HEADERS` `ON`{:.value}
 : Enables the use of precompiled headers on supported compilers for speeding up compilation times. This requires CMake version 3.16 or greater.
 
-### Sample-specific options
+#### Sample-specific options
 
 `RMLUI_IME_SAMPLE_USE_NOTO_FONTS` `OFF`{:.value}
 : Enable to download Noto fonts at build-time for the `ime` sample. This is required to enable the sample when using SDL backends.

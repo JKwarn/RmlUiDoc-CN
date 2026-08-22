@@ -5,15 +5,19 @@ parent: cpp_manual
 next: input
 ---
 
-TrueType and OpenType fonts can be loaded into RmlUi by the application. RmlUi has no default font, so at least one font must be loaded before text can be rendered.
+TrueType and OpenType fonts can be loaded into RmlUi by the application. RmlUi has no default font, so at least one font must be loaded before text can be rendered. Fonts can be loaded from C++ as described below, or declaratively from a style sheet using the RCSS [`@font-face`](../rcss/fonts.html#font-face) at-rule.
 
-To load a font, call one of the `Rml::LoadFontFace()` functions. The simplest of these takes a file name and optional fallback and weight parameters:
+To load a font, call one of the `Rml::LoadFontFace()` functions described in the following.
+
+### Load font face from file
+
+The simplest overload takes a file name, and optionally fallback, weight, and face index parameters:
 
 ```cpp
 // Adds a new font face to the font engine. The face's family, style, and weight will be determined from the face itself.
-// @param[in] file_path The path to the file to load the face from. The path is passed directly to the file interface which is used to load the file. The default file interface accepts both absolute paths and paths relative to the working directory.
+// @param[in] file_path The path to the file to load the face from.
 // @param[in] fallback_face True to use this font face for unknown characters in other font faces.
-// @param[in] weight The weight to load when the font face contains multiple weights, otherwise the weight to register the font as. By default, it loads all found font weights.
+// @param[in] weight The weight to load when the font face contains multiple weights.
 // @param[in] face_index The index of the font face within a font collection.
 // @return True if the face was loaded successfully, false otherwise.
 bool LoadFontFace(const String& file_path,
@@ -22,7 +26,9 @@ bool LoadFontFace(const String& file_path,
                   int face_index = 0);
 ```
 
-This function will load the font file specified (opening it through the file interface). The font's family (the string you specify the font with using the `font-family`{:.prop} RCSS property), the style (normal or italic) and by default the weight are all fetched from the font file itself. RmlUi will generate the font data for specific sizes of the font as required by the application. Note that if you are loading a .ttc, only the first font will be registered.
+This function will load the font file specified from `file_path`, opening it through the file interface. The path should normally be relative to the application's working directory, or an absolute path.
+
+The font's family (the string you specify the font with using the `font-family`{:.prop} RCSS property), the style (normal or italic) and by default the weight are all fetched from the font file itself. RmlUi will generate the font data for specific sizes of the font as required by the application. Note that if you are loading a .ttc, only the first font will be registered.
 
 If enabled, the `fallback_face` option will make the given font face be used for any unknown characters in other fonts. This is useful for example to provide a single font face for emojis, and another one providing characters for Cyrillic, Greek, and similar. These fonts will then be used whenever characters encountered are not located in the fonts specified by the document. Multiple fallback faces can be used, and they will be prioritized in the order they were loaded.
 
@@ -32,14 +38,37 @@ Overriding the default `weight` parameter can be done by one of `Rml::Style::Fon
 
 The `face_index` parameter allows selection of font faces within font collections. This is useful for loading a single font file with multiple faces.
 
-If you need to load a font face from memory, and override the family name, style or weight of the font, use the more complex `LoadFontFace()`:
+### Override the font family
+
+If you need to override the family name or style of a font loaded from file, use the following overload instead:
+
+```cpp
+// Adds a new font face from file to the font engine. The face's family, style, and weight are given by the parameters.
+// @param[in] file_path The path to the file to load the face from.
+// @param[in] family The family to register the font as.
+// @param[in] style The style to register the font as.
+// @param[in] weight The weight to load when the font face contains multiple weights.
+// @param[in] fallback_face True to use this font face for unknown characters in other font faces.
+// @param[in] face_index The index of the font face within a font collection.
+// @return True if the face was loaded successfully, false otherwise.
+bool LoadFontFace(const String& file_path,
+                  const String& family,
+                  Style::FontStyle style,
+                  Style::FontWeight weight = Style::FontWeight::Auto,
+                  bool fallback_face = false,
+                  int face_index = 0);
+```
+
+### Load font face from memory
+
+If you need to load a font face from memory rather than from file, use the following overload:
 
 ```cpp
 // Adds a new font face from memory to the font engine. The face's family, style, and weight are given by the parameters.
 // @param[in] data The font data.
 // @param[in] family The family to register the font as.
 // @param[in] style The style to register the font as.
-// @param[in] weight The weight to load when the font face contains multiple weights, otherwise the weight to register the font as. By default, it loads all found font weights.
+// @param[in] weight The weight to load when the font face contains multiple weights.
 // @param[in] fallback_face True to use this font face for unknown characters in other font faces.
 // @param[in] face_index The index of the font face within a font collection.
 // @return True if the face was loaded successfully, false otherwise.
@@ -54,9 +83,11 @@ bool LoadFontFace(Span<const byte> data,
 
 - When the provided `family` is empty, the font family and style is automatically retrieved from the font.
 - `style` is one of `Rml::Style::FontStyle::Normal`{:.value} or `Italic`{:.value}.
-- The `weight`, `fallback_face`, and `face_index` parameters work exactly like in the above function.
+- The `weight`, `fallback_face`, and `face_index` parameters work exactly like in the first function.
 
 The italic and bold versions of a font are selected with the `font-weight`{:.prop} and `font-style`{:.prop} RCSS properties.
+
+### Example
 
 In the following example, the font file at `data/trilobyte.ttf`{:.path} is loaded and registered with RmlUi with the family name, style and weight settings specified in the file itself.
 

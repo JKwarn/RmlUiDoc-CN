@@ -19,6 +19,17 @@ Some of the most important functions for the font engine interface are given in 
 // @return True if the face was loaded successfully, false otherwise.
 virtual bool LoadFontFace(const String& file_name, int face_index, bool fallback_face, Style::FontWeight weight);
 
+// Called by RmlUi when it wants to load a font face from file, registered using the provided family, style, and weight.
+// @param[in] file_name The file to load the face from.
+// @param[in] face_index The index of the font face within a font collection.
+// @param[in] family The family to register the font as.
+// @param[in] style The style to register the font as.
+// @param[in] weight The weight to load when the font face contains multiple weights, otherwise the weight to register the font as.
+// @param[in] fallback_face True to use this font face for unknown characters in other font faces.
+// @return True if the face was loaded successfully, false otherwise.
+virtual bool LoadFontFace(const String& file_name, int face_index, const String& family, Style::FontStyle style, Style::FontWeight weight,
+    bool fallback_face);
+
 // Called by RmlUi when a font configuration is resolved for an element. Should return a handle that
 // can later be used to resolve properties of the face, and generate string geometry to be rendered.
 // @param[in] family The family of the desired font handle.
@@ -63,7 +74,9 @@ virtual int GenerateString(RenderManager& render_manager, FontFaceHandle face_ha
     Vector2f position, ColourbPremultiplied colour, float opacity, const TextShapingContext& text_shaping_context, TexturedMeshList& mesh_list);
 ```
 
-The `LoadFontFace()` function is called when the user wants to load a font face. When an element is constructed, or some of its font-related properties are changed, it retrieves a `FontFaceHandle` through `GetFontFaceHandle()`. The font engine should then return a unique handle for the given family, style, weight and size.
+The `LoadFontFace()` functions are called when the user wants to load a font face, either through one of the `Rml::LoadFontFace()` functions or the RCSS [`@font-face`](../../rcss/fonts.html#font-face) at-rule. The first overload determines the family and style from the font file itself, while the second one registers the face using the provided family and style. A third overload, taking the font data directly instead of a file name, is used for fonts loaded from memory. Each of them returns false by default, so a custom font engine must implement the second overload for the RCSS `@font-face` at-rule to work.
+
+When an element is constructed, or some of its font-related properties are changed, it retrieves a `FontFaceHandle` through `GetFontFaceHandle()`. The font engine should then return a unique handle for the given family, style, weight and size.
 
 If any font effects are applied to a given element, a list of such effects are submitted through `PrepareFontEffects()`. It is up to the font engine interface to decide how to handle them. A handle should be returned for the given list of font effects, this handle will later be used during the call to `GenerateString()`. If font effects are not used, there is no need to implement this function.
 

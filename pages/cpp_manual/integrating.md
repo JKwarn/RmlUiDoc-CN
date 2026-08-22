@@ -163,7 +163,7 @@ Your application will need to update and render each context it maintains, as ap
 
 ### Loading fonts
 
-RmlUi does not come integrated with any fonts (with the exception of the debugger plugin), they must be provided by the user. Font faces can be loaded through the `Rml::LoadFontFace()` function.
+RmlUi does not come integrated with any fonts (with the exception of the debugger plugin), they must be provided by the user. Font faces can be loaded through the [`Rml::LoadFontFace()`](fonts.html) function, or from a style sheet using the [`@font-face`](../rcss/fonts.html#font-face) at-rule.
 
 ```cpp
 bool success = Rml::LoadFontFace("assets/my_font_face.ttf");

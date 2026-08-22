@@ -15,7 +15,14 @@ For full support, it is important to [load fonts](fonts.html) covering the above
 
 ![A showcase of input method editor (IME) with fallback fonts to support different writing systems.](../../assets/images/ime_sample.png)
 
-In addition to being a standalone sample for full IME support, it loads system fonts as a fallback to properly represent other writing systems, such as Hangul, Mongolian, and others. Otherwise, they would only be rendered as missing characters when typing.
+In addition to being a standalone sample for full IME support,  Otherwise, they would only be rendered as missing characters when typing.
+
+CMake option `RMLUI_IME_SAMPLE_USE_NOTO_FONTS`
+: By default, this option is disabled. When enabled, external Noto fonts are downloaded at build time and used in this sample.
+
+: ***Win32 backends***: The sample is always available. By default, it loads system fonts as a fallback to properly represent other writing systems, such as Hangul, Mongolian, and others. When the CMake option is enabled, it uses Noto fonts instead.
+
+: ***SDL backends***: The CMake option is required to make this sample available, it requires the Noto fonts to function correctly.
 
 ### Implementation
 
@@ -30,7 +37,7 @@ The state of the IME support on different platforms is the following:
 | Platform | IME | API   |
 | -------- |:---:|:-----:|
 | GLFW     | ❌   |       |
-| SDL      | ❌   |       |
+| SDL      | ✔️   | SDL   |
 | SFML     | ❌   |       |
 | Win32    | ✔️   | IMM32 |
 | X11      | ❌   |       |

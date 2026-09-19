@@ -1,24 +1,24 @@
 ---
 layout: page
-title: Elements
+title: 元素
 parent: lua_manual
 next: documents
 ---
 
-### Interface
+### 接口
 
-- [Element Lua API reference](api_reference.html#Element)
-- [Element C++ manual](../cpp_manual/elements.html)
+- [元素 Lua API 参考](api_reference.html#Element)
+- [元素 C++ 手册](../cpp_manual/elements.html)
 
-All properties and methods that are available for elements are described in detail in the API reference. The element-specific interface is similar to the C++ interface, refer there for the full documentation.
+元素可用的所有属性与方法都在 API 参考中有详细描述。元素特有的接口与 C++ 接口类似，完整文档请参阅该手册。
 
-The Lua interface for RmlUi elements closely resembles the [DOM element interface](https://developer.mozilla.org/en-US/docs/Web/API/element) of the web, similarly to the C++ element interface.
+RmlUi 元素的 Lua 接口与 Web 的 [DOM 元素接口](https://developer.mozilla.org/en-US/docs/Web/API/element) 非常相似，这一点与 C++ 元素接口也是一致的。
 
-#### Proxy Properties
+#### 代理属性
 
-Under the hood, some properties return proxies which can typically be used like arrays or maps (Lua tables). In particular the properties described in the following.
+在内部实现中，某些属性返回代理（proxy），这些代理通常可以像数组或映射（Lua 表）一样使用。尤其以下所描述的属性。
 
-`child_nodes` returns an array-like proxy for the children elements. The array only includes visible elements, the Lua plugin has no way of querying [hidden elements](../cpp_manual/hidden_elements.html). The following example iterates over all of an element's children, printing their tag names, ids and classes. The example requires the Lua `string` standard library.
+`child_nodes` 返回一个类数组的代理，用于访问子元素。该数组仅包含可见元素，Lua 插件无法查询[隐藏元素](../cpp_manual/hidden_elements.html)。下面的示例遍历元素的所有子元素，打印它们的标签名、id 和类名。该示例需要 Lua `string` 标准库。
 
 ```lua
 for i,child in ipairs(element.child_nodes) do
@@ -36,21 +36,21 @@ for i,child in ipairs(element.child_nodes) do
 end
 ```
 
-The proxy object can be accessed using indices. Note that the indices are one-based in Lua, as opposed to zero-based in the C++ API.
+该代理对象可以通过索引访问。请注意，在 Lua 中索引从 1 开始，这与 C++ API 中从 0 开始不同。
 
 ```lua
 element.child_nodes[2].inner_rml = 'Hello world!'
 ```
 
-`attributes` is accessed like a map with name and value pairs. The following example prints the element's `value`{:.attr} attribute.
+`attributes` 可以像映射一样通过名称和值的键值对来访问。下面的示例打印元素的 `value`{:.attr} 属性。
 
 ```lua
 print(element.attributes.value)
 ```
 
-`style` is a property which operates identically to its counterpart in Javascript. Properties are accessed as members of the style property by name and can be read or written to. The value of a property is always an unparsed string in this context; ie, `200px`{:.value}, `center`{:.value}, `rgb(255,0,0)`{:.value}, etc.
+`style` 是一个属性，其行为与 Javascript 中的对应属性完全相同。属性按名称作为 style 属性的成员来访问，并且可以读取或写入。在此上下文中，属性的值始终是未解析的字符串；即 `200px`{:.value}、`center`{:.value}、`rgb(255,0,0)`{:.value} 等。
 
-The following example demonstrates uses of the style property:
+下面的示例演示了 style 属性的用法：
 
 ```lua
 element.style.width = '150px'
@@ -59,19 +59,19 @@ if element.style.float ~= 'none' then
 end
 ```
 
-### Dispatching events
+### 派发事件
 
-Events can be generated on an element from within Lua with the `DispatchEvent()` function. When calling this function, the parameters are given as a Lua table of name-value pairs.
+可以在 Lua 内部使用 `DispatchEvent()` 函数在元素上生成事件。调用此函数时，参数以键值对的 Lua 表形式给出。
 
 ```lua
 element:DispatchEvent('open', {object = 'trapdoor', priority = 11})
 ```
 
-Parameter keys must be strings, and values must be strings, booleans, or numbers.
+参数键必须是字符串，值必须是字符串、布尔值或数字。
 
-### Creating elements
+### 创建元素
 
-Elements can be created dynamically in Lua using the document's `CreateElement()` or `CreateTextNode()` method. The following code sample uses `CreateElement()` to dynamically create a form control.
+可以在 Lua 中使用文档的 `CreateElement()` 或 `CreateTextNode()` 方法动态创建元素。下面的代码示例使用 `CreateElement()` 动态创建一个表单控件。
 
 ```lua
 input_element = document:CreateElement('input')
@@ -80,4 +80,4 @@ input_element:SetAttribute('type', 'radio')
 input_element:SetAttribute('name', 'graphics')
 input_element:SetAttribute('value', 'ok')
 ```
-***Note:*** The newly created element cannot be modified right away because `CreateElement` returns `ElementPtr` and that cannot use `SetAttribute`. We can work around this by using the return value of `AppendChild`. See [this issue](https://github.com/mikke89/RmlUi/issues/390) for more information.
+***Note:*** 新创建的元素不能立即修改，因为 `CreateElement` 返回 `ElementPtr`，而 `ElementPtr` 无法使用 `SetAttribute`。我们可以通过使用 `AppendChild` 的返回值来解决这个问题。更多信息请参阅[此问题](https://github.com/mikke89/RmlUi/issues/390)。

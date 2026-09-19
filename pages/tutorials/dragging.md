@@ -1,49 +1,49 @@
 ---
 layout: page
-title: Drag Tutorial
+title: 拖拽教程
 ---
 
-RmlUi has a few ways of implementing dragging of elements, such as:
+RmlUi 有几种实现元素拖拽的方式，例如：
 
-* the `<handle>`{:.tag} tag, as used by the documents in the sample applications
-* setting an element's `drag`{:.prop} property to `drag`{:.value} or `drag-drop`{:.value} and listening to the raw drag events (`dragstart`{:.evt}, `dragend`{:.evt}, etc) and animating element positions manually
-* setting an element's `drag`{:.prop} property to `clone`{:.value}
+* `<handle>`{:.tag} 标签，示例应用程序中的文档即采用这种方式
+* 将元素的 `drag`{:.prop} 属性设置为 `drag`{:.value} 或 `drag-drop`{:.value}，监听原始拖拽事件（`dragstart`{:.evt}、`dragend`{:.evt} 等），并手动为元素位置制作动画
+* 将元素的 `drag`{:.prop} 属性设置为 `clone`{:.value}
 
-This tutorial shows how to use the third type, cloning, to implement dragging items between multiple inventory windows.
+本教程演示如何使用第三种方式（克隆）在多个背包窗口之间拖拽物品。
 
-### Step 1: Taking a look
+### 第 1 步：初步查看
 
-Compile the drag tutorial (at `/Samples/tutorial/tutorial_drag/`{:.path}) and run the program; it should end up looking like this:
+编译拖拽教程（位于 `/Samples/tutorial/tutorial_drag/`{:.path}）并运行程序；最终界面应如下所示：
 
 ![dragging_1.jpg](dragging_1.jpg)
 
-Take a look at the source code. As you can see, the application creates two Inventory objects, each of which loads a document from the `inventory.rml`{:.path} file. The application then creates four inventory objects in one of the inventories; each of these objects is a RmlUi element with a tag of `icon`{:.tag}. At the bottom of the `tutorial.rcss`{:.path} file you can see the properties applied to `icon`{:.tag}. It is sized to 100px x 100px with a margin to separate it from its neighbour icons and a decorator for its background image. It is floated left so icons will stack from left to right in the inventory windows.
+查看一下源代码。可以看到，应用程序创建了两个 Inventory 对象，每个对象都从 `inventory.rml`{:.path} 文件中加载文档。应用程序随后在其中一个背包中创建了四个背包对象；这些对象每个都是标签为 `icon`{:.tag} 的 RmlUi 元素。在 `tutorial.rcss`{:.path} 文件的底部，可以看到应用于 `icon`{:.tag} 的属性。其大小为 100px x 100px，带有外边距以与相邻图标分隔，并使用装饰器绘制其背景图像。它向左浮动，因此图标会在背包窗口中从左到右排列。
 
-### Step 2: Adding a drag property
+### 第 2 步：添加拖拽属性
 
-If you try dragging the icons now, nothing much happens. In the tutorial's, RCSS file add the line:
+如果你现在尝试拖拽图标，不会有什么反应。在教程的 RCSS 文件中添加以下一行：
 
 ```
 	drag: clone;
 ```
 
-to the rule for `icon`{:.tag} elements. Now try dragging the icons again; success! A clone of the icons now follows the cursor when you drag them around. We'll need to add code to listen to the end of the drag and respond accordingly, but before we get to that I'll explain how the `drag`{:.prop} property works.
+把它添加到 `icon`{:.tag} 元素的规则中。现在再次尝试拖拽图标；成功了！拖拽时，图标的克隆体会跟随光标移动。我们需要添加代码来监听拖拽的结束并作出相应响应，但在那之前，我先解释一下 `drag`{:.prop} 属性的工作原理。
 
-The `drag`{:.prop} property can take several different values depending on how you want RmlUi to inform you about dragging. The possible values are:
+`drag`{:.prop} 属性可以根据你希望 RmlUi 如何通知拖拽信息而取若干不同的值。可能的值如下：
 
-* `none`{:.value}: The element does not send any drag messages. This is the default.
-* `block`{:.value}: The element does not send any drag messages, and prevents any elements 'underneath' the element from being dragged as well. This is useful for buttons on a window's title bar, for example.
-* `drag`{:.value}: If the left mouse button is pressed while over the element and dragged, the element will trigger a `dragstart`{:.evt} event. Every subsequent time the mouse is moved, the element will trigger a `drag`{:.evt} event. When the button is released, the element will trigger a `dragend`{:.evt} event.
-* `drag-drop`{:.value}: As drag, but as the mouse moves over other elements `dragover`{:.evt} and `dragout`{:.evt} events will be triggered (similarly to the `mouseover`{:.evt} and `mouseout`{:.evt} events). When the button is released, the element the mouse is hovering over will trigger the `dragdrop`{:.evt} message.
-* `clone`{:.value}: As `drag-drop`{:.value}, but a clone of the element is attached to the mouse cursor during dragging. The clone has the pseudo-class `drag`{:.cls} set on it to allow it to be differentiated from the original element.
+* `none`{:.value}：元素不发送任何拖拽消息。这是默认值。
+* `block`{:.value}：元素不发送任何拖拽消息，同时也会阻止该元素“下方”的任何元素被拖拽。例如，这对于窗口标题栏上的按钮很有用。
+* `drag`{:.value}：如果在元素上按住鼠标左键并拖拽，元素将触发 `dragstart`{:.evt} 事件。此后每次鼠标移动，元素都会触发 `drag`{:.evt} 事件。松开按钮时，元素将触发 `dragend`{:.evt} 事件。
+* `drag-drop`{:.value}：与 drag 相同，但当鼠标移动到其他元素上方时，将触发 `dragover`{:.evt} 和 `dragout`{:.evt} 事件（类似于 `mouseover`{:.evt} 和 `mouseout`{:.evt} 事件）。松开按钮时，鼠标悬停的元素将触发 `dragdrop`{:.evt} 消息。
+* `clone`{:.value}：与 `drag-drop`{:.value} 相同，但拖拽期间元素的克隆体会附着在鼠标光标上。克隆体上设置了伪类 `drag`{:.cls}，以便与原始元素区分开来。
 
-So both `drag`{:.value} and `drag-drop`{:.value} only send messages; they don't actually drag any elements anywhere automatically. Very useful for complicated dragging operations or dragging multiple elements.
+因此，`drag`{:.value} 和 `drag-drop`{:.value} 都只发送消息；它们不会自动拖拽任何元素。这对于复杂的拖拽操作或拖拽多个元素非常有用。
 
-The clone value, however, takes care of almost everything if all you need to do is drag single elements.
+而 clone 值几乎可以处理所有事情，前提是你只需要拖拽单个元素。
 
-### Step 3: Listening to the events
+### 第 3 步：监听事件
 
-Now that the items can be visibly dragged around, we need to actually change their parenting when they're dropped. Create a class which inherits from `Rml::EventListener` and give it a static method for registering the containers. Override the `ProcessEvent()` function as well so we can process the `dragdrop`{:.evt} event.
+既然物品可以被直观地拖动了，我们需要在它们被放下时真正改变其父级。创建一个继承自 `Rml::EventListener` 的类，并为其提供一个用于注册容器的静态方法。同时重写 `ProcessEvent()` 函数，以便处理 `dragdrop`{:.evt} 事件。
 
 ```cpp
 #ifndef DRAGLISTENER_H
@@ -65,7 +65,7 @@ protected:
 #endif
 ```
 
-The `RegisterDraggableContainer()` function simply needs to attach the listener object to the `dragdrop` event:
+`RegisterDraggableContainer()` 函数只需将监听器对象附加到 `dragdrop` 事件上：
 
 ```cpp
 #include "DragListener.h"
@@ -80,13 +80,13 @@ void DragListener::RegisterDraggableContainer(Rml::Element* element)
 }
 ```
 
-The `DragListener` object will now receive a call to `ProcessEvent()` whenever an item is dropped on the registered elements or any of their children.
+现在，每当有物品被放到已注册的元素或其任何子元素上时，`DragListener` 对象都会收到对 `ProcessEvent()` 的调用。
 
-#### The 'dragdrop' event
+#### 'dragdrop' 事件
 
-The event we'll be processing is the `dragdrop`{:.evt} event. This event is sent to the element that the dragged element was dropped onto. The dragged element itself can be queried from the event as the parameter `drag_element`{:.prop}.
+我们将处理的事件是 `dragdrop`{:.evt} 事件。该事件会发送给被拖拽元素所放到的元素。被拖拽的元素本身可以通过参数 `drag_element`{:.prop} 从事件中查询。
 
-We can now write a simple handler that will move dragged elements between the two containers:
+现在我们可以编写一个简单的处理程序，在两个容器之间移动被拖拽的元素：
 
 ```cpp
 void DragListener::ProcessEvent(Rml::Event& event)
@@ -102,29 +102,29 @@ void DragListener::ProcessEvent(Rml::Event& event)
 }
 ```
 
-The dragged element is simply removed from its old parent and attached to the container it was dropped onto.
+被拖拽的元素只是从其旧父级中移除，并附加到它被放到的容器上。
 
-#### Registering the containers
+#### 注册容器
 
-All that's left to do before we can try out the dragging is to register the containers. In the constructor of the Inventory object (top of Inventory.cpp), we need to register the inventory window as a draggable container; add the following line at the end of the constructor:
+在尝试拖拽之前，剩下要做的就是注册容器。在 Inventory 对象的构造函数中（Inventory.cpp 顶部），我们需要将背包窗口注册为可拖拽容器；在构造函数末尾添加以下一行：
 
 ```cpp
 	DragListener::RegisterDraggableContainer(document->GetElementById("content"));
 ```
 
-Fire it up, start dragging and see what happens.
+运行程序，开始拖拽，看看会发生什么。
 
 ![dragging_2.jpg](dragging_2.jpg)
 
-Success!
+成功！
 
-### Step 4: Sorting
+### 第 4 步：排序
 
-Currently, regardless of where you drag an item to it will end up as the last item in the window. It would be great if you could sort the items within a window by dragging them on top of each other. To do this, the `ProcessEvent()` function will need to determine both the container and the item within that container an element was dragged onto.
+目前，无论你把物品拖到哪里，它最终都会成为窗口中的最后一个物品。如果可以通过将一个物品拖到另一个物品上来对窗口内的物品进行排序，那就太好了。为此，`ProcessEvent()` 函数需要同时确定元素被拖到的容器以及该容器内的物品。
 
-Easy! We've attached as a `dragdrop`{:.evt} listener to the item containers. This means we'll be notified whenever the `dragdrop`{:.evt} event is sent to the containers or any of their children (i.e., their items). Each event has a target element and a current element. The target element is the element the event was actually targetted at; in the case of `dragdrop`{:.evt}, the element that was dropped on. The current element is the element the processing listener is observing; in our case, the container.
+很简单！我们已经将 `dragdrop`{:.evt} 监听器附加到物品容器上。这意味着，每当 `dragdrop`{:.evt} 事件被发送到容器或其任何子元素（即其中的物品）时，我们都会收到通知。每个事件都有一个目标元素（target element）和一个当前元素（current element）。目标元素是事件实际针对的元素；对于 `dragdrop`{:.evt} 而言，就是被放到的元素。当前元素是正在处理事件的监听器所观察的元素；在我们的例子中，就是容器。
 
-So we can find the destination item and container with the following:
+因此，我们可以通过以下方式找到目标物品和容器：
 
 ```cpp
 void DragListener::ProcessEvent(Rml::Event& event)
@@ -136,7 +136,7 @@ void DragListener::ProcessEvent(Rml::Event& event)
 		Rml::Element* drag_element = static_cast< Rml::Element* >(event.GetParameter< void* >("drag_element", NULL));
 ```
 
-If the dragged item is dropped directly onto a container, then the current and target elements will be the same. In this case, we want to keep the old processing:
+如果被拖拽的物品被直接放到容器上，那么当前元素和目标元素将是同一个。在这种情况下，我们希望保留原有的处理逻辑：
 
 ```cpp
 		if (dest_container == dest_element)
@@ -147,7 +147,7 @@ If the dragged item is dropped directly onto a container, then the current and t
 		}
 ```
 
-Otherwise, we want to insert the item into its new container before the item it was dragged onto.
+否则，我们希望将物品插入到其新容器中，位于它被拖到的物品之前。
 
 ```cpp
 		else
@@ -162,6 +162,6 @@ Otherwise, we want to insert the item into its new container before the item it 
 		}
 ```
 
-Run the app again and try it out. All good, except try dragging an item onto another item within the same window; in this case, it should be inserted after the element it is dragged onto, not before. So, just fix that up in the event handler and you're done!
+再次运行应用程序并尝试一下。一切正常，但可以尝试在同一个窗口内将一个物品拖到另一个物品上；在这种情况下，它应该被插入到被拖到的元素之后，而不是之前。所以，只需在事件处理器中修正这一点，就大功告成了！
 
-You can find the fully-completed source in the drag sample.
+你可以在 drag 示例中找到完整实现后的源代码。

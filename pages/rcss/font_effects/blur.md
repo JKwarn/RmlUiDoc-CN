@@ -1,39 +1,39 @@
 ---
 layout: page
-title: Blur font effect
+title: 模糊字体效果
 parent: rcss/font_effects
 grandparent: rcss
 ---
 
-The blur font effect renders a Gaussian blurred copy of the text.
+模糊字体效果渲染文本的高斯模糊副本。
 
-![Blur sample](blur.png)
+![模糊示例](blur.png)
 
-Note that, the blur effect will not replace the original text. To only show the blurred version of the text, set the `color`{:.prop} property of the original text to `transparent`{:.value}.
+请注意，模糊效果不会替换原始文本。若只想显示文本的模糊版本，请将原始文本的 `color`{:.prop} 属性设置为 `transparent`{:.value}。
 
-The effect is declared as:
+效果声明如下：
 
 ```css
 font-effect: blur( <width> <color> );
 ```
 
-Its properties are specified by the following.
+其属性由以下内容指定。
 
 `width`{:.prop}
 
-Value: | \<length\>
-Initial: | 1px
-Percentages: | N/A
+取值： | \<length\>
+初始值： | 1px
+百分比： | 不适用
 
-Determines the radius of the blur effect.
+决定模糊效果的半径。
 
 `color`{:.prop}
 
-Value: | \<color\>
-Initial: | white
-Percentages: | N/A
+取值： | \<color\>
+初始值： | white
+百分比： | 不适用
 
-The color is applied multiplicatively over the entire effect.
+该颜色以乘法方式应用于整个效果。
 
 
 ```css

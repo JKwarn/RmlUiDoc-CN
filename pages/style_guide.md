@@ -1,58 +1,58 @@
 ---
 layout: page
-title: Style guide for the core elements
+title: 核心元素样式指南
 ---
 
-RmlUi does not provide any built-in styles. Instead it gives full power, and responsibility, for styling to the user. This gives a lot of flexibility, but also requires the user to style all elements, including built-in ones such as `<input>`{:.tag} and `<select>`{:.tag}, and also generated elements such as scrollbars. It is recommended to include the [HTML Style Sheet](rml/html4_style_sheet.html) so that common tag names are layed out as in HTML.
+RmlUi 不提供任何内置样式。相反，它将设置样式的全部权力和责任交给用户。这带来了很大的灵活性，但也要求用户为所有元素设置样式，包括 `<input>`{:.tag} 和 `<select>`{:.tag} 等内置元素，以及滚动条等生成元素。建议引入 [HTML 样式表](rml/html4_style_sheet.html)，以便常见标签名称能够像在 HTML 中一样进行布局。
 
-Elements in RmlUi, including built-in ones, can be styled using normal RCSS properties. In addition, RmlUi features several functional elements that generate additional *hidden* elements that themselves can be styled. This document will go over some of these elements, such as scrollbars, sliders and drop-down boxes, and give recommendations on how to style them.
+RmlUi 中的元素（包括内置元素）可以使用普通的 RCSS 属性设置样式。此外，RmlUi 提供若干功能性元素，它们会生成额外的*隐藏*元素，这些隐藏元素本身也可以设置样式。本文将介绍其中的一些元素，如滚动条、滑块和下拉选择框，并就如何为它们设置样式给出建议。
 
-### Scrollbars
+### 滚动条
 
-Any element with scrolling overflow (a value of `scroll`{:.value} or `auto`{:.value} on either of the `overflow-x`{:.prop} or `overflow-y`{:.prop} properties) may generate scrollbars along its bottom or right side. By default, these are simple block elements with no background colour or decorator.
+任何具有滚动溢出的元素（在 `overflow-x`{:.prop} 或 `overflow-y`{:.prop} 属性上取值为 `scroll`{:.value} 或 `auto`{:.value}）都可能在其底部或右侧生成滚动条。默认情况下，这些是简单的块级元素，没有背景颜色或装饰器。
 
-#### Generated elements
+#### 生成的元素
 
-The scrollbar elements are tagged `scrollbarhorizontal`{:.tag} or `scrollbarvertical`{:.tag}, depending on their orientation. They are hidden elements parented directly to the scrolling element. Each scrollbar element contains four child elements:
+滚动条元素根据方向被标记为 `scrollbarhorizontal`{:.tag} 或 `scrollbarvertical`{:.tag}。它们是直接归属于滚动元素的隐藏元素。每个滚动条元素包含四个子元素：
 
-* `sliderarrowdec`{:.tag}: The button at the top (or left) of the scrollbar which can be clicked to scroll further up (or to the left) the element.
-* `sliderarrowinc`{:.tag}: The button at the bottom (or right) of the scrollbar which can be clicked to scroll further down (or to the right) the element.
-* `slidertrack`{:.tag}: The track that runs between the two arrow buttons.
-* `sliderbar`{:.tag}: The bar that runs on the track. It represents the size and position of the visible segment of the element's content. It can be dragged to scroll the visible window around.
+* `sliderarrowdec`{:.tag}：位于滚动条顶部（或左侧）的按钮，可以点击以继续向上（或向左）滚动元素。
+* `sliderarrowinc`{:.tag}：位于滚动条底部（或右侧）的按钮，可以点击以继续向下（或向右）滚动元素。
+* `slidertrack`{:.tag}：位于两个箭头按钮之间的轨道。
+* `sliderbar`{:.tag}：在轨道上运行的滑块。它表示元素内容可见段的大小和位置。可以拖拽它来滚动可见区域。
 
 ![style_guide_1.gif](style_guide_1.gif)
 
-When both horizontal and vertical scrollbars are present on an element, they are both shortened by the amount necessary to avoid an intersection. Another element is created and placed in this intersection point, placed and sized appropriately. This corner element is tagged scrollbarcorner and exists only for decoration purposes.
+当一个元素同时具有水平和垂直滚动条时，它们都会缩短必要的量以避免交叉。另一个元素会被创建并放置在这个交叉点上，并适当调整其位置和大小。这个角落元素被标记为 scrollbarcorner，仅用于装饰目的。
 
-#### Applying RCSS properties
+#### 应用 RCSS 属性
 
-All of these elements can be styled through RCSS to be sized, positioned and rendered appropriately. The recommended method for configuring a scrollbar is given below (note that this is for a vertical scrollbar; for a horizontal, swap width and height):
+所有这些元素都可以通过 RCSS 设置样式，以适当地调整大小、位置和渲染效果。下面给出了配置滚动条的推荐方法（注意：这是针对垂直滚动条的；对于水平滚动条，请交换宽度和高度）：
 
-1. Set the `width`{:.prop} property of the `scrollbarvertical`{:.tag} element to the appropriate value for your interface design. This should be enough to encompass the arrows, track and bar.
-2. Set the `width`{:.prop} and `height`{:.prop} properties of the `sliderarrowdec`{:.tag} and `sliderarrowinc`{:.tag} elements as appropriate. Set them to `0`{:.value} if you don't want buttons.
-3. Set the `width`{:.prop} property of the `slidertrack`{:.tag} as appropriate. The `height`{:.prop} value will be ignored for the track and will always be set internally. Use `margin-left`{:.prop} to position the track within the scrollbar.
-4. Set the `width`{:.prop} property of the `sliderbar`{:.tag} as appropriate. The height of the bar will be generated internally, but you can override this with the `height`{:.prop} property, or use the `min-height`{:.prop} and `max-height`{:.prop} properties to influence it.
-5. Apply decorators to the elements as appropriate.
+1. 将 `scrollbarvertical`{:.tag} 元素的 `width`{:.prop} 属性设置为适合你的界面设计的值。该宽度应足以容纳箭头、轨道和滑块。
+2. 适当地设置 `sliderarrowdec`{:.tag} 和 `sliderarrowinc`{:.tag} 元素的 `width`{:.prop} 和 `height`{:.prop} 属性。如果你不需要按钮，请将它们设置为 `0`{:.value}。
+3. 适当地设置 `slidertrack`{:.tag} 的 `width`{:.prop} 属性。轨道的 `height`{:.prop} 值将被忽略，并且总是由内部设置。使用 `margin-left`{:.prop} 在滚动条内定位轨道。
+4. 适当地设置 `sliderbar`{:.tag} 的 `width`{:.prop} 属性。滑块的高度会在内部生成，但你可以使用 `height`{:.prop} 属性覆盖它，或使用 `min-height`{:.prop} 和 `max-height`{:.prop} 属性来影响它。
+5. 适当地为各元素应用装饰器。
 
-See the _Rocket Invaders from Mars_ demo style sheet and the [templating tutorial](tutorials/window_template.html) for more pointers.
+更多提示请参阅 _Rocket Invaders from Mars_ 演示样式表和[模板教程](tutorials/window_template.html)。
 
-#### The 'scrollbar-margin' property
+#### 'scrollbar-margin' 属性
 
 {:#scrollbar-margin}
 
 `scrollbar-margin`{:.prop}
 
-Value: | \<length\>
-Initial: | 0px
-Applies to: | scroll containers
-Inherited: | no
-Percentages: | N/A
+值： | \<length\>
+初始值： | 0px
+适用于： | 滚动容器
+继承： | 否
+百分比： | 不适用
 
-As described above, the scrollbar elements (`scrollbarvertical`{:.tag} and `scrollbarhorizontal`{:.tag}) will shorten themselves automatically to avoid a corner intersection. This can lead to scenarios where a scrollbar is popping on and off (during a window resize, for example) and causing the other scrollbar to rapidly change size. To avoid this, and force a scrollbar to always shorten itself for a corner, you can use the numerical `scrollbar-margin`{:.prop} property on a scrollbar element. An element will shorten itself (on the bottom or right side, as appropriate) by the minimum of the appropriate corner dimension and the scrollbar margin.
+如上所述，滚动条元素（`scrollbarvertical`{:.tag} 和 `scrollbarhorizontal`{:.tag}）会自动缩短自身以避免角落交叉。这可能导致滚动条反复出现和消失（例如在窗口调整大小期间），并导致另一个滚动条快速改变大小。为了避免这种情况，并强制滚动条始终为角落缩短自身，你可以对滚动条元素使用数值 `scrollbar-margin`{:.prop} 属性。元素将按相应角落尺寸与 scrollbar margin 中的较小值来缩短自身（在底部或右侧，视情况而定）。
 
-#### Example RCSS
+#### RCSS 示例
 
-The following is the section of the style sheet for _Rocket Invaders from Mars_ relevant for scrollbars.
+以下是 _Rocket Invaders from Mars_ 样式表中与滚动条相关的部分。
 
 ```css
 @spritesheet theme
@@ -168,20 +168,20 @@ scrollbarvertical sliderarrowinc:active
 }
 ```
 
-### Sliders
+### 滑块
 
-Range sliders can be instanced through the RML tag `<input type="range" ... />`{:.tag}. Internally, they share most of the same child elements as scrollbars, specifically:
+范围滑块可以通过 RML 标签 `<input type="range" ... />`{:.tag} 实例化。在内部，它们与滚动条共享大部分相同的子元素，具体来说：
 
 * `sliderarrowdec`{:.tag}
 * `sliderarrowinc`{:.tag}
 * `slidertrack`{:.tag}
 * `sliderbar`{:.tag}
 
-These are styled in the same way you style scrollbars. In addition, range sliders feature:
+它们的样式设置方式与滚动条相同。此外，范围滑块还有以下特性：
 
-* `sliderprogress`{:.tag}. A sub-element of `slidertrack`{:.tag} which is automatically sized to indicate how much of the track has been traversed by the slider bar.
+* `sliderprogress`{:.tag}。`slidertrack`{:.tag} 的一个子元素，会自动调整大小以指示滑块已经经过了轨道的多少部分。
 
-Note that for input types, the `type`{:.attr} attribute of an `<input>`{:.tag} element is automatically set as a class to ease their specification in a style sheet. So the following rule will apply properties to an input's slider track:
+请注意，对于输入类型，`<input>`{:.tag} 元素的 `type`{:.attr} 属性会自动设置为一个类，以便在样式表中指定。因此，以下规则会将属性应用于输入的滑块轨道：
 
 ```css
 input.range slidertrack
@@ -190,29 +190,29 @@ input.range slidertrack
 }
 ```
 
-### Drop-down selection boxes
+### 下拉选择框
 
-Drop-down boxes can be instanced through the RML tag `<select>`{:.tag}, with individual options specified within the selection element with `<option>`{:.tag} tags.
+下拉选择框可以通过 RML 标签 `<select>`{:.tag} 实例化，其中的各个选项在 selection 元素内使用 `<option>`{:.tag} 标签指定。
 
-#### Intrinsic size
+#### 固有尺寸
 
-Drop-down boxes in RmlUi have a fixed intrinsic size rather than adapting the size to their contents, as is common behavior in web browsers. Instead, the `width`{:.prop} and `height`{:.prop} properties should be specified explicitly to achieve the desired size.
+RmlUi 中的下拉选择框具有固定的固有尺寸，而不是像 Web 浏览器中的常见行为那样适应其内容的大小。相反，应显式指定 `width`{:.prop} 和 `height`{:.prop} 属性来达到所需的大小。
 
-#### Generated elements
+#### 生成的元素
 
-The select element generates three hidden elements:
+select 元素会生成三个隐藏元素：
 
-* `selectvalue`{:.tag}: The container element for the selected option.
-* `selectarrow`{:.tag}: The button rendered to the right of the value element.
-* `selectbox`{:.tag}: The box containing the options. The visibility of this element is toggled when the arrow or value elements are clicked on, or when an option is selected.
+* `selectvalue`{:.tag}：所选选项的容器元素。
+* `selectarrow`{:.tag}：渲染在 value 元素右侧的按钮。
+* `selectbox`{:.tag}：包含选项的框。当点击箭头或 value 元素、或选中某个选项时，该元素的可见性会被切换。
 
-The pseudo-class `:checked`{:.cls} is set on the select element while the selection box is visible. Additionally, the selected option inside its drop-down list also has the `:checked`{:.cls} pseudo-class set.
+当选择框可见时，select 元素上会设置伪类 `:checked`{:.cls}。此外，其下拉列表中选中的选项也会设置 `:checked`{:.cls} 伪类。
 
 ![style_guide_2.gif](style_guide_2.gif)
 
-#### Example RCSS
+#### RCSS 示例
 
-The following are the select element's RCSS rules and properties from the _Rocket Invaders from Mars_ style sheet:
+以下是 _Rocket Invaders from Mars_ 样式表中 select 元素的 RCSS 规则和属性：
 
 ```css
 @spritesheet theme

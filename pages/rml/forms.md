@@ -1,125 +1,125 @@
 ---
 layout: page
-title: RML Forms
+title: RML 表单
 parent: rml
 next: controls
 ---
 
-A form is a collection of input elements inside a `<form>`{:.tag} element - when the form is "submitted", the information stored in the each child input element is sent through to the listening process.
+表单是 `<form>`{:.tag} 元素内的一组输入元素 —— 当表单被“提交”时，存储在每个子输入元素中的信息都会被发送给监听进程。
 
-See also the [form controls C++ documentation]({{"pages/cpp_manual/element_packages/form.html"|relative_url}}).
+另请参阅[表单控件 C++ 文档]({{"pages/cpp_manual/element_packages/form.html"|relative_url}})。
 
 ### \<form\>
 
-_Attributes_
+_属性_
 
 `onsubmit`{:.attr} = cdata (CI)
-: The name of the event to trigger when the form is submitted. The values of all form element children are passed to the event as parameters.
+: 表单被提交时触发的事件的名称。所有表单子元素的值都会作为参数传递给事件。
 
-#### \<form\> Children
+#### \<form\> 子元素
 
-There following elements function as children to a `<form>`{:.tag} element: the `<input>`{:.tag}, `<textarea>`{:.tag} and `<select>`{:.tag} elements. These have many common attributes which are listed below. Any specific attributes are listed afterward under their own headings.
+以下元素可作为 `<form>`{:.tag} 元素的子元素：`<input>`{:.tag}、`<textarea>`{:.tag} 和 `<select>`{:.tag} 元素。它们有许多共同的属性，如下所列。任何特定属性随后会在各自的标题下列出。
 
-_Attributes_
+_属性_
 
 `name`{:.attr} = cdata (CI)
-: The name of the input element. This is used to look up the element's value when the form is submitted. For types of radio it is used to group together radio buttons so that only one with the same name can be checked at once.
+: 输入元素的名称。表单提交时用于查找元素的值。对于 radio 类型，它用于对单选按钮进行分组，使得具有相同名称的按钮中只能有一个同时被选中。
 
 `value`{:.attr} = cdata (CN)
-: For types of `text`{:.value}, `password`{:.value} and `range`{:.value}, this is used as the initial value of the element. For the `radio`{:.value} and `checkbox`{:.value} types this is used as the value that is submitted if the input is checked. For `<option>`{:.tag} elements, this is the value that is submitted by the parent `<select>`{:.tag}, if it is the selected option.
+: 对于 `text`{:.value}、`password`{:.value} 和 `range`{:.value} 类型，用作元素的初始值。对于 `radio`{:.value} 和 `checkbox`{:.value} 类型，如果输入被选中，则用作提交的值。对于 `<option>`{:.tag} 元素，如果它是被选中的选项，则这是父级 `<select>`{:.tag} 提交的值。
 
 `disabled`{:.attr} (CI)
-: If this attribute is set, then the input element is unable to receive focus or be changed by user input.
+: 如果设置了该属性，则输入元素将无法接收焦点，也无法被用户输入更改。
 
 `autofocus`{:.attr} (CI)
-: The first visible control element with this attribute set will receive focus when a document is shown with default arguments. See [document visiblity](../cpp_manual/documents.html#visibility) for details.
+: 当文档以默认参数显示时，第一个设置了该属性的可见控件元素将获得焦点。详细信息请参见[文档可见性](../cpp_manual/documents.html#visibility)。
 
 #### \<input\>
 
-_Attributes_
+_属性_
 
 `type`{:.attr} = cdata (CI)
-: The type of the input field. Must be one of:
-* `text`{:.value} - A one-line text-entry field.
-* `password`{:.value} - Like text, but replaces the entered text with asterisks.
-* `radio`{:.value} - A radio button.
-* `checkbox`{:.value} - A checkbox.
-* `range`{:.value} - A slider bar.
-* `button`{:.value} - A button.
-* `submit`{:.value} - A button for submitting the form.
+: 输入字段的类型。必须为以下之一：
+* `text`{:.value} - 单行文本输入字段。
+* `password`{:.value} - 与 text 类似，但输入的文本会用星号替换。
+* `radio`{:.value} - 单选按钮。
+* `checkbox`{:.value} - 复选框。
+* `range`{:.value} - 滑块条。
+* `button`{:.value} - 按钮。
+* `submit`{:.value} - 用于提交表单的按钮。
 
-##### Text and Password types
+##### text 与 password 类型
 
 `size`{:.attr} = number (CN)
-: For types of text and password, defines the length (in characters) of the element.
+: 对于 text 和 password 类型，定义元素的长度（以字符为单位）。
 
 `maxlength`{:.attr} = number (CN)
-: For types of text and password, defines the maximum length (in characters) that the element will accept.
+: 对于 text 和 password 类型，定义元素可接受的最大长度（以字符为单位）。
 
 `placeholder`{:.attr} = cdata (CN)
-: For types of text and password, defines placeholder text displayed when the element's value is empty. Can be styled using the `:placeholder-shown`{:.cls} [pseudo-class](../rcss/selectors.html#pseudo-selectors).
+: 对于 text 和 password 类型，定义当元素值为空时显示的占位文本。可以使用 `:placeholder-shown`{:.cls} [伪类](../rcss/selectors.html#pseudo-selectors)进行样式化。
 
-##### Radio and Checkbox types
+##### radio 与 checkbox 类型
 
 `checked`{:.attr} (CI)
-: For types of radio and checkbox, if this attribute is set then the element is "on".
+: 对于 radio 和 checkbox 类型，如果设置了该属性，则元素为“开”。
 
-##### Range type
+##### range 类型
 
 `min`{:.attr} = number (CN)
-: For the range type, defines the value at the lowest (left or top) end of the slider.
+: 对于 range 类型，定义滑块最低端（左侧或顶部）的值。
 
 `max`{:.attr} = number (CN)
-: For the range type, defines the value at the highest (right or bottom) end of the slider.
+: 对于 range 类型，定义滑块最高端（右侧或底部）的值。
 
 `step`{:.attr} = number (CN)
-: For the range type, defines the increment that the slider will move by.
+: 对于 range 类型，定义滑块移动的增量。
 
 `orientation`{:.attr} = cdata (CI)
-: For the range type, specifies if it is a vertical or horizontal slider. Values can be `horizontal`{:.value} or `vertical`{:.value}.
+: 对于 range 类型，指定它是垂直滑块还是水平滑块。值可以为 `horizontal`{:.value} 或 `vertical`{:.value}。
 
 #### \<textarea\>
 
-_Attributes_
+_属性_
 
 `cols`{:.attr} = number (CN)
-: The width of the visible area of the textarea, as a number of columns of text.
+: 文本域可见区域的宽度，以文本列数表示。
 
 `rows`{:.attr} = number (CN)
-: The height of the visible area of the textarea, as a number of text rows.
+: 文本域可见区域的高度，以文本行数表示。
 
 `wrap`{:.attr} = cdata (CI)
-: If set to `nowrap`{:.value}, the textarea will not wrap unbroken lines to a new row.
+: 如果设置为 `nowrap`{:.value}，文本域将不会把未断行的文本换到新行。
 
 `maxlength`{:.attr} = number (CN)
-: The maximum length (in characters) that the element will accept.
+: 元素可接受的最大长度（以字符为单位）。
 
 `placeholder`{:.attr} = cdata (CN)
-: Defines placeholder text displayed when the textarea's value is empty. Can be styled using the `:placeholder-shown`{:.cls} [pseudo-class](../rcss/selectors.html#pseudo-selectors).
+: 定义当文本域值为空时显示的占位文本。可以使用 `:placeholder-shown`{:.cls} [伪类](../rcss/selectors.html#pseudo-selectors)进行样式化。
 
 #### \<select\>
 
-`<select>`{:.tag} has no additional parameters.
+`<select>`{:.tag} 没有额外的参数。
 
 ##### \<option\>
 
-_Attributes_
+_属性_
 
 `selected`{:.attr} (CI)
-: If set, then the option is selected when the `<select>`{:.tag} element is first loaded.
+: 如果设置，则 `<select>`{:.tag} 元素首次加载时该选项将被选中。
 
-**Note**: It is possible to use the `disabled`{:.attr} attribute to make the option not selectable by the user. Useful for labeling groups of options.
+**注意**：可以使用 `disabled`{:.attr} 属性使选项无法被用户选择。这对于标记选项组很有用。
 
 #### \<label\>
 
-A label associates a form input field with a caption. When a user hovers over or clicks a label, it will be forwarded to the targeted element.
+标签将表单输入字段与说明文字关联起来。当用户将鼠标悬停在标签上或点击标签时，该操作将被转发给目标元素。
 
-A target element can be specified by providing an ID in the `for`{:.attr} attribute. Otherwise, when omitted, the label will target the first descending element which has one of the following tags: `<button>`{:.tag}, `<input>`{:.tag}, `<textarea>`{:.tag}, `<progress>`{:.tag}, or `<select>`{:.tag}.
+可以通过在 `for`{:.attr} 属性中提供 ID 来指定目标元素。否则，当省略时，标签将把第一个具有以下标签之一的子元素作为目标：`<button>`{:.tag}、`<input>`{:.tag}、`<textarea>`{:.tag}、`<progress>`{:.tag} 或 `<select>`{:.tag}。
 
-_Attributes_
+_属性_
 
 `for`{:.attr} = idref (CI)
-: If set, the label element will target the element with the given ID. Otherwise, the label will target the first descending element of a valid tag (see above).
+: 如果设置，标签元素将以具有给定 ID 的元素为目标。否则，标签将把第一个具有有效标签（见上文）的子元素作为目标。
 
 ```html
 <label><input type="checkbox" value="pizza"/> Pizza</label>

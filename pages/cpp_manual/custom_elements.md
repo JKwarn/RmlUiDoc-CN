@@ -1,23 +1,23 @@
 ---
 layout: page
-title: Custom elements
+title: 自定义元素
 parent: cpp_manual
 next: hidden_elements
 ---
 
-If you need special functionality on an element that you can't easily manage through the event system, you have the option of creating a custom element. Custom elements derive directly from the core Element class definition and are created through a custom element instancer. Custom elements can:
+如果你需要在元素上实现无法通过事件系统轻松管理的特殊功能，可以选择创建自定义元素。自定义元素直接派生自核心 Element 类定义，并通过自定义元素 instancer 创建。自定义元素可以：
 
-* Respond to property and attribute changes.
-* Manage the layout of hidden internal elements.
-* Execute custom update or rendering code.
-* Respond to events inline.
-* Respond to descendant add / remove events.
+* 响应标记属性（attribute）与样式属性（property）的变化。
+* 管理隐藏内部元素的布局。
+* 执行自定义更新或渲染代码。
+* 内联响应事件。
+* 响应后代的添加/移除事件。
 
-### Creating a custom element
+### 创建自定义元素
 
-All custom elements are classes derived (not necessarily directly) from `Rml::Element`. The constructor for Element takes one parameter, the tag of the element; a derived element's constructor can either pass a constant string down to the base constructor, or take a string themselves to pass down.
+所有自定义元素都是派生自（不一定直接派生）`Rml::Element` 的类。Element 的构造函数接受一个参数，即元素的标签；派生元素的构造函数既可以向基类构造函数传递一个常量字符串，也可以自己接受一个字符串再传递下去。
 
-The virtual functions that can be overridden in a custom element are:
+可以在自定义元素中覆盖的虚函数有：
 
 ```cpp
 // Returns the baseline of the element, in pixels offset from the bottom of the element's content area.
@@ -62,9 +62,9 @@ virtual void GetInnerRML(Rml::String& content) const;
 virtual void GetRML(Rml::String& content);
 ```
 
-#### Layout
+#### 布局
 
-A custom element can override the `GetIntrinsicDimensions()` function if it wants to be laid out as a replaced element. Replaced elements are elements with intrinsic dimensions that can be positioned like inline or block content. Examples of replaced elements are images and form controls.
+如果自定义元素希望作为替换元素（replaced element）进行布局，它可以覆盖 `GetIntrinsicDimensions()` 函数。替换元素是具有固有尺寸的元素，可以像内联或块级内容一样定位。替换元素的示例包括图像和表单控件。
 
 ```cpp
 // Gets the intrinsic dimensions of this element, if it is of a type that has an inherent size.
@@ -74,9 +74,9 @@ A custom element can override the `GetIntrinsicDimensions()` function if it want
 virtual bool GetIntrinsicDimensions(Rml::Vector2f& dimensions, float& ratio);
 ```
 
-If a custom element is to be a replaced element, it should override this function and return true. The actual intrinsic dimensions of the element should be put into the dimensions parameter. If the element has an intrinsic ratio, this can be set on the ratio parameter, either in addition or instead of the dimensions parameter. This function will be called every time the element is laid out, so the parameters can be dynamic values. The default element returns false.
+如果自定义元素要成为替换元素，它应该覆盖此函数并返回 true。元素的实际固有尺寸应放入 dimensions 参数中。如果元素具有固有宽高比，可以在 ratio 参数上设置，可以是在 dimensions 参数之外附加设置，也可以是只设置 ratio。每次元素被布局时都会调用此函数，因此这些参数可以是动态值。默认元素返回 false。
 
-A custom replaced element (ie, one with intrinsic dimensions) can override the `GetBaseline()` function if it wants to change its reference point for horizontal positioning on a line.
+自定义替换元素（即具有固有尺寸的元素）如果希望更改其在行上进行水平定位的参考点，可以覆盖 `GetBaseline()` 函数。
 
 ```cpp
 // Returns the baseline of the element, in pixels offset from the bottom of the element's content area.
@@ -84,15 +84,15 @@ A custom replaced element (ie, one with intrinsic dimensions) can override the `
 virtual float GetBaseline() const;
 ```
 
-The `GetBaseline()` function returns the pixel offset from the bottom of the element's content area that neighbouring text should, by default, line their baselines up with. This will only affect the element's positioning if it is placed inline.
+`GetBaseline()` 函数返回从元素内容区域底部算起的像素偏移量，默认情况下相邻文本的基线应与之对齐。这只会影响元素在内联放置时的定位。
 
-#### Default actions
+#### 默认动作
 
-A custom element can override the `ProcessDefaultAction()` function to intercept all event types with a default action, sent to this element or one of its descendants. The default actions follow the normal event phases, but are only executed in the phase according to their `default_action_phase` which is defined for each event type. If an event is cancelled with `Event::StopPropagation()`, then the default action is not performed unless already executed. See the [event specifications](events.html#event-specifications) for details of each event type, and for which phases the default action is called.
+自定义元素可以覆盖 `ProcessDefaultAction()` 函数，以拦截发送给此元素或其某个后代的所有具有默认动作的事件类型。默认动作遵循正常的事件阶段，但只在其定义的 `default_action_phase`（针对每个事件类型定义）对应的阶段中执行。如果事件被 `Event::StopPropagation()` 取消，则除非已经执行，否则不会执行默认动作。有关每个事件类型的细节，以及默认动作在哪些阶段被调用，请参阅[事件规范](events.html#event-specifications)。
 
-Note that the element may receive events targeted at one of its children. Be sure to check the target element of the event and the event type.
+请注意，元素可能会收到针对其某个子元素的事件。务必检查事件的目标元素和事件类型。
 
-**Important**: You must remember to call the base class's `ProcessDefaultAction()` function with any unprocessed events! The base element responds to many events in its `ProcessDefaultAction()` function, and all manner of strange behaviour may result if you don't do this.
+**重要**：你必须记得将任何未处理的事件调用基类的 `ProcessDefaultAction()` 函数！基元素在其 `ProcessDefaultAction()` 函数中响应许多事件，如果你不这样做，可能会产生各种奇怪的行为。
 
 ```cpp
 // Called when an emitted event propagates to this element, for event types with default actions.
@@ -100,36 +100,36 @@ Note that the element may receive events targeted at one of its children. Be sur
 virtual void ProcessDefaultAction(Rml::Event& event);
 ```
 
-#### Hooks into update and render loops
+#### 更新与渲染循环的钩子
 
-A custom element can override the `OnUpdate()` or `OnRender()` functions to hook functionality into the update or render loops.
+自定义元素可以覆盖 `OnUpdate()` 或 `OnRender()` 函数，以将功能挂接到更新或渲染循环中。
 
-The `OnUpdate()` function is called at the very beginning of the base element's update function. There is no need to call the base element's `OnUpdate()` function if you do not wish to.
+`OnUpdate()` 函数在基元素更新函数的最开始被调用。如果你不希望调用基元素的 `OnUpdate()` 函数，则无需调用。
 
 ```cpp
 // Called during the update loop after children are updated.
 virtual void OnUpdate();
 ```
-Note that the element's property definition and computed values will be calculated after the call to `OnUpdate()`. Thus, it is safe to set new properties and expect them to be properly set during the current update loop. However, querying any of the element's computed values will return the ones calculated during the previous update loop.
+请注意，元素的属性定义和计算值将在调用 `OnUpdate()` 之后计算。因此，设置新属性并期望它们在当前更新循环中被正确设置是安全的。但是，查询元素的任何计算值将返回上一次更新循环期间计算的值。
 
-The `OnRender()` function is called from the base element's render loop after the following has occurred:
+`OnRender()` 函数在以下情况发生后，从基元素的渲染循环中被调用：
 
-* Descendant elements in the element's stacking context with a z-index of lower than 0 have been rendered.
-* The clipping region has been set for the element (if appropriate).
-* The elements background, border and all appropriate decorators have been rendered.
+* 元素堆叠上下文中 z-index 低于 0 的后代元素已被渲染。
+* 已为元素设置裁剪区域（如果适用）。
+* 元素的背景、边框和所有适用的装饰器已被渲染。
 
-There is no need to call the base element's `OnRender()` function if you do not wish to. Note that most custom rendering can be accomplished through the use of custom decorators; this is recommended rather than overriding `OnRender()` for reusability.
+如果你不希望调用基元素的 `OnRender()` 函数，则无需调用。请注意，大多数自定义渲染可以通过使用自定义装饰器来完成；出于可重用性的考虑，推荐这样做，而不是覆盖 `OnRender()`。
 
 ```cpp
 // Called during render after backgrounds, borders, decorators, but before children, are rendered.
 virtual void OnRender();
 ```
 
-#### Changes to properties or attributes
+#### 标记属性（attribute）与样式属性（property）的变化
 
-A custom element can override the `OnAttributeChange()` or `OnPropertyChange()` functions to respond to changes to its attributes or properties.
+自定义元素可以覆盖 `OnAttributeChange()` 或 `OnPropertyChange()` 函数，以响应其标记属性或样式属性的变化。
 
-`OnAttributeChange()` is called whenever an attribute is added, removed or redefined. The names of the changed attributes are passed into the function in the 'changed_attributes' variable, which is a dictionary of name and values. To check if a specific attribute has been altered, look for its presence in the list with the `find()` function.
+每当标记属性被添加、移除或重新定义时，都会调用 `OnAttributeChange()`。被更改标记属性的名称通过 'changed_attributes' 变量传入函数，该变量是名称和值的字典。要检查某个特定标记属性是否被更改，请使用 `find()` 函数在列表中查找它是否存在。
 
 ```cpp
 // Called when attributes on the element are changed.
@@ -137,7 +137,7 @@ A custom element can override the `OnAttributeChange()` or `OnPropertyChange()` 
 virtual void OnAttributeChange(const Rml::AttributeNameList& changed_attributes);
 ```
 
-`OnPropertyChange()` is called whenever the value of a property (or group of properties) is changed. The names of the changed properties are passed into the function in the `changed_properties` variable, which is a set of `PropertyId`s.
+每当样式属性（或一组样式属性）的值发生变化时，都会调用 `OnPropertyChange()`。被更改样式属性的名称通过 `changed_properties` 变量传入函数，该变量是一个 `PropertyId` 集合。
 
 ```cpp
 // Called when properties on the element are changed.
@@ -145,11 +145,11 @@ virtual void OnAttributeChange(const Rml::AttributeNameList& changed_attributes)
 virtual void OnPropertyChange(const Rml::PropertyIdSet& changed_properties);
 ```
 
-**Important**: If you override either of these functions, you must remember to call the base class's corresponding function! As with `ProcessDefaultAction()`, the base element responds to many attribute and property changes, and all manner of strange behaviour may result if you don't do this.
+**重要**：如果你覆盖了这两个函数中的任何一个，你必须记得调用基类的相应函数！与 `ProcessDefaultAction()` 一样，基元素响应许多标记属性和样式属性的变化，如果你不这样做，可能会产生各种奇怪的行为。
 
-#### Hierarchy changes
+#### 层级变化
 
-A custom element can override the `OnChildAdd()` or `OnChildRemove()` functions to respond to changes in the element's hierarchy. When an element is added or removed from another, the appropriate function is called on itself and its nearby ancestors immediately. Note that for performance reasons, only the nodes up to two levels up in the hierarchy are notified.
+自定义元素可以覆盖 `OnChildAdd()` 或 `OnChildRemove()` 函数，以响应元素层级的变化。当一个元素被添加到另一个元素或从另一个元素移除时，相应的函数会立即在该元素自身及其附近的祖先上被调用。请注意，出于性能原因，只有层级中向上两级以内的节点会收到通知。
 
 ```cpp
 // Called when a child node has been added up to two levels below us in the hierarchy.
@@ -161,13 +161,13 @@ virtual void OnChildAdd(Rml::Element* child);
 virtual void OnChildRemove(Rml::Element* child);
 ```
 
-#### RML generation
+#### RML 生成
 
-A custom element can override the `GetRML()` and `GetInnerRML()` function if the default RML generation functions are inadequate. This is generally not needed, unless an element rearranges its child elements internally, or makes heavy use of custom XML node handlers; in this case, the default functions may generate nonsensical RML.
+如果默认的 RML 生成函数不适用，自定义元素可以覆盖 `GetRML()` 和 `GetInnerRML()` 函数。这通常是不需要的，除非元素在内部重新排列其子元素，或者大量使用自定义 XML 节点处理器；在这种情况下，默认函数可能会生成无意义的 RML。
 
-`GetInnerRML()` is meant to return the internal RML of the element; ie, only the RML needed to generate the element's content, not the element itself. By default, it calls `GetRML()` on all of its DOM children and concatenates the result.
+`GetInnerRML()` 旨在返回元素的内部 RML；即，仅生成元素内容所需的 RML，不包含元素本身。默认情况下，它对其所有 DOM 子元素调用 `GetRML()` 并拼接结果。
 
-`GetRML()` is meant to return the RML required to generate the entire element. This therefore includes the element's tag and all of its attributes as well as all of its descendant's RML. By default, it generates its open tag, appends to that the the result of `GetInnerRML()`, and finally appends its closing tag.
+`GetRML()` 旨在返回生成整个元素所需的 RML。因此，这包括元素的标签及其所有标记属性（attribute），以及所有后代的 RML。默认情况下，它生成开标签，在其后追加 `GetInnerRML()` 的结果，最后追加闭标签。
 
 ```cpp
 // Gets the markup and content of the element.
@@ -179,11 +179,11 @@ virtual void GetInnerRML(Rml::String& content) const;
 virtual void GetRML(Rml::String& content);
 ```
 
-### Creating a custom element instancer
+### 创建自定义元素 instancer
 
-In order to have a custom element created through the RmlUi factory, an instancer for the element needs to be registered with the factory against the appropriate RML tag names. An element instancer is responsible for creating and destroying its elements when required, and also destroying itself when RmlUi is shut down.
+为了通过 RmlUi factory 创建自定义元素，需要在 factory 中针对相应的 RML 标签名注册该元素的 instancer。元素 instancer 负责在需要时创建和销毁其元素，并在 RmlUi 关闭时销毁自身。
 
-A custom element instancer needs to be derived from `Rml::ElementInstancer`, and implement the required pure virtual methods:
+自定义元素 instancer 需要派生自 `Rml::ElementInstancer`，并实现必需的纯虚方法：
 
 ```cpp
 // Instances an element given the tag name and attributes.
@@ -200,19 +200,19 @@ virtual Rml::ElementPtr InstanceElement(Rml::Element* parent,
 virtual void ReleaseElement(Rml::Element* element) = 0;
 ```
 
-`InstanceElement()` will be called whenever the factory is called upon to instance an element with a tag that the instancer was registered against. The parameters to the function are:
+每当 factory 被调用、需要实例化一个 instancer 已注册的标签元素时，都会调用 `InstanceElement()`。该函数的参数是：
 
-* `parent`: The element that the new element will be parented to if it is created successfully; you do not need to actually do the parenting! This will only be non-null if the element is instanced from RML.
-* `tag`: The string that whoever is creating the element wants the element's tag to be; due to the way elements are constructed through the factory, this may not be one of the tags the instancer was registered against. It is recommended you pass this through to the element to be its tag name, but this is not required.
-* `attributes`: The attributes defined on the element's tag in RML or passed into the factory. You do not need to set these attributes on the element yourself; that will be done automatically if the instancing is successful. You only need to use these if element instancing is dependent on the values (for example, the instancer for `input`{:.tag} elements instances different types depending on the value of the `type`{:.attr} attribute).
+* `parent`：如果新元素成功创建，它将被作为子元素挂到该元素下；你实际上不需要做挂接这件事！仅当元素是从 RML 实例化时，此参数才会非空。
+* `tag`：创建元素的任何一方希望该元素使用的标签字符串；由于元素是通过 factory 构造的，这可能不是 instancer 注册的标签之一。建议你将其传递给元素作为其标签名，但这不是必须的。
+* `attributes`：在 RML 中元素标签上定义、或传入 factory 的标记属性（attribute）。你不需要自己在元素上设置这些标记属性；如果实例化成功，这将自动完成。只有当元素实例化依赖于这些值时才需要使用它们（例如，`input`{:.tag} 元素的 instancer 会根据 `type`{:.attr} 标记属性的值实例化不同的类型）。
 
-If `InstanceElement()` is successful, return the new element wrapped in an `ElementPtr` (unique element). Otherwise, return nullptr to indicate an instancing error.
+如果 `InstanceElement()` 成功，则返回包装在 `ElementPtr`（unique 元素）中的新元素。否则，返回 nullptr 表示实例化错误。
 
-`ReleaseElement()` will be called after an element has been released from its owner, that is, its `ElementPtr` is destroyed or reset. The element should be deleted appropriately.
+当元素从其所有者释放后，即其 `ElementPtr` 被销毁或重置时，会调用 `ReleaseElement()`。元素应被适当地删除。
 
-#### Registering an instancer
+#### 注册 instancer
 
-To register a custom instancer with RmlUi, call the `RegisterElementInstancer()` function on the RmlUi factory (`Rml::Factory`) after RmlUi has been initialised.
+要向 RmlUi 注册自定义 instancer，请在 RmlUi 初始化之后调用 RmlUi factory（`Rml::Factory`）上的 `RegisterElementInstancer()` 函数。
 
 ```cpp
 // Make sure custom_instancer is kept alive until after the call to Rml::Shutdown
@@ -220,13 +220,13 @@ auto custom_instancer = std::make_unique<ElementInstancerCustom>();
 Rml::Factory::RegisterElementInstancer("custom", custom_instancer.get());
 ```
 
-The first parameter to `RegisterElementInstancer()` is the tag name the instancer is bound to. In the above example, the custom instancer will be called to instance an element whenever an element with the tag 'custom' is encountered while parsing an RML stream, or as otherwise required by the factory. You can register an instancer as many times as you like with the factory against different tag names.
+`RegisterElementInstancer()` 的第一个参数是该 instancer 绑定的标签名。在上面的示例中，当解析 RML 流时遇到标签为 'custom' 的元素，或 factory 另有需要时，将调用该自定义 instancer 来实例化元素。你可以对 factory 使用不同的标签名多次注册同一个 instancer。
 
-The library takes a non-owning pointer to the instancer. Thus, the instancer must be kept alive until after the call to `Rml::Shutdown`, and then cleaned up by the user.
+库持有指向 instancer 的非拥有指针。因此，instancer 必须保持存活直到调用 `Rml::Shutdown` 之后，然后由用户清理。
 
-#### Using a generic instancer
+#### 使用通用 instancer
 
-If a custom element does not require any special behaviour from its instancer, the easiest way to generate an instancer for it is to use the templated `ElementInstancerGeneric`. Instead of deriving your own instancer class, simply construct a new `Rml::ElementInstancerGeneric` templated to the type of the custom element you'd like to instance, and register it with the factory as you would a normal instancer.
+如果自定义元素不需要其 instancer 提供任何特殊行为，为其生成 instancer 的最简单方法是使用模板化的 `ElementInstancerGeneric`。无需派生自己的 instancer 类，只需构造一个新的、以你想要实例化的自定义元素类型为模板参数的 `Rml::ElementInstancerGeneric`，并像普通 instancer 一样在 factory 中注册它。
 
 ```cpp
 // Make sure custom_instancer is kept alive until after the call to Rml::Shutdown
@@ -234,17 +234,17 @@ auto custom_instancer = std::make_unique< Rml::ElementInstancerGeneric< CustomEl
 Rml::Factory::RegisterElementInstancer("custom", custom_instancer.get());
 ```
 
-The only requirement on the element type that it is templated to is that the constructor take a string (the tag name) like the base element.
+对其所模板化的元素类型唯一的要求是：构造函数像基元素一样接受一个字符串（标签名）。
 
-### Custom XML node handling
+### 自定义 XML 节点处理
 
-For some complex custom elements, the RML required to generate the element is not indicative of the actual internal hierarchy. For example, tabs in a tabset are specified by `<tab>`{:.tag} tags immediately beneath the `<tabset>`{:.tag} tag. If the standard XML parsing was being executed, an element would be instanced and parented to the tabset tag. But this isn't what is wanted, instead, we want to place all the tabs together under a single `<tabs>`{:.tag} tag. So a custom XML node handler is used for tabsets to process tabs (and equivalently for panels) differently.
+对于一些复杂的自定义元素，生成元素所需的 RML 并不能反映实际的内部层级。例如，tabset 中的选项卡由紧挨在 `<tabset>`{:.tag} 标签下方的 `<tab>`{:.tag} 标签指定。如果执行标准 XML 解析，元素将被实例化并作为子元素挂到 tabset 标签下。但这并不是我们想要的，相反，我们希望将所有选项卡一起放在单个 `<tabs>`{:.tag} 标签下。因此，tabset 使用自定义 XML 节点处理器来以不同方式处理选项卡（面板同理）。
 
-Node handlers are registered against RML tag names. When an RML file is being parsed, the XML parser maintains a stack of node handlers. Whenever a new tag is encountered, the parser checks if a specific node handler is registered against that tag; if so, that handler is pushed onto the stack and takes over the parsing until its associated tag is closed. If no handler is associated with a particular element, the current node handler continues parsing.
+节点处理器针对 RML 标签名注册。解析 RML 文件时，XML 解析器维护一个节点处理器栈。每当遇到新标签时，解析器会检查是否有特定的节点处理器针对该标签注册；如果有，该处理器被压入栈中并接管解析，直到其关联标签闭合。如果没有处理器与特定元素关联，则当前节点处理器继续解析。
 
-#### Creating a custom XML node handler
+#### 创建自定义 XML 节点处理器
 
-Custom node handlers derive from the `Rml::XMLNodeHandler` class and implement the pure virtual functions:
+自定义节点处理器派生自 `Rml::XMLNodeHandler` 类，并实现纯虚函数：
 
 ```cpp
 // Called when a new element tag is opened.
@@ -269,9 +269,9 @@ virtual bool ElementData(Rml::XMLParser* parser,
                          const Rml::String& data) = 0;
 ```
 
-`ElementStart()`, `ElementEnd()` and `ElementData()` are called on the node handler for the appropriate XML parse events that occur while it is the active node handler. A self-closing tag will result in a call to `ElementEnd()` immediately after `ElementStart()`. `ElementData()` is called when loose non-whitespace data is encountered between two tags.
+当节点处理器处于活动状态期间发生相应的 XML 解析事件时，会在该节点处理器上调用 `ElementStart()`、`ElementEnd()` 和 `ElementData()`。自闭合标签会导致在 `ElementStart()` 之后立即调用 `ElementEnd()`。当在两个标签之间遇到松散的、非空白的文本数据时，会调用 `ElementData()`。
 
-Each of these functions is passed a pointer to the XML parser running the parse. From the parser the current parse frame can be requested with the `GetParseFrame()` function; the parse frame object contains the current element and tag being processed, as well as the active node handler.
+这些函数都会传入一个指向正在执行解析的 XML 解析器的指针。通过解析器可以使用 `GetParseFrame()` 函数请求当前的解析帧；解析帧对象包含当前正在处理的元素和标签，以及活动的节点处理器。
 
 ```cpp
 struct ParseFrame
@@ -290,9 +290,9 @@ struct ParseFrame
 };
 ```
 
-`ElementStart()` is called with the name and attributes of the opening tag. If the node handler creates a new element and wants it on the top parse frame, it should return the element. Otherwise, it should return NULL to keep the current element on top of the parse frame stack. This is useful if the node handler creates internal elements for the current element, but doesn't want any further parsing executed on them.
+`ElementStart()` 会以开标签的名称和标记属性（attribute）被调用。如果节点处理器创建了一个新元素，并且希望它位于解析帧栈顶部，则应返回该元素。否则，应返回 NULL 以将当前元素保留在解析帧栈顶部。当节点处理器为当前元素创建内部元素、但又不希望对其执行进一步解析时，这会很有用。
 
-If the node handler wants to change the node handler for the new element, it can push a new handler onto the XML parser's stack using `PushHandler()` or `PushDefaultHandler()` from `ElementStart()`. The default handler will instance elements as described previously in the documentation.
+如果节点处理器想为新元素更改节点处理器，它可以在 `ElementStart()` 中使用 `PushHandler()` 或 `PushDefaultHandler()` 将新处理器压入 XML 解析器的栈。默认处理器将按照本文档前面所述的方式实例化元素。
 
 ```cpp
 // Pushes an element handler onto the parse stack for parsing child elements.
@@ -304,10 +304,11 @@ bool PushHandler(const Rml::String& tag);
 void PushDefaultHandler();
 ```
 
-If it doesn't call either of these methods, it will remain the node handler for any child elements it creates.
-Registering a custom node handler
+如果它不调用这两个方法中的任何一个，它将继续作为其创建的任何子元素的节点处理器。
 
-Register a custom node handler with RmlUi's XML parser with the static `RegisterNodeHandler()` function on `Rml::XMLParser`. You can register the same handler multiple times with the parser against different tag names. `RegisterNodeHandler()` takes shared ownership of the handler, thus, users do not need to store their own copy when they are done.
+#### 注册自定义节点处理器
+
+使用 `Rml::XMLParser` 上的静态 `RegisterNodeHandler()` 函数，将自定义节点处理器注册到 RmlUi 的 XML 解析器。你可以使用不同的标签名将同一个处理器多次注册到解析器。`RegisterNodeHandler()` 对处理器持有共享所有权，因此用户完成后无需自己保存副本。
 
 ```cpp
 // Registers a custom node handler to be used to a given tag.
@@ -318,6 +319,6 @@ static Rml::XMLNodeHandler* RegisterNodeHandler(const Rml::String& tag,
                                                          SharedPtr<Rml::XMLNodeHandler> handler);
 ```
 
-#### Samples
+#### 示例
 
-Custom XML node handlers are used extensively by the included [element packages](element_packages.html); consult the source for the `XMLNodeHandlerTabSet` and `XMLNodeHandlerTextArea` classes for demonstrations of their use.
+随附的[元素包](element_packages.html)广泛使用了自定义 XML 节点处理器；请参阅 `XMLNodeHandlerTabSet` 和 `XMLNodeHandlerTextArea` 类的源码，了解它们的使用演示。

@@ -1,14 +1,14 @@
 ---
 layout: page
-title: Assigning property values, cascading, and inheritance
+title: 属性值赋值、层叠与继承
 parent: rcss
 next: box_model
 ---
 
-This functionality of RCSS is identical to that defined in [CSS2](http://www.w3.org/TR/REC-CSS2/cascade.html); please refer there for documentation. Important things to be aware of:
+RCSS 的这一功能与 [CSS2](http://www.w3.org/TR/REC-CSS2/cascade.html) 中定义的完全相同；请参阅该文档。需要注意的重要事项：
 
-* RmlUi has no built-in UA style sheet.
-* The `!important`{:.tag} tag is not yet supported.
-* The `inherit`{:.value} rule is not yet supported.
+* RmlUi 没有内置的 UA 样式表。
+* 尚不支持 `!important`{:.tag} 标记。
+* 尚不支持 `inherit`{:.value} 规则。
 
-RCSS also supports [custom properties and variables](custom_properties.html), which take part in the cascade and inheritance.
+RCSS 还支持[自定义属性与变量](custom_properties.html)，它们参与层叠和继承。

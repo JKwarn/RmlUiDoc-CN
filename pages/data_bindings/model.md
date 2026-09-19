@@ -1,34 +1,34 @@
 ---
 layout: page
-title: Data model
+title: 数据模型
 parent: data_bindings
 next: views_and_controllers
 ---
 
 {% raw %}
 
-The data model is the interface between the user data, and the views and controllers assigned to the model.
+数据模型（data model）是用户数据与分配给该模型的视图和控制器之间的接口。
 
-Each `Context` can store several named data models. In the RML document, the given data model is applied by using the `data-model=[model_name]` attribute. Then, all its children belong to the given data model, and can reference data variables within it.
+每个 `Context` 都可以存储多个具名数据模型。在 RML 文档中，通过使用 `data-model=[model_name]` 属性来应用指定的数据模型。之后，其所有子元素都属于该数据模型，并且可以引用其中的数据变量。
 
-The procedure for setting up and handling a data model should be as follows.
+设置和管理数据模型的过程应如下所示。
 
-1. Create the data model on the context with a given name.
-2. Register any Scalar, Struct or Array types in the *data model constructor*.
-3. Bind variables using the data model constructor.
-4. Load the document.
+1. 在上下文上以给定名称创建数据模型。
+2. 在*数据模型构造函数*中注册任何标量、结构体或数组类型。
+3. 使用数据模型构造函数绑定变量。
+4. 加载文档。
 
-Then, during the update loop:
+然后，在更新循环中：
 
-1. Submit inputs to the context as normal. Data controllers will update data variables on the client side as necessary, and consequently set the dirty flag on the same variables.
-2. It is now safe to query the data model for dirty data variables if desired, and set dirty state on any data changed on the client side.
-3. Finally, during the call to `Context::Update`, all data views will be updated with any dirtied data variables.
+1. 像往常一样向上下文提交输入。数据控制器会在客户端侧按需更新数据变量，并随之在同一变量上设置脏（dirty）标志。
+2. 现在可以安全地按需查询数据模型中脏的数据变量，也可以在客户端侧为任何已更改的数据设置脏状态。
+3. 最后，在调用 `Context::Update` 期间，所有数据视图都将使用任何已变脏的数据变量进行更新。
 
-Usage of the model constructor and model handle are detailed in the following sections.
+模型构造函数和模型句柄的用法将在以下章节中详细说明。
 
-### Model constructor
+### 模型构造函数
 
-The function `Context::CreateModel` returns a data model constructor which can be used to register types and functions, and bind variables.
+`Context::CreateModel` 函数返回一个数据模型构造函数，可用于注册类型和函数以及绑定变量。
 
 ```cpp
 /// Creates a data model.
@@ -44,27 +44,27 @@ DataModelConstructor Context::CreateDataModel(
 );
 ```
 
-#### Registering types
+#### 注册类型
 
-Users should first register types before binding variables, as RmlUi may need the type information to instantiate the data variables. All registered types apply to every data model in the current context.
+用户应在绑定变量之前先注册类型，因为 RmlUi 可能需要类型信息来实例化数据变量。所有已注册的类型都适用于当前上下文中的每个数据模型。
 
-Built-in types are handled automatically and do not need to be registered, this applies to arithmetic types such as `int` and `float`, as well as `Rml::String`.
+内置类型会自动处理，无需注册，这适用于 `int` 和 `float` 等算术类型以及 `Rml::String`。
 
-##### Arrays
+##### 数组
 
 ```cpp
 template<typename Container>
 bool DataModelConstructor::RegisterArray();
 ```
-Registers `Container` as an Array. The container must have the `size()` and `begin()` member functions defined, the latter which returns an iterator which can be incremented. This is satisfied by several containers such as `std::vector` and `std::array`. This register call is all that is needed to set up an Array.
+将 `Container` 注册为数组（Array）。该容器必须定义 `size()` 和 `begin()` 成员函数，后者返回一个可递增的迭代器。`std::vector` 和 `std::array` 等多个容器都满足此要求。设置数组仅需这一次注册调用。
 
-##### Structs
+##### 结构体
 
 ```cpp
 template<typename T>
 StructHandle<T> DataModelConstructor::RegisterStruct();
 ```
-Registers `T` as a Struct. The function returns an object which can be used to register its members. Member objects, and getter- and setter functions can be registered. See the following example.
+将 `T` 注册为结构体（Struct）。该函数返回一个可用于注册其成员的对象。可以注册成员对象以及 getter 和 setter 函数。请参阅以下示例。
 
 ```cpp
 struct Vec2 {
@@ -88,15 +88,15 @@ if (auto vec2_handle = constructor.RegisterStruct<Vec2>())
 }
 ```
 
-Member objects and member functions cannot be const-qualified, and their type must first have been registered. Getter functions can return any data type (including Arrays and Structs) by reference or pointer. Getter functions returning by value, and combined getter and setter functions, must return or take a Scalar type.
+成员对象和成员函数不能使用 const 限定，且其类型必须已先注册。getter 函数可以按引用或指针返回任何数据类型（包括数组和结构体）。按值返回的 getter 函数以及组合的 getter 与 setter 函数必须返回或接受标量（Scalar）类型。
 
-##### Scalars
+##### 标量
 
 ```cpp
 template<typename T>
 bool DataModelConstructor::RegisterScalar(DataTypeGetFunc<T> get_func, DataTypeSetFunc<T> set_func = {});
 ```
-Registers a new type `T` to be used like a Scalar variable. It takes a getter and a setter function to convert the type to and from an `Rml::Variant`, see the following example.
+注册一个新类型 `T` 以像标量（Scalar）变量一样使用。它接受 getter 和 setter 函数，用于将该类型与 `Rml::Variant` 相互转换，请参阅以下示例。
 
 ```cpp
 constructor.RegisterScalar<Rml::Colourb>(
@@ -115,19 +115,19 @@ constructor.RegisterScalar<Rml::Colourb>(
 ```
 
 
-#### Registering transform functions
+#### 注册变换函数
 {:#registering-transforms}
 
-Transform functions can be used in data expression using the function call syntax `fnc()` or the pipe operator `| fnc`. A transform function can be registered using the function
+变换函数可以在数据表达式中使用，通过函数调用语法 `fnc()` 或管道运算符 `| fnc` 调用。可以使用以下函数注册变换函数：
 
 ```cpp
 void DataModelConstructor::RegisterTransformFunc(const String& name, DataTransformFunc transform_func);
 ```
-where the transform function is defined as
+其中变换函数定义为
 ```cpp
 using DataTransformFunc = std::function<Variant(const VariantList&)>;
 ```
-The input argument contains all the arguments passed into the transform function, in the order they appear in the data expression. When the function is called using the pipe operator, the first argument will be the left hand side of the `|` operator. The transform function should return a `Variant` with the new value or an empty one to indicate failure.
+输入参数包含传入变换函数的所有参数，顺序与它们在数据表达式中出现的顺序一致。使用管道运算符调用函数时，第一个参数将是 `|` 运算符左侧的值。变换函数应返回一个包含新值的 `Variant`，或返回空值以表示失败。
 
 ```cpp
 // Register a transform function for formatting time
@@ -141,59 +141,59 @@ constructor.RegisterTransformFunc("format_time", [](const Rml::VariantList& argu
 });
 ```
 
-#### Binding data variables
+#### 绑定数据变量
 
-Data variables strictly apply to the current data model. The data variable is a a wrapper around a raw pointer - or a get/set function pair. The pointed-to type must first have been *registered* unless it is an arithmetic type (such as `int`, `char`, `float`), or `Rml::String`.
+数据变量严格应用于当前数据模型。数据变量是原始指针或 get/set 函数对的包装。除非指向的类型是算术类型（如 `int`、`char`、`float`）或 `Rml::String`，否则该类型必须已*注册*。
 
-Bind the data variables using the following functions.
+使用以下函数绑定数据变量。
 ```cpp
 // Bind a data variable.
 template<typename T>
 bool DataModelConstructor::Bind(const String& name, T* ptr);
 ```
-Binds a data variable `name` to the data model. Then name is used when referencing the data variable in data expressions, and for getting and setting the dirty state of variables. Next, `ptr` is a pointer to the data on the user side. The lifetime of this data must extend the current data model. That means either until after the call to `Rml::Shutdown()`, until the context is destroyed, or until the data model has been manually removed from the context.
+将数据变量 `name` 绑定到数据模型。之后，在数据表达式中引用该数据变量、以及获取和设置变量的脏状态时都将使用此名称。`ptr` 是指向用户侧数据的指针。该数据的生命周期必须比当前数据模型更长。也就是说，要么持续到调用 `Rml::Shutdown()` 之后，要么持续到上下文被销毁，要么持续到数据模型被手动从上下文中移除。
 
-Binding pointers, specifically raw pointers, `std::unique_ptr` and `std::shared_ptr`, is also supported and will automatically be dereferenced as needed. Const-qualified objects however are not supported.
+也支持绑定指针，特别是原始指针、`std::unique_ptr` 和 `std::shared_ptr`，并且会根据需要自动解引用。但不支持 const 限定的对象。
 
 ```cpp
 // Bind a get/set function pair.
 bool DataModelConstructor::BindFunc(const String& name, DataGetFunc get_func, DataSetFunc set_func = {});
 ```
-Binds a Scalar data type `name`, taking a getter and a setter function to retrieve and assign a value to an `Rml::Variant`. The get/set functions are defined as follows.
+绑定标量数据类型的 `name`，接受 getter 和 setter 函数来检索值并将值赋给 `Rml::Variant`。get/set 函数定义如下。
 
 ```cpp
 using DataGetFunc = std::function<void(Variant&)>;
 using DataSetFunc = std::function<void(const Variant&)>;
 ```
 
-#### Binding event callback functions
+#### 绑定事件回调函数
 
-Event callbacks can be used in the `data-event` controller to receive and act on events.
+事件回调可以在 `data-event` 控制器中使用，用于接收事件并作出响应。
 
 ```cpp
 bool DataModelConstructor::BindEventCallback(const String& name, DataEventFunc event_func);
 ```
 
-where
+其中
 
 ```cpp
 using DataEventFunc = std::function<void(DataModelHandle, Event&, const VariantList&)>;
 ```
 
-The `DataModelHandle` is a handle to the data model which generated the event callback. The `Event` is the event which generated the event callback, and can be used like other events in RmlUi, including reading its properties and stopping propagation. `VariantList` provides a list of arguments passed in by the user in the `data-event` assignment expression.
+`DataModelHandle` 是生成事件回调的数据模型的句柄。`Event` 是生成事件回调的事件，可以像 RmlUi 中的其他事件一样使用，包括读取其属性和停止传播。`VariantList` 提供用户在 `data-event` 赋值表达式中传入的参数列表。
 
-#### Returning the data model handle
+#### 返回数据模型句柄
 
-Finally, the data model handle can be returned from the `DataModelConstructor` by calling
+最后，可以通过调用以下函数从 `DataModelConstructor` 获取数据模型句柄：
 
 ```cpp
 DataModelHandle DataModelConstructor::GetModelHandle() const;
 ```
 
 
-### Model handle
+### 模型句柄
 
-The data model handle is used to interact with the data model after setting it up.
+数据模型句柄用于在完成数据模型设置后与之交互。
 
 ```cpp
 void DataModelHandle::DirtyVariable(const String& variable_name);
@@ -201,12 +201,12 @@ void DataModelHandle::DirtyVariable(const String& variable_name);
 bool DataModelHandle::IsVariableDirty(const String& variable_name);
 ```
 
-`DirtyVariable()` should be called every time the data is changed on the client side. `IsVariableDirty()` can be used to check if eg. a controller changed the value of a data variable. All dirty variables are cleared after a call to `Context::Update()`. Thus, dirty variables should be checked after inputs have been processed but before the context update.
+每当客户端侧的数据发生变化时，都应调用 `DirtyVariable()`。`IsVariableDirty()` 可用于检查控制器是否更改了数据变量的值。所有脏变量都会在调用 `Context::Update()` 后被清除。因此，应在处理完输入之后、上下文更新之前检查脏变量。
 
 
-### Removing the data model
+### 移除数据模型
 
-The data model can be manually closed by calling the following on the owning context.
+可以通过在所属上下文上调用以下函数来手动关闭数据模型。
 
 ```cpp
 /// Removes the given data model.
@@ -217,15 +217,15 @@ The data model can be manually closed by calling the following on the owning con
 bool Context::RemoveDataModel(const String& name);
 ```
 
-Otherwise the data model is removed automatically when the context is destroyed.
+否则，数据模型会在上下文销毁时自动移除。
 
-### Appendix
+### 附录
 
-#### Registering types across library boundaries
+#### 跨库边界注册类型
 
-Some considerations are necessary if you want to register types in one shared library (e.g. `.dll` or `.so`), and bind a variable with those same types in another shared library. In such cases, one might see an error like "*data type T not registered with the type register*" when trying to bind a data variable. This is because RmlUi assigns a unique ID to each type, however, the ID is not automatically visible across library boundaries. This results in mismatched IDs between the registered type and the data variable type.
+如果你想在某个共享库（例如 `.dll` 或 `.so`）中注册类型，并在另一个共享库中使用相同的类型绑定变量，则需要考虑一些问题。在这种情况下，尝试绑定数据变量时可能会看到类似“*data type T not registered with the type register*”这样的错误。这是因为 RmlUi 会为每个类型分配一个唯一 ID，但该 ID 不会自动跨库边界可见。这会导致已注册类型与数据变量类型之间的 ID 不匹配。
 
-One solution is to export the ID from one of the libraries, and make sure the other libraries can see the export. Example:
+一种解决方案是从其中一个库导出该 ID，并确保其他库可以看到该导出。例如：
 
 `my_data_types.hpp`{:.path}:
 ```cpp
@@ -239,8 +239,8 @@ template class MY_DATATYPES_LIBRARY_API Rml::Family<MyTypes::Variant>;
 template class MY_DATATYPES_LIBRARY_API Rml::Family<MyTypes::Vector3>;
 ```
 
-Here, `MY_DATATYPES_LIBRARY_API` should follow the common idiom for [export macros](https://cmake.org/cmake/help/latest/module/GenerateExportHeader.html). Now make sure to include `my_data_types.hpp`{:.path} in all libraries that use any of these types for their data bindings.
+此处，`MY_DATATYPES_LIBRARY_API` 应遵循[导出宏](https://cmake.org/cmake/help/latest/module/GenerateExportHeader.html)的常见惯例。现在，请确保在所有使用这些类型进行数据绑定的库中包含 `my_data_types.hpp`{:.path}。
 
-*Note:* Some compilers need the export macro on the declaration, and others need it on the definition. You may need to adjust the code accordingly, see [RmlUi#759](https://github.com/mikke89/RmlUi/pull/759#issuecomment-2832679164) and [fmt#2229](https://github.com/fmtlib/fmt/issues/2228) for more details.
+*注意：* 某些编译器需要在声明处使用导出宏，而另一些编译器需要在定义处使用。你可能需要相应地调整代码，更多详情请参阅 [RmlUi#759](https://github.com/mikke89/RmlUi/pull/759#issuecomment-2832679164) 和 [fmt#2229](https://github.com/fmtlib/fmt/issues/2228)。
 
 {% endraw %}

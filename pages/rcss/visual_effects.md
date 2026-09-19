@@ -1,107 +1,107 @@
 ---
 layout: page
-title: Visual effects
+title: 视觉效果
 parent: rcss
 next: colours_backgrounds
 ---
 
-### Overflow and clipping
+### 溢出与裁剪
 
-The contents of a block box may extend beyond the content area of the box itself, for example under the following scenarios:
+块级盒子的内容可能会延伸到盒子自身的内容区域之外，例如在以下场景中：
 
-* The contents of an inline box wider than its containing block box cannot be broken.
-* A block box has a width greater than its containing block box.
-* A block box has an explicit height set, and its contents exceed that height.
+* 宽度大于其包含块盒子的行内盒子的内容无法断开。
+* 块级盒子的宽度大于其包含块盒子。
+* 块级盒子设置了明确的高度，而其内容超过了该高度。
 
-When overflow occurs, the overflow-x' and 'overflow-y' properties dictate how the overflow is handled.
+当发生溢出时，'overflow-x' 和 'overflow-y' 属性决定如何处理溢出。
 
-#### Overflow: the 'overflow' property
+#### 溢出：'overflow' 属性
 {:#overflow}
 
-`overflow-x`{:.prop}, `overflow-y`{:.prop}
+`overflow-x`{:.prop}、`overflow-y`{:.prop}
 
-Value: | visible \| hidden \| auto \| scroll
-Initial: | visible
-Applies to: | block-level elements
-Inherited: | no
-Percentages: | N/A
+取值： | visible \| hidden \| auto \| scroll
+初始值： | visible
+适用于： | 块级元素
+继承： | 否
+百分比： | 不适用
 
-The values have the following meanings:
+取值含义如下：
 
 `visible`{:.value}
-: Overflowing content is visible along this axis.
+: 溢出的内容沿此轴可见。
 
 `hidden`{:.value}
-: Overflowing content is hidden along this axis.
+: 溢出的内容沿此轴被隐藏。
 
 `auto`{:.value}
-: If overflow occurs along this axis, overflowing content is hidden and a scrollbar is generated and positioned along the axis so the hidden content can be scrolled into view.
+: 如果沿此轴发生溢出，溢出的内容会被隐藏，并沿该轴生成并放置一个滚动条，以便将隐藏的内容滚动到视图中。
 
 `scroll`{:.value}
-: A scrollbar is always visible along the axis, allowing hidden content to be scrolled into view. This will eliminate 'popping' if content suddenly overflows and a scrollbar appears.
+: 沿该轴始终显示一个滚动条，允许将隐藏的内容滚动到视图中。如果内容突然溢出并出现滚动条，这可以消除'跳动'现象。
 
-If either `overflow-x`{:.prop} or `overflow-y`{:.prop} is set to a value other than 'visible', clipping will occur on both axes.
+如果 `overflow-x`{:.prop} 或 `overflow-y`{:.prop} 中的任何一个设置为 'visible' 以外的值，两个轴都会发生裁剪。
 
-Note that, unlike CSS, [positioned elements](visual_formatting_model.html#position) and [transformed elements](animations_transitions_transforms.html#transform) do not affect when clipping is applied to the element. Thus, such elements may not be clipped or cause scrollbars to appear even when they overflow. Instead, one can use the [`clip: always`{:.value} property](#clip) together with hidden overflow to force clipping to occur.
+请注意，与 CSS 不同，[已定位元素](visual_formatting_model.html#position)和[已变换元素](animations_transitions_transforms.html#transform)不会影响裁剪何时应用于该元素。因此，此类元素即使溢出也可能不会被裁剪或产生滚动条。此时，可以使用 [`clip: always`{:.value} 属性](#clip) 配合隐藏溢出（hidden overflow）来强制发生裁剪。
 
 `overflow`{:.prop}
 
-Shorthand for `overflow-x overflow-y`{:.prop}. If two values are specified, the first will be used to specify `overflow-x`{:.prop} and the second `overflow-y`{:.prop}. If one value is specified, it will be used to specify both.
+`overflow-x overflow-y`{:.prop} 的简写。如果指定两个值，第一个用于指定 `overflow-x`{:.prop}，第二个用于指定 `overflow-y`{:.prop}。如果指定一个值，则同时用于指定两者。
 
 ```css
-/* Hide horizontal overflowing content and generate a scrollbar (if required) along the vertical axis. */
+/* 隐藏水平溢出的内容，并沿垂直轴生成滚动条（如果需要）。 */
 div#content
 {
 	overflow: hidden auto;
 }
 ```
 
-#### Clipping: the 'clip' property
+#### 裁剪：'clip' 属性
 {:#clip}
 
-This property defines how the element interacts with the clipping regions of its ancestors.
+此属性定义元素如何与其祖先的裁剪区域交互。
 
-The property differs completely from the CSS `clip`{:.prop} property which instead defines the clipping region of an element. In RCSS, the clipping region is always the 'client area'. The client area is normally the padding area of an element, but for certain elements it may be the content area.
+该属性与 CSS 的 `clip`{:.prop} 属性完全不同，后者定义元素的裁剪区域。在 RCSS 中，裁剪区域始终是"客户区"。客户区通常是元素的内边距区域，但对于某些元素而言可能是内容区域。
 
 `clip`{:.prop}
 
-Value: | auto \| none \| always \| \<number\>
-Initial: | auto
-Applies to: | all elements
-Inherited: | no
-Percentages: | N/A
+取值： | auto \| none \| always \| \<number\>
+初始值： | auto
+适用于： | 所有元素
+继承： | 否
+百分比： | 不适用
 
-The values have the following meanings:
+取值含义如下：
 
 `auto`{:.value}
-: The element is subjected to all the clipping regions put in place by its ancestors.
+: 元素受其祖先设置的所有裁剪区域约束。
 
 `none`{:.value}
-: The element is never clipped (except by the context).
+: 元素永远不会被裁剪（上下文除外）。
 
 `always`{:.value}
-: The element always clips, forcing all descendant elements to clip to this element's client area. This can be useful in some cases where elements are not automatically clipped even when set to e.g. `overflow: hidden`{:.prop}, such as with absolutely positioned or transformed child elements.
+: 元素始终裁剪，强制所有后代元素裁剪到该元素的客户区。在某些元素即使设置为例如 `overflow: hidden`{:.prop} 也不会被自动裁剪的情况下（例如绝对定位或已变换的子元素），这可能很有用。
 
 `<number>`{:.value}
-: The element is subjected to the clipping regions of its ancestors, except it skips the closest `<number>`{:.value} ancestors that could have put in place a clipping region (ie, those ancestors with an `overflow-x`{:.prop} or `overflow-y`{:.prop} other than `visible`{:.value}). The number must be in the range `[1, 127]`{:.value}.
+: 元素受其祖先裁剪区域的约束，但会跳过最接近的 `<number>`{:.value} 个可能设置了裁剪区域的祖先（即那些 `overflow-x`{:.prop} 或 `overflow-y`{:.prop} 不是 `visible`{:.value} 的祖先）。该数字必须在 `[1, 127]`{:.value} 范围内。
 
-### Visibility: the 'visibility' property
+### 可见性：'visibility' 属性
 {:#visibility}
 
 `visibility`{:.prop}
 
-Value: | visible \| hidden
-Initial: | visible
-Applies to: | all elements
-Inherited: | no
-Percentages: | N/A
+取值： | visible \| hidden
+初始值： | visible
+适用于： | 所有元素
+继承： | 否
+百分比： | 不适用
 
-Values have the following meanings:
+取值含义如下：
 
 `visible`{:.value}
-: The generated box is visible.
+: 生成的盒子可见。
 
 `hidden`{:.value}
-: The generated box, and all of its descendants, is hidden. Note that the box still has an impact on layout, it is just not rendered.
+: 生成的盒子及其所有后代都被隐藏。请注意，该盒子仍然会影响布局，只是不会被渲染。
 
-*Animation behavior*: When interpolating between `visible`{:.value} and `hidden`{:.value}, the `visible`{:.value} keyword is applied during the entire interpolation period. This is helpful in animations and transition where one wants to apply fade-in or fade-out effects when showing or hiding an element. This behavior ensures that the element is visible during the entire fading procedure.
+*动画行为*：在 `visible`{:.value} 和 `hidden`{:.value} 之间插值时，整个插值期间都会应用 `visible`{:.value} 关键字。这在显示或隐藏元素时想要应用淡入或淡出效果的动画和过渡中很有帮助。此行为确保元素在整个淡入淡出过程中保持可见。

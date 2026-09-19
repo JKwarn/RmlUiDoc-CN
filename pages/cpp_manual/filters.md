@@ -1,31 +1,31 @@
 ---
 layout: page
-title: Filters
+title: 滤镜
 parent: cpp_manual
 next: debugger
 ---
 
-Filters are generic, configurable, reusable objects designed to be attached to elements to add custom visual effects during rendering. The same filters can either be applied to the background of an element (the `backdrop-filter`{:.prop} property), or to the otherwise fully rendered element (the `filter`{:.prop} property). They can also be invoked to create special effects during other rendering operations, for example to apply blur onto a `box-shadow`{:.prop}.
+滤镜是通用的、可配置的、可重用的对象，设计用于附加到元素上，以在渲染期间添加自定义视觉效果。相同的滤镜既可以应用于元素的背景（`backdrop-filter`{:.prop} 属性），也可以应用于其他方面已完成渲染的元素（`filter`{:.prop} 属性）。它们还可以被调用来在其他渲染操作期间创建特殊效果，例如对 `box-shadow`{:.prop} 应用模糊。
 
-For a full description on how filters are attached to elements and configured through RML, see the [relevant section in the RCSS documentation](../rcss/filters.html).
+关于滤镜如何通过 RML 附加到元素并进行配置的完整描述，请参阅 [RCSS 文档中的相关章节](../rcss/filters.html)。
 
-### Filter overview
+### 滤镜概览
 
-RmlUi ships with several built-in filters, including blur, drop-shadow, and color adjustments. Depending on the visual effects you want to achieve, you may need to develop custom filters. Custom filters are defined and instanced in a similar way to custom decorators. A custom filter class is created, which needs to derive from `Rml::Filter`, and an instancer is registered for it with the RmlUi factory.
+RmlUi 附带几个内置滤镜，包括模糊、投影和颜色调整。取决于你想要实现的视觉效果，你可能需要开发自定义滤镜。自定义滤镜的定义和实例化方式与自定义装饰器类似。需要创建一个派生自 `Rml::Filter` 的自定义滤镜类，并在 RmlUi factory 中为其注册一个 instancer。
 
-When a filter is applied to an element, all rendering for that element and its children is done one a separate render layer. When the element has completed rendering, the filter is applied to that layer, and composited onto the below layer in the layer stack. On the other hand, backdrop filters render directly onto the background of the element, before the rest of the element is rendered, without layering the element and its children.
+当滤镜应用于元素时，该元素及其子元素的所有渲染都在一个单独的渲染层上完成。当元素完成渲染后，滤镜应用于该层，并与层栈中下面的层合成。另一方面，背景滤镜在元素其余部分渲染之前直接渲染到元素的背景上，而无需对元素及其子元素分层。
 
-Filters represent effects that require a specific behavior on the renderer side. Thus, a custom filter is typically accompanied by some new code, such as a new graphics shader, on the renderer side. The user will need to implement this behavior in their renderer. However, by declaring new filter types in RmlUi, users will be able to declare their custom filters directly in RCSS, just like any other built-in filters. Additionally, RmlUi will automatically handle the necessary layering so that elements are rendered correctly with the filter effect applied.
+滤镜表示需要渲染器侧特定行为的效果。因此，自定义滤镜通常伴随着渲染器侧的一些新代码，例如新的图形着色器。用户需要在其渲染器中实现此行为。然而，通过在 RmlUi 中声明新的滤镜类型，用户将能够直接在 RCSS 中声明其自定义滤镜，就像任何其他内置滤镜一样。此外，RmlUi 将自动处理必要的分层，以便元素在应用滤镜效果的情况下被正确渲染。
 
-Like for decorators, filters are instanced once for each declaration in an RCSS document. Then, for each element that uses the filter, a compiled filter is created. This compiled filter is used to render the filter effect for that element.
+与装饰器一样，滤镜在 RCSS 文档中为每条声明实例化一次。然后，对于每个使用该滤镜的元素，都会创建一个编译后的滤镜。该编译后的滤镜用于为该元素渲染滤镜效果。
 
-### Custom filters
+### 自定义滤镜
 
-If you need custom filter effects beyond what the built-in filters can provide, you can easily create a custom filter to suit your needs.
+如果你需要超出内置滤镜所能提供的自定义滤镜效果，你可以轻松创建自定义滤镜来满足你的需求。
 
-#### Creating a custom filter
+#### 创建自定义滤镜
 
-All custom filters are classes derived from `Rml::Filter`. There are two virtual functions that need to be overridden in a custom filter:
+所有自定义滤镜都是派生自 `Rml::Filter` 的类。自定义滤镜中有两个需要覆盖的虚函数：
 
 ```cpp
 /// Called to compile the filter for a given element.
@@ -39,15 +39,15 @@ virtual Rml::CompiledFilter CompileFilter(Rml::Element* element) const = 0;
 virtual void ExtendInkOverflow(Rml::Element* element, Rml::Rectanglef& overflow) const;
 ```
 
-`CompileFilter()` will be called by an element that uses the filter before it is rendered. This function should return a `Rml::CompiledFilter` object containing any data needed for rendering the filter on this specific element.
+`CompileFilter()` 将由使用该滤镜的元素在渲染之前调用。此函数应返回一个 `Rml::CompiledFilter` 对象，其中包含在此特定元素上渲染滤镜所需的任何数据。
 
-`ExtendInkOverflow()` is an optional function that allows you to extend the area affected by the filter beyond the element's border box. This is useful for filters that take effect outside the border area, or that need to consider neighboring pixels, such as the blur and drop-shadow filters. If your filter doesn't need to extend beyond the element's bounds, you don't need to override this function.
+`ExtendInkOverflow()` 是一个可选函数，允许你将滤镜影响的区域扩展到元素边框盒之外。这对于在边框区域之外生效、或需要考虑相邻像素的滤镜很有用，例如模糊和投影滤镜。如果你的滤镜不需要扩展到元素边界之外，你就不需要覆盖此函数。
 
-For a full example, please take a look at the library's source code for the `Rml::FilterDropShadow` filter.
+完整的示例请参阅库中 `Rml::FilterDropShadow` 滤镜的源码。
 
-#### Generating a compiled filter
+#### 生成编译后的滤镜
 
-The compiled filter holds the data needed to render the filter for a given element. It should be constructed during the call to `CompileFilter()` function of the filter class.
+编译后的滤镜保存着为给定元素渲染滤镜所需的数据。它应在滤镜类的 `CompileFilter()` 函数调用期间构造。
 
 ```cpp
 Rml::Colourb color(255, 0, 0);
@@ -62,15 +62,15 @@ Rml::CompiledFilter filter = element->GetRenderManager()->CompileFilter("drop-sh
 return filter;
 ```
 
-The values provided in this dictionary will be submitted to the `CompileFilter()` function in the render interface. The user can then use these values to configure the filter effect for their renderer. The render interface will be able to return a compiled filter handle to later refer back to these values. See the [render interface filters section](interfaces/render.html#filters) for details.
+此字典中提供的值将被提交给渲染接口中的 `CompileFilter()` 函数。用户随后可以使用这些值为其渲染器配置滤镜效果。渲染接口将能够返回一个编译后的滤镜句柄，以便以后引用这些值。有关细节请参阅[渲染接口滤镜部分](interfaces/render.html#filters)。
 
-Once the compiled filter is returned from `CompileFilter()`, the library will be able to use it when calling into the render interface to composite layers. It will use it to render any filters or backdrop filters declared for the element.
+一旦编译后的滤镜从 `CompileFilter()` 返回，库将能够在调用渲染接口合成图层时使用它。它将使用它来渲染为元素声明的任何滤镜或背景滤镜。
 
-#### Creating a custom filter instancer
+#### 创建自定义滤镜 instancer
 
-The instancer for a filter is responsible for defining and processing the properties that can be used to configure the filter. While you can create custom filters with no properties, we recommend that you expose all variables to RCSS. It's quick and easy, and you'll have much more flexible filters.
+滤镜的 instancer 负责定义和处理可用于配置滤镜的样式属性（property）。虽然你可以创建没有任何样式属性的自定义滤镜，但我们建议你将所有变量暴露给 RCSS。这既快速又简单，而且你会得到更灵活的滤镜。
 
-A filter instancer needs to derive from `Rml::FilterInstancer`. The following pure virtual function needs to be overridden:
+滤镜 instancer 需要派生自 `Rml::FilterInstancer`。需要覆盖以下纯虚函数：
 
 ```cpp
 /// Instances a filter given the name and attributes from the RCSS file.
@@ -81,15 +81,15 @@ virtual Rml::SharedPtr<Rml::Filter> InstanceFilter(const Rml::String& name,
                                                    const Rml::PropertyDictionary& properties) = 0;
 ```
 
-`InstanceFilter()` will be called whenever a filter needs to be created using this instancer. It is passed `name` which provides the name that the filter was created with, and `properties` which contains the parsed property values used to specify the filter in RCSS (see below).
+每当需要使用此 instancer 创建滤镜时，都会调用 `InstanceFilter()`。它传入 `name`（提供创建滤镜时使用的名称）和 `properties`（包含用于在 RCSS 中指定滤镜的已解析属性值，见下文）。
 
-Once the filter has been constructed, return it as a shared pointer. If the filter was not created successfully, return a `nullptr` to indicate an error.
+构造滤镜后，将其作为共享指针返回。如果滤镜未成功创建，返回 `nullptr` 表示错误。
 
-#### Defining the filter's properties
+#### 定义滤镜的样式属性（property）
 
-Each filter instancer holds a complete property specification for the filters it creates. In its constructor, the custom instancer has the opportunity to add properties and shorthands to its specification by using the protected functions `RegisterProperty()` and `RegisterShorthand()`. For detailed documentation on defining properties, see the documentation on [registering user-defined properties](rcss.html#user-defined-properties).
+每个滤镜 instancer 都持有其创建的滤镜的完整样式属性（property）规范。在其构造函数中，自定义 instancer 可以通过使用受保护的函数 `RegisterProperty()` 和 `RegisterShorthand()` 来向规范中添加样式属性和简写。有关定义样式属性的详细文档，请参阅[注册用户自定义属性](rcss.html#user-defined-properties)的文档。
 
-The following is an example filter defining a simple property specification:
+以下是一个定义简单属性规范的滤镜示例：
 
 ```cpp
 CustomFilterInstancer::CustomFilterInstancer() : Rml::FilterInstancer()
@@ -101,27 +101,27 @@ CustomFilterInstancer::CustomFilterInstancer() : Rml::FilterInstancer()
 }
 ```
 
-The custom filter now has two properties. The property dictionary passed into the instancer's `InstanceFilter()` function will contain values for the two properties, defaulting to their specified default values if they weren't set in the RCSS.
+自定义滤镜现在有两个属性。传入 instancer 的 `InstanceFilter()` 函数的属性字典将包含这两个属性的值，如果它们在 RCSS 中未设置，则默认为其指定的默认值。
 
-Note that the shorthand `filter` is special. This shorthand will be used to parse the text inside the parenthesis of the property value. This allows specifying the filter with inline properties as in the following example.
+请注意，简写 `filter` 很特殊。此简写将用于解析属性值括号内的文本。这允许像下面的示例一样使用内联属性指定滤镜。
 
 ```css
 filter: custom-filter( 15 colorful );
 ```
 
-Now this will be parsed by the above rules such that 'custom-property-1' contains 15, and 'custom-property-2' contains the keyword 'colorful'.
+现在这将由上述规则解析，使得 'custom-property-1' 包含 15，'custom-property-2' 包含关键字 'colorful'。
 
-The property IDs are stored on the instancer object, so they can easily retrieve the parsed value during the call to `InstanceFilter()`,
+属性 ID 存储在 instancer 对象上，因此它们可以在调用 `InstanceFilter()` 期间轻松获取解析后的值。
 
 ```cpp
 int value1 = properties.GetProperty(property_id1)->Get<int>();
 ```
 
-The `value1` variable will now contain the value specified in the style sheet, e.g. '15' in the above example.
+`value1` 变量现在将包含样式表中指定的值，例如上例中的 '15'。
 
-#### Registering an instancer
+#### 注册 instancer
 
-To register a custom filter instancer with RmlUi, call the `RegisterFilterInstancer()` function on the RmlUi factory (`Rml::Factory`) after RmlUi has been initialized.
+要在 RmlUi 初始化后向 RmlUi 注册自定义滤镜 instancer，请调用 RmlUi factory（`Rml::Factory`）上的 `RegisterFilterInstancer()` 函数。
 
 ```cpp
 // Registers a non-owning pointer to an instancer that will be used to instance filters.
@@ -133,7 +133,7 @@ static Rml::FilterInstancer* RegisterFilterInstancer(const Rml::String& name,
                                                      Rml::FilterInstancer* instancer);
 ```
 
-For example:
+例如：
 
 ```cpp
 // Keep instancer alive until after the call to Rml::Shutdown().
@@ -141,7 +141,7 @@ auto instancer = std::make_unique<CustomFilterInstancer>();
 Rml::Factory::RegisterFilterInstancer("custom-filter", instancer.get());
 ```
 
-This will allow you to use the custom filter in RML as follows:
+这将允许你在 RML 中如下使用自定义滤镜：
 
 ```html
 <rml>
@@ -157,10 +157,10 @@ This will allow you to use the custom filter in RML as follows:
 ...
 ```
 
-Like for other instancers, it is the user's responsibility to manage the lifetime of the instancer. Thus, it must be kept alive until after the call to `Rml::Shutdown()`, and then cleaned up by the user.
+与其他 instancer 一样，管理 instancer 的生命周期是用户的责任。因此，它必须保持存活直到调用 `Rml::Shutdown()` 之后，然后由用户清理。
 
-### Updating filters
+### 更新滤镜
 
-After being instanced, filters are not updated from inside the library. Instead, animation of filters in RmlUi involves destroying an existing filter and instancing a new one each time a parameter needs to be updated. Normally, a compiled filter is considered a light-weight construction.
+实例化后，滤镜不会从库内部更新。相反，RmlUi 中的滤镜动画涉及销毁现有滤镜，并在每次需要更新参数时实例化一个新滤镜。通常，编译后的滤镜被认为是轻量级的构造。
 
-If you have a filter that requires updating independently of the library's animation feature, you would need to implement your own update mechanism. This could involve separately maintaining values through an index or pointer passed through the compiled filter dictionary, and updating these values during your application's update loop.
+如果你有一个需要独立于库的动画功能进行更新的滤镜，你需要实现自己的更新机制。这可能涉及通过编译后的滤镜字典中传递的索引或指针单独维护值，并在应用程序的更新循环中更新这些值。

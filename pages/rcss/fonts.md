@@ -1,22 +1,22 @@
 ---
 layout: page
-title: Fonts
+title: 字体
 parent: rcss
 next: text
 ---
 
-RCSS implements a simpler version of the [CSS2 font model](http://www.w3.org/TR/REC-CSS2/fonts.html) when dealing with text rendering. This is for two reasons:
+在文本渲染方面，RCSS 实现了 [CSS2 字体模型](http://www.w3.org/TR/REC-CSS2/fonts.html) 的简化版本。原因有二：
 
-* The document renderer is fully under the control of the author, so (for example) a specific font can be assumed to exist.
-* Improved performance.
+* 文档渲染器完全由作者控制，因此（例如）可以假定特定字体存在。
+* 性能更好。
 
-Fonts are specified in a similar fashion to CSS. However, before a font can be used, it must be loaded into the font engine. This can be done from RCSS using the [`@font-face`](#font-face) at-rule, or from C++ using [`Rml::LoadFontFace()`](../cpp_manual/fonts.html).
+字体的指定方式与 CSS 类似。但是，字体在使用前必须先加载到字体引擎中。这可以通过 RCSS 中的 [`@font-face`](#font-face) at-rule 完成，也可以通过 C++ 中的 [`Rml::LoadFontFace()`](../cpp_manual/fonts.html) 完成。
 
 
-### Font face declarations: The '@font-face' at-rule
+### 字体面声明：'@font-face' at-rule
 {:#font-face}
 
-The `@font-face`{:.prop} at-rule loads one or more font files and registers them with the font engine under a given family name, so that they can be used with the `font-family`{:.prop} property. It is the RCSS equivalent of calling [`Rml::LoadFontFace()`](../cpp_manual/fonts.html) from C++.
+`@font-face`{:.prop} at-rule 加载一个或多个字体文件，并以给定的族名将它们注册到字体引擎中，以便可以通过 `font-family`{:.prop} 属性使用它们。它相当于在 C++ 中调用 [`Rml::LoadFontFace()`](../cpp_manual/fonts.html) 的 RCSS 方式。
 
 ```css
 @font-face {
@@ -35,180 +35,175 @@ body {
 }
 ```
 
-Both `font-family`{:.prop} and `src`{:.prop} are required, all other descriptors are optional. A block missing either of them is ignored, and a warning is emitted to the log.
+`font-family`{:.prop} 和 `src`{:.prop} 都是必需的，所有其他描述符都是可选的。缺少其中任何一个的块都会被忽略，并向日志发出警告。
 
-The at-rule is processed as soon as the style sheet is parsed, and the resulting font faces are registered globally in the font engine. This implies they are not scoped to the style sheet or document that declared them. Declaring the same face several times is harmless, any repeat is detected as a duplicate and skipped.
+该 at-rule 在样式表被解析时立即处理，生成的字体面会全局注册在字体引擎中。这意味着它们不会限定在声明它们的样式表或文档范围内。多次声明相同的字体面是无害的，任何重复都会被检测为重复项并跳过。
 
-#### Descriptors
+#### 描述符
 
 `font-family`{:.prop#font-face-font-family}
 
-Value: | \<string\>
-Initial: | undefined
-Applies to: | `@font-face`{:.prop} blocks
-Inherited: | N/A
-Percentages: | N/A
+取值： | \<string\>
+初始值： | 未定义
+适用于： | `@font-face`{:.prop} 块
+继承： | 不适用
+百分比： | 不适用
 
-The family name to register the loaded faces under. Required.
-
+注册加载的字体面所用的族名。必需。
 
 `src`{:.prop#font-face-src}
 
-Value: | \<string\> \[, \<string\>\]\*
-Initial: | undefined
-Applies to: | `@font-face`{:.prop} blocks
-Inherited: | N/A
-Percentages: | N/A
+取值： | \<string\> \[, \<string\>\]\*
+初始值： | 未定义
+适用于： | `@font-face`{:.prop} 块
+继承： | 不适用
+百分比： | 不适用
 
-A comma-separated list of font files to load. File names are resolved relative to the path of the current style sheet. Required.
-
+要加载的字体文件的逗号分隔列表。文件名相对于当前样式表的路径进行解析。必需。
 
 `font-style`{:.prop#font-face-font-style}
 
-Value: | normal \| italic
-Initial: | normal
-Applies to: | `@font-face`{:.prop} blocks
-Inherited: | N/A
-Percentages: | N/A
-Required: | No
+取值： | normal \| italic
+初始值： | normal
+适用于： | `@font-face`{:.prop} 块
+继承： | 不适用
+百分比： | 不适用
+必需： | 否
 
-The style to register the loaded faces as. This always overrides the style declared inside the font file, thus an italic font file must be declared with `font-style: italic`{:.prop} for it to be selected by the `font-style`{:.prop} property.
-
+将加载的字体面注册为的样式。这总是覆盖字体文件内部声明的样式，因此斜体字体文件必须声明 `font-style: italic`{:.prop}，才能被 `font-style`{:.prop} 属性选中。
 
 `font-weight`{:.prop#font-face-font-weight}
 
-Value: | all \| normal \| bold \| \<number \[1,1000\]\>
-Initial: | all
-Applies to: | `@font-face`{:.prop} blocks
-Inherited: | N/A
-Percentages: | N/A
+取值： | all \| normal \| bold \| \<number \[1,1000\]\>
+初始值： | all
+适用于： | `@font-face`{:.prop} 块
+继承： | 不适用
+百分比： | 不适用
 
-Values have the following meanings:
+取值含义如下：
 
 `all`{:.value}
-: The weight is retrieved from the font file. If the file contains several weight variations, all of them are loaded.
+: 字重从字体文件中获取。如果文件包含多个字重变体，则全部加载。
 
 `normal`{:.value}
 `bold`{:.value}
 `<number>`{:.value}
-: The weight to register the font as. When the font file contains several weight variations, this selects which variation to load.
-
+: 将字体注册为的字重。当字体文件包含多个字重变体时，此值选择要加载的变体。
 
 `-rmlui-fallback-face`{:.prop#font-face-fallback-face}
 
-Value: | false \| true
-Initial: | false
-Applies to: | `@font-face`{:.prop} blocks
-Inherited: | N/A
-Percentages: | N/A
+取值： | false \| true
+初始值： | false
+适用于： | `@font-face`{:.prop} 块
+继承： | 不适用
+百分比： | 不适用
 
-When `true`{:.value}, the loaded faces are used for any characters that cannot be found in the fonts specified by the document. Several fallback faces can be declared, they are prioritized in the order they were loaded. See [loading fonts](../cpp_manual/fonts.html) for details.
-
+当为 `true`{:.value} 时，加载的字体面用于任何在文档指定的字体中找不到的字符。可以声明多个回退字体面，它们按加载顺序确定优先级。详见[加载字体](../cpp_manual/fonts.html)。
 
 `-rmlui-face-index`{:.prop#font-face-face-index}
 
-Value: | \<number\>
-Initial: | 0
-Applies to: | `@font-face`{:.prop} blocks
-Inherited: | N/A
-Percentages: | N/A
+取值： | \<number\>
+初始值： | 0
+适用于： | `@font-face`{:.prop} 块
+继承： | 不适用
+百分比： | 不适用
 
-The index of the face to load within a font collection, such as a `.ttc`{:.path} file.
+在字体集合（如 `.ttc`{:.path} 文件）中要加载的字体面索引。
 
 
-### Font specification properties
+### 字体指定属性
 
-#### Font family: the 'font-family' property
+#### 字体族：'font-family' 属性
 {:#font-family}
 
 `font-family`{:.prop}
 
-Value: | \<string\>
-Initial: | undefined
-Applies to: | all elements
-Inherited: | yes
-Percentages: | N/A
+取值： | \<string\>
+初始值： | 未定义
+适用于： | 所有元素
+继承： | 是
+百分比： | 不适用
 
-This property specifies the name of a family of fonts to be used to render sections of text descending from the element. Note that, unlike CSS, only a single font family can be specified with this property, not a comma-delimited font set.
+此属性指定用于渲染从该元素派生的文本部分的字体族名称。请注意，与 CSS 不同，此属性只能指定单个字体族，而不是逗号分隔的字体集。
 
-#### Font styling: the 'font-style' and 'font-weight' properties
+#### 字体样式：'font-style' 和 'font-weight' 属性
 {:#font-style}
 
 `font-style`{:.prop}
 
-Value: | normal \| italic
-Initial: | normal
-Applies to: | all elements
-Inherited: | yes
-Percentages: | N/A
+取值： | normal \| italic
+初始值： | normal
+适用于： | 所有元素
+继承： | 是
+百分比： | 不适用
 
-This property can be used to request normal or italicised versions of a font from within a font-family. Note that RCSS does not yet support oblique font styles.
+此属性可用于在字体族内请求字体的常规或斜体版本。请注意，RCSS 尚不支持 oblique 字体样式。
 
 `font-weight`{:.prop}
 {:#font-weight}
 
-Value: | normal \| bold \| \<number \[1,1000\]\>
-Initial: | normal
-Applies to: | all elements
-Inherited: | yes
-Percentages: | N/A
+取值： | normal \| bold \| \<number \[1,1000\]\>
+初始值： | normal
+适用于： | 所有元素
+继承： | 是
+百分比： | 不适用
 
-This property can be used to request normal or bolded versions of a font from within a font-family. A numeric value can be specified for more granularity on supported fonts. The range is based on the commonly used OpenType specification: 100 (Thin), 200 (Extra Light), 300 (Light), 400 (Normal), 500 (Medium), 600 (Semi Bold), 700 (Bold), 800 (Extra Bold), 900 (Black).
+此属性可用于在字体族内请求字体的常规或粗体版本。对于受支持的字体，可以指定数值以获得更细的粒度。该范围基于常用的 OpenType 规范：100（Thin）、200（Extra Light）、300（Light）、400（Normal）、500（Medium）、600（Semi Bold）、700（Bold）、800（Extra Bold）、900（Black）。
 
-#### Font size: the 'font-size' property
+#### 字体大小：'font-size' 属性
 {:#font-size}
 
 `font-size`{:.prop}
 
-Value: | \<length\> \| \<percentage\>
-Initial: | 12px
-Applies to: | all elements
-Inherited: | yes
-Percentages: | Font size of parent element
+取值： | \<length\> \| \<percentage\>
+初始值： | 12px
+适用于： | 所有元素
+继承： | 是
+百分比： | 父元素的字体大小
 
-Values have the following meanings:
+取值含义如下：
 
 `<length>`{:.value}
-: The font size is generated at the point size requested. For font-relative units (such as `em`{:.value} ), the font size is relative to the parent element's font size.
+: 以请求的字号生成字体。对于字体相对单位（如 `em`{:.value}），字体大小相对于父元素的字体大小。
 
 `<percentage>`{:.value}
-: The font size is generated at the point size of the element's parent's font, scaled by the percentage.
+: 以元素父字体的大小乘以该百分比生成字体大小。
 
 
-#### Font shorthand
+#### 字体简写
 {:#font}
 
 `font`{:.prop}
 
-Value: | `font-style`{:.prop} `font-weight`{:.prop} `font-size`{:.prop} `font-family`{:.prop}
-Initial: | See individual properties
-Applies to: | all elements
-Inherited: | yes
-Percentages: | N/A
+取值： | `font-style`{:.prop} `font-weight`{:.prop} `font-size`{:.prop} `font-family`{:.prop}
+初始值： | 参见各个属性
+适用于： | 所有元素
+继承： | 是
+百分比： | 不适用
 
-A shorthand property for setting all the font properties at once.
+一个用于一次性设置所有字体属性的简写属性。
 
 
-#### Font kerning: the 'font-kerning' property
+#### 字体字距调整：'font-kerning' 属性
 {:#font-kerning}
 
 `font-kerning`{:.prop}
 
-Value: | auto \| normal \| none
-Initial: | auto
-Applies to: | all elements
-Inherited: | yes
-Percentages: | N/A
+取值： | auto \| normal \| none
+初始值： | auto
+适用于： | 所有元素
+继承： | 是
+百分比： | 不适用
 
-Values have the following meanings:
+取值含义如下：
 
 `auto`{:.value}
-: Font kerning is enabled if available by default, but is disabled for small font sizes to improve the readability of text.
+: 如果默认可用，则启用字体字距调整，但对于小号字体会禁用，以提高文本的可读性。
 
 `normal`{:.value}
-: Font kerning is always enabled if available.
+: 如果可用，始终启用字体字距调整。
 
 `none`{:.value}
-: Font kerning is disabled.
+: 禁用字体字距调整。
 
-Font kerning affects how characters are spaced next to each other. Most fonts have kerning information that improves readability by making the optical spacing between characters more uniform.
+字体字距调整影响相邻字符的间距方式。大多数字体都有字距调整信息，通过使字符之间的光学间距更均匀来提高可读性。

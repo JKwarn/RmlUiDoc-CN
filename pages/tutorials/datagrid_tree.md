@@ -1,10 +1,10 @@
 ---
 layout: page
-title: Datagrid Tree Tutorial
+title: Datagrid 树教程
 status: deprecated
-status-desc: datagrid has been deprecated in favor of data bindings
+status-desc: datagrid 已弃用，推荐使用数据绑定
 ---
 
-***NOTE***
+***注意***
 
-The datagrid and related functionality has been deprecated as of RmlUi 4.0 and removed in RmlUi 5.0. Instead, users are encouraged to use [data bindings](../data_bindings.html) possibly combined with [RCSS tables](../rcss/tables.html). Similar functionality as previously presented in this tutorial, using a tree structure but instead implemented with data bindings, can be seen in the `treeview` sample.
+数据网格（datagrid）及相关功能自 RmlUi 4.0 起已弃用，并在 RmlUi 5.0 中移除。建议用户改用[数据绑定](../data_bindings.html)，并可与 [RCSS 表格](../rcss/tables.html)结合使用。与本教程先前介绍的功能类似、使用树结构但改用数据绑定实现的功能，可以在 `treeview` 示例中看到。

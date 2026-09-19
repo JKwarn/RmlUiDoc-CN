@@ -1,66 +1,66 @@
 ---
 layout: page
-title: Animations, transitions, and transforms
+title: 动画、过渡与变换
 parent: rcss
 next: custom_properties
 ---
 
-RmlUi provides comprehensive support for animations, transitions, and transforms. Together, they can be used to build very rich user experiences. These features are generally modeled after the CSS3 specifications, with some differences.
+RmlUi 为动画、过渡和变换提供了全面的支持。它们可以组合使用，构建出非常丰富的用户体验。这些功能大体上以 CSS3 规范为模型，但存在一些差异。
 
-See also the [C++ documentation](../cpp_manual/animations_transforms.html) on animations and transforms.
+另请参阅 [C++ 文档](../cpp_manual/animations_transforms.html) 中关于动画和变换的内容。
 
-### Animations
+### 动画
 {:#animation}
 
-Most properties in RCSS can be animated. This includes in particular properties representing:
+RCSS 中的大多数属性都可以设置动画。这尤其包括表示以下内容的属性：
 
-- Numbers, lengths, and percentages
-- Angles
-- Colors
-- Keywords
-- Transforms
-- Decorators
-- Filters
+- 数字、长度和百分比
+- 角度
+- 颜色
+- 关键字
+- 变换
+- 装饰器
+- 滤镜
 
-Notably, box shadows do not currently support being animated.
+值得注意的是，盒阴影目前还不支持动画。
 
-Animations can be specified entirely in RCSS, using the following property together with keyframes.
+动画可以完全在 RCSS 中声明，使用以下属性配合关键帧。
 
 `animation`{:.prop}
 
-Value: | none \| \[\<duration\> \<delay\>? \<tweening-function\>? \[\<num-iterations\>\|infinite\]? alternate? paused? \<keyframes-name\>\]<span class="prop-def-symbol" title="one or more comma-separated occurrences">#</span>
-Initial: | none
-Applies to: | all elements
-Inherited: | no
-Percentages: | N/A
+取值： | none \| \[\<duration\> \<delay\>? \<tweening-function\>? \[\<num-iterations\>\|infinite\]? alternate? paused? \<keyframes-name\>\]<span class="prop-def-symbol" title="one or more comma-separated occurrences">#</span>
+初始值： | none
+适用于： | 所有元素
+继承： | 否
+百分比： | 不适用
 
 `none`{:.value}
-: No animations specified.
+: 未指定动画。
 
 `<duration>`{:.value}
-: Duration of the animation, specified in seconds (`s`{:.value} unit). Required value.
+: 动画持续时间，以秒（`s`{:.value} 单位）指定。必需值。
 
 `<delay>`{:.value}
-: Time delay before starting the animation, specified in seconds. Default: `0s`{:.value}.
+: 开始动画前的延迟时间，以秒指定。默认值：`0s`{:.value}。
 
 `<tweening-function>`{:.value}
-:  Tweening functions specify how the animated value progresses during the animation cycle. See [tweening functions](#tweening-functions) below for details and possible values. Default: `linear-in-out`{:.value}.
+: 补间函数指定动画值在动画周期内的推进方式。详细信息和可能的取值请参阅下面的[补间函数](#tweening-functions)。默认值：`linear-in-out`{:.value}。
 
 `<num-iterations> | infinite`{:.value}
-: Number of iterations to play the animation before pausing. Specify as an integer or the keyword `infinite`{:.value}. Default: 1.
+: 暂停前播放动画的迭代次数。指定为整数或关键字 `infinite`{:.value}。默认值：1。
 
 `alternate`{:.value}
-: If present, alternate the direction of the animation every other cycle.
+: 如果存在，则每隔一个周期交替动画的方向。
 
 `paused`{:.value}
-: If present, the animation does not start on load.
+: 如果存在，则动画在加载时不会启动。
 
 `<keyframes-name>`{:.value}
-: A string specifying the name of the keyframes. Keyframes are specified [as in CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/@keyframes), see examples below. Required value.
+: 指定关键帧名称的字符串。关键帧的指定[与 CSS 中一样](https://developer.mozilla.org/en-US/docs/Web/CSS/@keyframes)，参见下面的示例。必需值。
 
-Values can be given in any order, with the exception that `duration`{:.value} must come before `delay`{:.value}.
+取值可以按任意顺序给出，但 `duration`{:.value} 必须位于 `delay`{:.value} 之前。
 
-Example usage:
+用法示例：
 
 ```css
 @keyframes my-progress-bar {
@@ -81,7 +81,7 @@ Example usage:
 }
 ```
 
-Multiple animations can be specified on the same element by using a comma-separated list.
+通过使用逗号分隔的列表，可以在同一元素上指定多个动画。
 
 ```css
 @keyframes my-progress-bar { ... }
@@ -92,42 +92,42 @@ Multiple animations can be specified on the same element by using a comma-separa
 #multi-animation { animation: 1s elastic-out my-progress-bar, 2s make-red; }
 ```
 
-Internally, animations apply their properties on the local style of the element. Thus, mixing RML style attributes and animations should be avoided on the same element.
+在内部，动画将其属性应用于元素的局部样式。因此，应避免在同一元素上混用 RML 样式属性和动画。
 
-See the `animation` sample for more examples and details.
+更多示例和细节请参阅 `animation` 示例。
 
 
-### Transitions
+### 过渡
 {:#transition}
 
-Transitions apply an animation between two property values on an element when its property changes. Transitions are implemented in RCSS similar to how they operate in CSS. However, in RCSS, they only apply when a class or pseudo-class is added to or removed from an element.
+过渡在元素的属性发生变化时，在两个属性值之间应用动画。RCSS 中过渡的实现方式与 CSS 类似。但是，在 RCSS 中，它们仅在向元素添加或从元素移除类或伪类时应用。
 
 `transition`{:.prop}
 
-Value: | none \| \[\[\<property-name\><span class="prop-def-symbol" title="one or more space-separated occurrences">+</span> \| all \| none\] \<duration\> \<delay\>? \<tweening-function\>?\]<span class="prop-def-symbol" title="one or more comma-separated occurrences">#</span>
-Initial: | none
-Applies to: | all elements
-Inherited: | no
-Percentages: | N/A
+取值： | none \| \[\[\<property-name\><span class="prop-def-symbol" title="one or more space-separated occurrences">+</span> \| all \| none\] \<duration\> \<delay\>? \<tweening-function\>?\]<span class="prop-def-symbol" title="one or more comma-separated occurrences">#</span>
+初始值： | none
+适用于： | 所有元素
+继承： | 否
+百分比： | 不适用
 
 `none`{:.value}
-: No transitions specified.
+: 未指定过渡。
 
 `<property-name>+ | all | none`{:.value}
-: Specifies the list of properties to be animated when they are changed, as a space-separated list of names. Alternatively, the `all`{:.value} keyword animates all properties, while `none`{:.value} will not animate any properties.
+: 指定更改时要设置动画的属性列表，以空格分隔的名称列表形式给出。或者，`all`{:.value} 关键字为所有属性设置动画，而 `none`{:.value} 则不会为任何属性设置动画。
 
 `<duration>`{:.value}
-: Duration of the animation, specified in seconds (`s`{:.value} unit). Required value.
+: 动画持续时间，以秒（`s`{:.value} 单位）指定。必需值。
 
 `<delay>`{:.value}
-: Time delay before starting the animation, specified in seconds. Default: `0s`{:.value}.
+: 开始动画前的延迟时间，以秒指定。默认值：`0s`{:.value}。
 
 `<tweening-function>`{:.value}
-:  Tweening functions specify how the animated value progresses during the animation cycle. See [tweening functions](#tweening-functions) below for details and possible values. Default: `linear-in-out`{:.value}.
+: 补间函数指定动画值在动画周期内的推进方式。详细信息和可能的取值请参阅下面的[补间函数](#tweening-functions)。默认值：`linear-in-out`{:.value}。
 
-Values can be given in any order, with the exception that `duration`{:.value} must come before `delay`{:.value}. Multiple transitions can be specified on the same element by using a comma-separated list.
+取值可以按任意顺序给出，但 `duration`{:.value} 必须位于 `delay`{:.value} 之前。通过使用逗号分隔的列表，可以在同一元素上指定多个过渡。
 
-Example usage:
+用法示例：
 
 ```css
 #transition_test {
@@ -142,15 +142,15 @@ Example usage:
 }
 ```
 
-See the `animation` sample for more examples and details.
+更多示例和细节请参阅 `animation` 示例。
 
 
-### Tweening functions
+### 补间函数
 {:#tweening-functions}
 
-Animations and transitions can optionally take a *tweening* function, which specifies how the animated value progresses during the animation cycle. Here, we deviate from the CSS specs where they are instead called `animation-timing-function`{:.value}s.
+动画和过渡可以选择性地接受一个*补间（tweening）*函数，它指定动画值在动画周期内的推进方式。这里我们与 CSS 规范有所不同，CSS 中它们被称为 `animation-timing-function`{:.value}。
 
-A tweening function in RCSS is specified as `<name>-in`{:.value}, `<name>-out`{:.value}, or `<name>-in-out`{:.value}, with one of the following names,
+RCSS 中的补间函数指定为 `<name>-in`{:.value}、`<name>-out`{:.value} 或 `<name>-in-out`{:.value}，名称可以是以下之一：
 
 - `back`{:.value}
 - `bounce`{:.value}
@@ -164,19 +164,19 @@ A tweening function in RCSS is specified as `<name>-in`{:.value}, `<name>-out`{:
 - `quintic`{:.value}
 - `sine`{:.value}
 
-See the animation and transition documentation above for usage examples there. Each tweening function provides a specific mapping between normalized time *t* and used interpolation value *y*, as seen in the following plot.
+上面的动画和过渡文档中有用法示例。每个补间函数在归一化时间 *t* 与所用的插值 *y* 之间提供特定的映射，如下面的图形所示。
 
 <div style="text-align: center">
 	<img alt="Tweening functions" src="../../assets/images/tweening_functions.svg" style="width: 100%; max-width: 700px">
 </div>
 
-See also the `demo` sample, where users can play with different tweening functions and durations, and see the resulting animation. It is also possible to provide a custom tweening function in the [C++ animation API](../cpp_manual/animations_transforms.html).
+另请参阅 `demo` 示例，用户可以在其中尝试不同的补间函数和持续时间，并查看生成的动画。也可以在 [C++ 动画 API](../cpp_manual/animations_transforms.html) 中提供自定义的补间函数。
 
 
-### Transforms
+### 变换
 {:#transform}
 
-Transforms can be applied to elements using the `transform`{:.prop} property. The related properties `transform-origin`{:.prop}, `perspective`{:.prop}, and `perspective-origin`{:.prop} are also supported in RCSS, which controls aspects of how the transform will be applied and rendered. These are roughly equivalent to their respective [CSS properties](https://developer.mozilla.org/en-US/docs/Web/CSS/transform).
+可以使用 `transform`{:.prop} 属性对元素应用变换。相关的 `transform-origin`{:.prop}、`perspective`{:.prop} 和 `perspective-origin`{:.prop} 属性在 RCSS 中也受支持，它们控制变换应用和渲染方式的各个方面。这些大致相当于各自的 [CSS 属性](https://developer.mozilla.org/en-US/docs/Web/CSS/transform)。
 
 ```css
 transform: rotateX(10deg) skew(-10deg, 15deg) translateZ(100px);
@@ -185,47 +185,47 @@ perspective: 1000px;
 perspective-origin: 20px 50%;
 ```
 
-Note that, a limitation in RmlUi is that transforms do not affect when clipping is applied to the element. For example, an element with `overflow: hidden`{:.value} will not clip its transformed content, unless the content overflows without the transform. Instead, one can use the [`clip: always`{:.value} property](visual_effects.html#clip) together with `overflow: hidden`{:.value} to force clipping to occur.
+请注意，RmlUi 的一个限制是：变换不会影响裁剪何时应用于该元素。例如，`overflow: hidden`{:.value} 的元素不会裁剪其已变换的内容，除非内容在没有变换的情况下溢出。此时，可以使用 [`clip: always`{:.value} 属性](visual_effects.html#clip) 配合 `overflow: hidden`{:.value} 来强制发生裁剪。
 
-The properties controlling transforms are defined as follows.
+控制变换的属性定义如下。
 
 `transform`{:.prop}
 
-Value: | none \| \<transform-function\><span class="prop-def-symbol" title="one or more space-separated occurrences">+</span>
-Initial: | none
-Applies to: | all elements
-Inherited: | no
-Percentages: | See individual transform functions
+取值： | none \| \<transform-function\><span class="prop-def-symbol" title="one or more space-separated occurrences">+</span>
+初始值： | none
+适用于： | 所有元素
+继承： | 否
+百分比： | 参见各个变换函数
 
 `none`{:.value}
-: No transform applied.
+: 不应用变换。
 
 `<transform-function>+`{:.value}
-: Specifies a list of transform functions to be applied to the element, see [all available values](#transform-functions) below.
+: 指定要应用于元素的变换函数列表，参见下面的[所有可用取值](#transform-functions)。
 
 
 `transform-origin`{:.prop}
 {:#transform-origin}
 
-Value: | \[\<transform-origin-x\> <span class="prop-def-symbol" title="one or both must be specified">\|\|</span> \<transform-origin-y\>\] \<transform-origin-z\>?
-Initial: | 50% 50% 0px
-Applies to: | all elements
-Inherited: | no
-Percentages: | Relative to the size of the element's border-box.
+取值： | \[\<transform-origin-x\> <span class="prop-def-symbol" title="one or both must be specified">\|\|</span> \<transform-origin-y\>\] \<transform-origin-z\>?
+初始值： | 50% 50% 0px
+适用于： | 所有元素
+继承： | 否
+百分比： | 相对于元素边框盒的大小
 
-Describes the origin point around which the transformation occurs, given as the distance from the top-left corner of the element's border-box. This is a shorthand property, the underlying properties are specified along each dimension as follows.
+描述变换发生所围绕的原点，以距元素边框盒左上角的距离给出。这是一个简写属性，其基础属性沿每个维度指定如下。
 
-`transform-origin-x`{:.prop}: \[left \| center \| right \| \<length-percentage\>\]
+`transform-origin-x`{:.prop}：\[left \| center \| right \| \<length-percentage\>\]
 
-`transform-origin-y`{:.prop}: \[top \| center \| bottom \| \<length-percentage\>\]
+`transform-origin-y`{:.prop}：\[top \| center \| bottom \| \<length-percentage\>\]
 
-`transform-origin-z`{:.prop}: \<length\>
+`transform-origin-z`{:.prop}：\<length\>
 
 
-#### Transform functions
+#### 变换函数
 {:#transform-functions}
 
-All transform functions and their argument types are listed in the following.
+下面列出所有变换函数及其参数类型。
 
 **`<transform-function>`{:.value}**
 
@@ -237,55 +237,55 @@ All transform functions and their argument types are listed in the following.
 `rotateX`{:.value}( `<angle>`{:.value} )                |  `scaleZ`{:.value}( `<number>`{:.value} )       |  `translateY`{:.value}( `<length-percentage>`{:.value} )
 `rotateY`{:.value}( `<angle>`{:.value} )                |  `skew`{:.value}( `<angle>#{2}`{:.value} )      |  `translateZ`{:.value}( `<length>`{:.value} )
 
-See a detailed description for each function in the [CSS Transforms specification](https://drafts.csswg.org/css-transforms-2/#transform-functions). Angles take units of 'deg' or 'rad'. See also the `transform` and `animation` samples for more examples.
+每个函数的详细描述请参阅 [CSS 变换规范](https://drafts.csswg.org/css-transforms-2/#transform-functions)。角度采用 'deg' 或 'rad' 单位。更多示例请参阅 `transform` 和 `animation` 示例。
 
 
-#### Perspective
+#### 透视
 {:#perspective}
 
 `perspective`{:.prop}
 
-Value: | none \| \<length ≥ 0px\>
-Initial: | none
-Applies to: | all elements
-Inherited: | no
-Percentages: | N/A
+取值： | none \| \<length ≥ 0px\>
+初始值： | none
+适用于： | 所有元素
+继承： | 否
+百分比： | 不适用
 
-Perspective can make objects that are farther away appear smaller, when combined with 3d transformations.
+与 3d 变换结合使用时，透视可以使较远的物体看起来更小。
 
 `none`{:.value}
-: No perspective applied, equivalent to an infinite distance.
+: 不应用透视，等价于无限远的距离。
 
 `<length ≥ 0px>`{:.value}
-: Distance to the center of projection.
+: 到投影中心的距离。
 
 
 `perspective-origin`{:.prop}
 {:#perspective-origin}
 
-Value: | \<perspective-origin-x\> <span class="prop-def-symbol" title="one or both must be specified">\|\|</span> \<perspective-origin-y\>
-Initial: | 50% 50%
-Applies to: | all elements
-Inherited: | no
-Percentages: | Relative to the size of the element's border-box.
+取值： | \<perspective-origin-x\> <span class="prop-def-symbol" title="one or both must be specified">\|\|</span> \<perspective-origin-y\>
+初始值： | 50% 50%
+适用于： | 所有元素
+继承： | 否
+百分比： | 相对于元素边框盒的大小
 
-Describes the origin point for the `perspective`{:.prop} property. This is a shorthand property, the underlying properties are specified along each dimension as follows.
+描述 `perspective`{:.prop} 属性的原点。这是一个简写属性，其基础属性沿每个维度指定如下。
 
-`perspective-origin-x`{:.prop}: \[left \| center \| right \| \<length-percentage\>\]
+`perspective-origin-x`{:.prop}：\[left \| center \| right \| \<length-percentage\>\]
 
-`perspective-origin-y`{:.prop}: \[top \| center \| bottom \| \<length-percentage\>\]
+`perspective-origin-y`{:.prop}：\[top \| center \| bottom \| \<length-percentage\>\]
 
 
-#### Interpolation
+#### 插值
 
-RmlUi has full interpolation support for transforms, making them very attractive to use in combination with animations and transitions.
+RmlUi 对变换具有完整的插值支持，使其与动画和过渡结合使用时非常具有吸引力。
 
 <video src="../animations/animation_sample.webm" width="640" height="360" poster="../animations/animation_sample_poster.png" preload="metadata" controls></video>
 
-The following video demonstrates transitions with transforms on a main menu.
+以下视频演示了主菜单上带变换的过渡。
 
 <video src="../animations/game_main_menu.webm" width="640" height="360" poster="../animations/game_main_menu_poster.png" preload="metadata" controls></video>
 
-With transforms applied to the elements, we can essentially move the camera as if in three-dimensional space by changing the perspective and origin, as shown in the following.
+通过对元素应用变换，我们可以通过改变透视和原点，基本上就像在三维空间中移动摄像机一样，如下所示。
 
 <video src="../animations/game_menu_transform.webm" width="640" height="360" poster="../animations/game_menu_transform_poster.png" preload="metadata" controls></video>

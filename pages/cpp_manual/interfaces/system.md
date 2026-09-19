@@ -1,60 +1,60 @@
 ---
 layout: page
-title: System interface
+title: 系统接口
 parent: cpp_manual/interfaces
 grandparent: cpp_manual
 next: file
 ---
 
-The system interface is needed for RmlUi to tell the time, and allows the application to perform common tasks such as logging messages from RmlUi, translating strings, and setting the mouse cursor. The system interface provides default implementation for all functions, however, users may want to override the default behavior with their own customizations.
+系统接口是 RmlUi 报时所需要的，并允许应用程序执行常见任务，例如记录来自 RmlUi 的消息、翻译字符串和设置鼠标光标。系统接口为所有函数提供默认实现，但是，用户可能希望用自己的自定义行为覆盖默认行为。
 
-The system interface is given in `<RmlUi/Core/SystemInterface.h>`{:.incl}. To develop a custom system interface, create a class derived from `Rml::SystemInterface` and provide function definitions for the virtual functions you wish to override.
+系统接口提供在 `<RmlUi/Core/SystemInterface.h>`{:.incl} 中。要开发自定义系统接口，请创建一个派生自 `Rml::SystemInterface` 的类，并为你希望覆盖的虚函数提供函数定义。
 
-#### Elapsed time
+#### 已用时间
 
 ```cpp
 // Get the number of seconds elapsed since the start of the application.
 virtual double GetElapsedTime();
 ```
-The `GetElapsedTime()` function should simply return the number of seconds that have elapsed since the start of the application. The default implementation uses the standard C++ chrono utilities.
+`GetElapsedTime()` 函数应简单地返回自应用程序启动以来经过的秒数。默认实现使用标准 C++ chrono 工具。
 
-#### String translation
+#### 字符串翻译
 
 ```cpp
 // Translate the input string into the translated string.
 virtual int TranslateString(Rml::String& translated, const Rml::String& input);
 ```
-`TranslateString()` is called when a text element is constructed from an RML stream. This allows the application to send all text read from file through its string tables. The parameter `input` is the raw text read from the RML, while `translated` should be set to the final text to be given to the text element to render. The total number of changes made to the raw text should be returned. If the number is greater than 0, RmlUi will recursively call your translate function to process any new text that was added to the stream (watch out for infinite recursion). If your translation function does all the recursion itself, you can safely return 0 on every call.
+当从 RML 流构造文本元素时，会调用 `TranslateString()`。这允许应用程序通过其字符串表发送所有从文件读取的文本。参数 `input` 是从 RML 读取的原始文本，而 `translated` 应设置为最终要交给文本元素渲染的文本。应返回对原始文本所做的更改总数。如果该数字大于 0，RmlUi 将递归调用你的翻译函数来处理添加到流中的任何新文本（注意无限递归）。如果你的翻译函数自己完成所有递归，你可以在每次调用时安全地返回 0。
 
-Note that the translated text can include RML tags and they will be processed as if they were in the original stream; this can be used, for example, to substitute images for certain tokens.
+请注意，翻译后的文本可以包含 RML 标签，它们将被处理，就像它们在原始流中一样；例如，这可以用于为某些标记替换图像。
 
-#### Paths
+#### 路径
 
 ```cpp
 // Joins the path of an RML or RCSS file with the path of a resource specified within the file.
 virtual void JoinPath(String& translated_path, const String& document_path, const String& path);
 ```
-This function can be specialized to modify how paths are joined. This is eg. called from RmlUi when an RCSS file is referenced from an RML file, or when image files are referenced from an RCSS file. In most cases the default implementation should be suitable.
+此函数可以被特化以修改路径的连接方式。例如，当从 RML 文件引用 RCSS 文件，或从 RCSS 文件引用图像文件时，RmlUi 会调用它。在大多数情况下，默认实现应该是合适的。
 
-#### Logging
+#### 日志记录
 
 ```cpp
 // Log the specified message.
 virtual bool LogMessage(Rml::Log::Type type, const Rml::String& message);
 ```
-The `LogMessage()` function is called when RmlUi generates a message. Here, `type` is one of `Rml::Log::LT_ERROR` for error messages, `Rml::Log::LT_ASSERT` for failed internal assertions (debug library only), `Rml::Log::LT_WARNING` for non-fatal warnings, or `Rml::Log::LT_INFO` for generic information messages. The `message` parameter is the actual message itself. The function should return true if program execution should continue, or false to generate an interrupt to break execution. This can be useful if you are running inside a debugger to see exactly what an application is doing to trigger a certain message.
+当 RmlUi 生成消息时，会调用 `LogMessage()` 函数。这里，`type` 是 `Rml::Log::LT_ERROR`（错误消息）、`Rml::Log::LT_ASSERT`（失败的内部断言，仅调试库）、`Rml::Log::LT_WARNING`（非致命警告）或 `Rml::Log::LT_INFO`（一般信息消息）之一。`message` 参数是实际消息本身。如果程序执行应继续，该函数应返回 true；如果要生成中断以中断执行，则返回 false。如果你在调试器中运行，这可能很有用，可以确切地看到应用程序做了什么才触发了某条消息。
 
-#### Mouse cursor
+#### 鼠标光标
 
 ```cpp
 // Set the mouse cursor.
 virtual void SetMouseCursor(const Rml::String& cursor_name);
 ```
-The `SetMouseCursor()` function is called when RmlUi wants to change the mouse cursor. This behavior is controlled by the [`cursor`{:.prop} property](../../rcss/user_interface.html#cursor), the value of which is directly sent through the interface as the `cursor_name`. The default value for the `cursor`{:.prop} property is an empty string, thus, this can be used to set a default cursor. There are also some [built-in cursor names](../contexts.html#builtin-cursors) that are submitted when the context is in a certain state, such as during autoscrolling.
+当 RmlUi 想要更改鼠标光标时，会调用 `SetMouseCursor()` 函数。此行为由 [`cursor`{:.prop} 属性](../../rcss/user_interface.html#cursor)控制，其值通过接口直接作为 `cursor_name` 发送。`cursor`{:.prop} 属性的默认值是一个空字符串，因此这可以用于设置默认光标。还有一些[内置光标名称](../contexts.html#builtin-cursors)，当上下文处于某种状态时（例如在自动滚动期间）会提交它们。
 
-The user is responsible for setting the system cursor or otherwise rendering the cursor as desired. It is possible to choose for each context whether it should call this function, see [context cursor](../contexts.html#mouse-cursor) for additional details.
+用户负责设置系统光标或以其他方式按需渲染光标。可以选择每个上下文是否应调用此函数，更多细节请参阅[上下文光标](../contexts.html#mouse-cursor)。
 
-#### Clipboard
+#### 剪贴板
 
 ```cpp
 // Set clipboard text.
@@ -62,12 +62,12 @@ virtual void SetClipboardText(const String& text);
 // Get clipboard text.
 virtual void GetClipboardText(String& text);
 ```
-`SetClipboardText()` is called from RmlUi when it wants to copy the given text to the clipboard. This is typically called when the user presses the copy shortcut keys (Ctrl+C) in a text input field. Likewise, `GetClipboardText()` is called from RmlUi when it wants to retrieve the text currently stored in the clipboard, typically after the user has pressed the paste key combination (Ctrl+V).
+当 RmlUi 想要将给定文本复制到剪贴板时，会调用 `SetClipboardText()`。这通常在用户按下文本输入字段中的复制快捷键（Ctrl+C）时调用。同样，当 RmlUi 想要检索当前存储在剪贴板中的文本时，会调用 `GetClipboardText()`，通常在用户按下粘贴键组合（Ctrl+V）之后。
 
-Clients are themselves responsible to interact with the system clipboard if desired, the default library implementation will only copy and paste text internally within the application. All text is considered encoded in UTF-8.
+客户端自己负责在需要时与系统剪贴板交互，默认的库实现只会在应用程序内部复制和粘贴文本。所有文本都被视为 UTF-8 编码。
 
 
-#### Virtual keyboard
+#### 虚拟键盘
 
 ```cpp
 // Activate keyboard (for touchscreen devices).
@@ -75,6 +75,6 @@ virtual void ActivateKeyboard(Rml::Vector2f caret_position, float line_height);
 // Deactivate keyboard (for touchscreen devices).
 virtual void DeactivateKeyboard();
 ```
-These functions are called from RmlUi when it wants to activate or deactivate a virtual keyboard, such as on phones and tablets. These are typically called when the user focuses on or away from a text input field.
+当 RmlUi 想要激活或停用虚拟键盘时（例如在手机和平板上），会调用这些函数。这通常在用户聚焦或离开文本输入字段时调用。
 
-Additionally, `ActivateKeyboard()` is called whenever the caret position of the current text field is changed. The `caret_position` is the absolute position of the carret in window coordinates, while `line_height` is the pixel height of the current line being edited. These arguments can be used to position any input method editor (IME).
+此外，每当当前文本字段的光标位置更改时，都会调用 `ActivateKeyboard()`。`caret_position` 是光标在窗口坐标中的绝对位置，而 `line_height` 是正在编辑的当前行的像素高度。这些参数可用于定位任何输入法编辑器（IME）。

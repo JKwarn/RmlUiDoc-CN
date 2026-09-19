@@ -1,57 +1,57 @@
 ---
 layout: page
-title: RML Syntax
+title: RML 语法
 parent: rml
 next: events
 ---
 
-RML generally follows the [XML syntax](https://html.spec.whatwg.org/multipage/xhtml.html) for HTML. In particular this means that *all tags* must be closed. Further, it is assumed that documents are encoded in UTF-8. XML namespaces are not supported.
+RML 大体遵循 HTML 的 [XML 语法](https://html.spec.whatwg.org/multipage/xhtml.html)。这尤其意味着 *所有标签* 都必须闭合。此外，假设文档以 UTF-8 编码。不支持 XML 命名空间。
 
-RML documents consist of a tree of nodes, see the [documents](documents.html) page for their general structure. The following describes some features beyond the common tree parsing behavior. For the most part, the syntax is equivalent to a subset of XML and HTML, with some additions.
+RML 文档由节点树组成，其一般结构请参见[文档](documents.html)页面。下面描述了一些超出常见树解析行为的功能。大多数情况下，语法等同于 XML 和 HTML 的一个子集，并有一些补充。
 
 
-### Character references
+### 字符引用
 
-RML supports character references in attributes and in data (text) encountered inside tags. When encountered, they will be translated into the specified Unicode code point.
+RML 支持在属性中以及在标签内遇到的数据（文本）中使用字符引用。遇到时，它们将被转换为指定的 Unicode 码点。
 
-#### Named character references
+#### 命名字符引用
 
-| Escape string | Character            |
+| 转义字符串 | 字符            |
 |---------------|----------------------|
 | `&lt;`        | `<`                  |
 | `&gt;`        | `>`                  |
 | `&quot;`      | `"`                  |
 | `&amp;`       | `&`                  |
-| `&nbsp;`      | *Non-breaking space* |
+| `&nbsp;`      | *不换行空格* |
 
-#### Numerical character references
+#### 数字字符引用
 
-Characters can be specified numerically based on their Unicode code points, just like in HTML.
+与 HTML 一样，字符可以基于其 Unicode 码点以数字形式指定。
 
-| Escape format | Description                                              |
+| 转义格式 | 说明                                              |
 |---------------|----------------------------------------------------------|
-| `&#nnnn;`     | Unicode code point specified in decimal form `nnnn`.     |
-| `&#xhhhh;`    | Unicode code point specified in hexadecimal form `hhhh`. |
+| `&#nnnn;`     | 以十进制形式 `nnnn` 指定的 Unicode 码点。     |
+| `&#xhhhh;`    | 以十六进制形式 `hhhh` 指定的 Unicode 码点。 |
 
-For example, the euro sign € can be written using decimal form `&#8364;` or equivalently in hexadecimal form `&#x20ac;`.
+例如，欧元符号 € 可以用十进制形式 `&#8364;` 书写，也可以等效地用十六进制形式 `&#x20ac;` 书写。
 
 
-### Comments
+### 注释
 
-Comments are supported using the familiar format.
+注释使用熟悉的格式。
 
 ```html
 <!-- My comment -->
 ```
 
-Comments can also include tags, which will be ignored.
+注释中也可以包含标签，这些标签将被忽略。
 
 
-### CData sections
+### CData 段
 
-CData sections can be used to include text that should not be parsed as RML. The section is started by `<![CDATA[`, followed by some data, and finally ended by `]]>`.
+CData 段可用于包含不应作为 RML 解析的文本。段以 `<![CDATA[` 开始，后跟一些数据，最后以 `]]>` 结束。
 
-**Example**
+**示例**
 ```html
 <p>A strange face appeared:
 <![CDATA[
@@ -60,31 +60,31 @@ CData sections can be used to include text that should not be parsed as RML. The
 ```
 
 
-### CData tags
+### CData 标签
 
-When a CData tag is encountered in a document, all subsequent text is considered raw data until its end tag is encountered.
+当在文档中遇到 CData 标签时，其后的所有文本都将被视为原始数据，直到遇到其结束标签。
 
-| CData tags        |
+| CData 标签        |
 |-------------------|
 | `<style>`{:.tag}  |
 | `<script>`{:.tag} |
 
 
-### Structural data attributes
+### 结构数据属性
 
-When a node with a structural data attribute is encountered, then all descendant RML nodes and data will be treated as a single data child of the structural node.
+当遇到具有结构数据属性的节点时，所有后代 RML 节点和数据都将被视为结构节点的单个数据子节点。
 
-| Structural data attributes |
+| 结构数据属性 |
 |----------------------------|
 | `data-for`{:.attr}         |
 
-Note that a valid subtree is still required, and that the subtree will be considered when finding the node's end tag.
+请注意，仍然需要一个有效的子树，并且在查找节点的结束标签时会考虑该子树。
 
-##### Example
+##### 示例
 
 {% raw %}
 
-In the following, [data bindings](../data_bindings.html) are used to dynamically display a list of elements. During RML parsing, only a single node is created, for the `div`{:.tag} tag. All its inner contents, including the `h1`{:.tag} and `p`{:.tag} tags, are submitted as a single data child.
+在下面的示例中，[数据绑定](../data_bindings.html)用于动态显示元素列表。在 RML 解析期间，只为 `div`{:.tag} 标签创建一个节点。其所有内部内容（包括 `h1`{:.tag} 和 `p`{:.tag} 标签）都将作为单个数据子节点提交。
 
 ```html
 <div data-for="invader : invaders">
@@ -93,6 +93,6 @@ In the following, [data bindings](../data_bindings.html) are used to dynamically
 </div>
 ```
 
-This allows the `data-for` view to store its inner contents without generating them immediately, so that it can later dynamically create a list of the provided elements as needed.
+这允许 `data-for` 视图保存其内部内容而不立即生成它们，以便之后可以根据需要动态创建所提供元素的列表。
 
 {% endraw %}

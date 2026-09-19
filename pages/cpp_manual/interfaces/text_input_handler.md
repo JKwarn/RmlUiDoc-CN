@@ -1,13 +1,13 @@
 ---
 layout: page
-title: Text input handler interface
+title: 文本输入处理器接口
 parent: cpp_manual/interfaces
 grandparent: cpp_manual
 ---
 
-The text input handler interface, unlike other interfaces, does not hinder the application's functionality without implementation. It listens to events of all editable text areas, such as text field activation, and provides a proxy object to manipulate the text input in question. It is the best entry point for a custom implementation of the [input method editor (IME)](../ime.html).
+与其他接口不同，文本输入处理器接口即使不实现也不会妨碍应用程序的功能。它监听所有可编辑文本区域的事件，例如文本字段激活，并提供代理对象来操纵相关文本输入。它是[输入法编辑器（IME）](../ime.html)自定义实现的最佳入口点。
 
-To handle these events, create a class derived from `Rml::TextInputHandler` (defined in `<RmlUi/Core/TextInputHandler.h>`{:.incl}) and override the abstract methods you are interested in:
+要处理这些事件，请创建一个派生自 `Rml::TextInputHandler`（在 `<RmlUi/Core/TextInputHandler.h>`{:.incl} 中定义）的类，并覆盖你感兴趣的抽象方法：
 
 ```cpp
 // Called when a text input area is activated (e.g., focused).
@@ -20,13 +20,13 @@ virtual void OnDeactivate(TextInputContext* input_context) {}
 virtual void OnDestroy(TextInputContext* input_context) {}
 ```
 
-Once you complete your implementation, install it globally with `Rml::SetTextInputHandler()` or pass it during context construction to have an instance specific to the created context. Remember that overriding the global handler will not affect already existing contexts.
+完成实现后，使用 `Rml::SetTextInputHandler()` 全局安装它，或在上下文构造期间传递它，以拥有特定于所创建上下文的实例。请记住，覆盖全局处理器不会影响已存在的上下文。
 
-The class implementing the input handler can then communicate with the input context handed to it. Typically, the implementation of the input context is provided by the library, allowing the user to focus on the IME or other input-related functionality.
+实现输入处理器的类然后可以与交给它的输入上下文通信。典型情况下，输入上下文的实现由库提供，允许用户专注于 IME 或其他与输入相关的功能。
 
-### Text input context
+### 文本输入上下文
 
-A text input context is a proxy class for managing an editable text area. {{ page.lib_name }} implements the `Rml::TextInputContext` interface (defined in `<RmlUi/Core/TextInputContext.h>`{:.incl}) for text field elements, but users of the library may decide to provide a custom implementation with definitions for the pure virtual methods:
+文本输入上下文是用于管理可编辑文本区域的代理类。{{ page.lib_name }} 为文本字段元素实现了 `Rml::TextInputContext` 接口（在 `<RmlUi/Core/TextInputContext.h>`{:.incl} 中定义），但库的用户可以决定为纯虚方法提供自定义实现：
 
 ```cpp
 /// Retrieve the screen-space bounds of the text area (in px).
@@ -66,13 +66,13 @@ virtual void SetCompositionRange(int start, int end) = 0;
 virtual void CommitComposition(String composition) = 0;
 ```
 
-This interface provides means to connect {{ page.lib_name }} with existing game engines for the IME or any other user input-related functionality. The lifetime of an input context instance is ended with the call to `OnDestroy()` in `Rml::TextInputHandler`, the text input handler must ensure not to interact with the same instance after this point.
+此接口提供了将 {{ page.lib_name }} 与现有游戏引擎连接的方法，以用于 IME 或任何其他与用户输入相关的功能。输入上下文实例的生命周期以 `Rml::TextInputHandler` 中调用 `OnDestroy()` 结束，文本输入处理器必须确保在此时之后不再与同一实例交互。
 
-#### IME Composition
+#### IME 组合
 
-Commonly, while the IME composition is active, the text may ignore internal restrictions, such as the maximum text length, to improve the user experience. `SetText()` is a method that takes the passed text and replaces the character range with it. Once the composition ends, however, the resulting string should be inserted while following the input configuration; this is when `CommitComposition()` should be used. Note that it takes effect only when the composition range is set from `SetCompositionRange()`, which must be executed before modifying the text; text modifications cancel the composition range.
+通常，当 IME 组合处于活动状态时，文本可能忽略内部限制（例如最大文本长度）以改善用户体验。`SetText()` 是一个接受传入文本并替换字符范围的方法。然而，一旦组合结束，结果字符串应在遵循输入配置的同时插入；此时应使用 `CommitComposition()`。请注意，它只有在组合范围通过 `SetCompositionRange()` 设置后才生效，这必须在修改文本之前执行；文本修改会取消组合范围。
 
-This is an example implementation of a text input method editor using the text input context:
+以下是使用文本输入上下文的文本输入法编辑器示例实现：
 
 ```cpp
 class TextInputMethodEditor {
@@ -122,4 +122,4 @@ void TextInputMethodEditor::ConfirmComposition(Rml::StringView composition)
 }
 ```
 
-In a real application, you want to connect the editor to your backend and handle the composition state. See the [platform implementations](https://github.com/mikke89/RmlUi/tree/master/Backends) for detailed examples with ready-to-use text input handlers.
+在真实应用程序中，你会希望将编辑器连接到后端并处理组合状态。请参阅[平台实现](https://github.com/mikke89/RmlUi/tree/master/Backends)获取带有可直接使用的文本输入处理器的详细示例。

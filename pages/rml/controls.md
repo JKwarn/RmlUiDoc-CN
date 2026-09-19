@@ -1,27 +1,27 @@
 ---
 layout: page
-title: RML Controls
+title: RML 控件
 parent: rml
 next: data_display
 ---
 
 ### \<handle\>
 
-The `<handle>`{:.tag} element can be used to move or change the size of elements.
+`<handle>`{:.tag} 元素可用于移动元素或改变元素的大小。
 
-_Attributes_
+_属性_
 
 `move_target`{:.attr} = idref (CI)
-: If specified, the handle will move the element specified by the ID when dragged. Can be `#document`{:.value} to reference the current document, or `#parent`{:.value} to reference the parent element.
+: 如果指定了该属性，则拖动句柄时，句柄将移动由该 ID 指定的元素。可以设为 `#document`{:.value} 以引用当前文档，或设为 `#parent`{:.value} 以引用父元素。
 
 `size_target`{:.attr} = idref (CI)
-: If specified, the handle will size the element specified by the ID when dragged. Can be `#document`{:.value} to reference the current document, or `#parent`{:.value} to reference the parent element.
+: 如果指定了该属性，则拖动句柄时，句柄将调整由该 ID 指定的元素的尺寸。可以设为 `#document`{:.value} 以引用当前文档，或设为 `#parent`{:.value} 以引用父元素。
 
 `edge_margin`{:.attr} = \<length-percentage\>{1-4} | none
-: Constrains the target placement to the edges of its containing block. This attribute can take any length or percentage, which specifies the minimum distance between the target and the edges of its containing block. These constraints will be satisfied while dragging the handle, for both position and size targets.\
-By default, this value is set to `0px`, which means that handle targets will be constrained exactly to the edges of their containing block. The value can also be specified by up to four space-separated values in box order (top/right/bottom/left), determining the minimum distance to each side. Negative values are allowed, which enables movement outside the edges of the containing block. Percentages are resolved against the size of the target element. The value `none`{:.value} can be used to remove all constraints.
+: 将目标的放置约束在其包含块的边缘。该属性可以接受任意长度或百分比，用于指定目标与其包含块边缘之间的最小距离。无论在位置目标还是尺寸目标上，拖动句柄时这些约束都会得到满足。\
+默认情况下，该值为 `0px`，这意味着句柄目标将被严格约束在包含块的边缘。该值也可以由最多四个以空格分隔的值（按盒顺序：上/右/下/左）指定，以确定到各边的最小距离。允许使用负值，这样可以移动到包含块边缘之外。百分比将相对于目标元素的尺寸进行解析。可以使用 `none`{:.value} 值移除所有约束。
 
-During drag operations, the handle element will first consider the target element's combination of inset properties (`top`{:.prop}, `right`{:.prop}, `bottom`{:.prop}, `left`{:.prop}) and size properties (`width`{:.prop}, `height`{:.prop}). It will then adjust the necessary aforementioned properties to move or size the target element according to the drag delta, in a way that retains the sides that the element anchors to. This way, the target element can still automatically be resized when its container is resized, even after the handle has changed its placement.
+在拖动过程中，句柄元素将首先考虑目标元素的 inset 属性组合（`top`{:.prop}、`right`{:.prop}、`bottom`{:.prop}、`left`{:.prop}）与尺寸属性（`width`{:.prop}、`height`{:.prop}）。然后，它会调整上述必要的属性，以根据拖动增量移动目标元素或调整其尺寸，同时保留该元素所锚定的边。这样，即使句柄更改了目标元素的位置，当容器调整大小时，目标元素仍然可以自动调整大小。
 
 ```html
 <div id="bucket">Bucket</div>
@@ -47,14 +47,14 @@ During drag operations, the handle element will first consider the target elemen
 
 ### \<tabset\>
 
-A `<tabset>`{:.tag} element contains `<tab>`{:.tag} elements and `<panel>`{:.tag} elements.
+`<tabset>`{:.tag} 元素包含 `<tab>`{:.tag} 元素和 `<panel>`{:.tag} 元素。
 
-See also the [tab set documentation]({{"pages/cpp_manual/element_packages/tab_set.html"|relative_url}}) in the C++ manual.
+另请参阅 C++ 手册中的[选项卡集文档]({{"pages/cpp_manual/element_packages/tab_set.html"|relative_url}})。
 
 #### \<tab\>
 
-Each `<tab>`{:.tag} element acts as a button, that when clicked will hide the currently visible panel and show its corresponding panel.
+每个 `<tab>`{:.tag} 元素都充当一个按钮，点击后会隐藏当前可见的面板，并显示其对应的面板。
 
 #### \<panel\>
 
-A `<panel>`{:.tag} element is the body of the tabset. The visibility of the panel is controlled by the tab elements in the parent tabset.
+`<panel>`{:.tag} 元素是选项卡集的主体。面板的可见性由父选项卡集中的 tab 元素控制。

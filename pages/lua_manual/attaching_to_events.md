@@ -1,37 +1,37 @@
 ---
 layout: page
-title: Attaching To Events
+title: 绑定事件
 parent: lua_manual
 next: elements
 ---
 
-### Statically in RML
+### 在 RML 中静态绑定
 
-The easiest way to attach to events with Lua is to write your code directly into the RML files, using the `on*`{:.attr} attributes. When the event is fired three global variables are set up, `document`, `event` and `element`.
+使用 Lua 绑定事件的最简单方法是通过 `on*`{:.attr} 属性将代码直接写入 RML 文件。事件触发时会设置三个全局变量：`document`、`event` 和 `element`。
 
-[element](elements.html)  | The element that is currently being processed.
-[document](documents.html) | The document the element that is currently being processed belongs to.
-[event](events.html) | The event that is currently being processed.
+[element](elements.html)  | 当前正在处理的元素。
+[document](documents.html) | 当前正在处理的元素所属的文档。
+[event](events.html) | 当前正在处理的事件。
 
-Example:
+示例：
 
 ```html
 <button onclick="print('Clicked!')"/>
 ```
 
-Multiple statements can be called as in normal Lua.
+与普通 Lua 一样，可以调用多条语句。
 
-Example:
+示例：
 
 ```html
 <button onclick="print('Line 1') print('Line 2')"/>
 ```
 
-### Dynamically from Lua Code
+### 从 Lua 代码动态绑定
 
-The Lua version of `AddEventListener` is modeled directly on Javascript. This allows you to bind any callable Lua function or string to an event.
+Lua 版本的 `AddEventListener` 直接以 Javascript 为蓝本。这使您可以将任何可调用的 Lua 函数或字符串绑定到事件。
 
-Method 1:
+方法 1：
 
 ```lua
 function Init(document)			
@@ -40,7 +40,7 @@ function Init(document)
 end
 ```
 
-Method 2:
+方法 2：
 
 ```lua
 function OnClick()

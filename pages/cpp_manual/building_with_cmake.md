@@ -1,26 +1,26 @@
 ---
 layout: page
-title: Building RmlUi with CMake
+title: 使用 CMake 构建 RmlUi
 parent: cpp_manual
 next: integrating
 ---
 
-The following will guide you through the process of building RmlUi. This is necessary before you can integrate it into your own application. If you are just getting started, the recommended approach is to use a package manager to handle building and integration. We also encourage you to build the included samples and have a look at them.
+以下内容将引导你完成构建 RmlUi 的整个过程。在将其集成到你自己的应用程序之前，这是必须完成的一步。如果你是初学者，推荐使用包管理器来处理构建与集成。我们也鼓励你构建随附的示例并查看它们。
 
-**Contents**
+**目录**
 
-- [Prerequisites](#prerequisites)
-- [Building using vcpkg](#vcpkg)
-- [Building using Conan](#conan)
-- [Building using Devbox](#devbox)
-- [Building on Windows](#windows)
-- [Building on macOS and Linux](#macos-and-linux)
-- [Building using Emscripten](#emscripten)
-- [CMake presets](#cmake-presets)
-- [CMake options](#cmake-options)
+- [先决条件](#prerequisites)
+- [使用 vcpkg 构建](#vcpkg)
+- [使用 Conan 构建](#conan)
+- [使用 Devbox 构建](#devbox)
+- [在 Windows 上构建](#windows)
+- [在 macOS 和 Linux 上构建](#macos-and-linux)
+- [使用 Emscripten 构建](#emscripten)
+- [CMake 预设](#cmake-presets)
+- [CMake 选项](#cmake-options)
 
 
-### Prerequisites
+### 先决条件
 {:#prerequisites}
 
 - [RmlUi](https://github.com/mikke89/RmlUi)
@@ -28,109 +28,109 @@ The following will guide you through the process of building RmlUi. This is nece
 - [FreeType](https://www.freetype.org)
 
 
-*or*
+*或*
 
 - [vcpkg](#vcpkg)
 
-*or*
+*或*
 
-- [Conan package manager](#conan)
+- [Conan 包管理器](#conan)
 
-*or*
+*或*
 
-- [Devbox package manager](#devbox)
+- [Devbox 包管理器](#devbox)
 
-For new users, the recommended approach is to use a package manager such as vcpkg or Conan to handle building and integration of the library. These take care of dependencies and all the integration details, getting you set-up with a breeze.
+对于新用户，推荐使用 vcpkg 或 Conan 之类的包管理器来处理库的构建与集成。这些工具负责处理依赖关系及所有集成细节，让你轻松完成配置。
 
-For full access to all the build options, the library can be manually built using CMake. You'll first need to download CMake or install it via a package manager of your choice. CMake is not a build system itself, its purpose is to generate Makefiles, Xcode projects and Visual Studio projects, among other formats. Next, follow the instructions for your platform below.
+要完全访问所有构建选项，可以使用 CMake 手动构建库。你首先需要下载 CMake，或通过你选择的包管理器安装它。CMake 本身并不是一个构建系统，它的用途是生成 Makefile、Xcode 项目、Visual Studio 项目以及其他格式。接下来，按照下面针对你所在平台的说明进行操作。
 
-If you haven't already done so, download a copy of RmlUi. You can download and extract the library as a zip file, or use git from your terminal:
+如果尚未完成，请下载一份 RmlUi。你可以将库下载并解压为 zip 文件，或者在终端中使用 git：
 
 ```
 git clone https://github.com/mikke89/RmlUi.git
 ```
 
-### Building using vcpkg
+### 使用 vcpkg 构建
 {:#vcpkg}
 
-[vcpkg](https://vcpkg.io) is a cross-platform C/C++ package manager for acquiring and managing libraries. Read the [getting started with vcpkg](https://learn.microsoft.com/en-us/vcpkg/get_started/overview) guide to download and install the package manager.
+[vcpkg](https://vcpkg.io) 是一个用于获取和管理库的跨平台 C/C++ 包管理器。请阅读 [vcpkg 入门](https://learn.microsoft.com/en-us/vcpkg/get_started/overview) 指南来下载并安装该包管理器。
 
-Then, RmlUi can be installed simply using the command:
+然后，只需使用以下命令即可安装 RmlUi：
 ```
 vcpkg install rmlui
 ```
-Now you are all set to integrate RmlUi, all you need to do is include the header files into your source code.
+现在你已经准备好集成 RmlUi 了，只需将头文件包含到你的源代码中即可。
 
-The vcpkg port supports certain features derived from the [CMake options](#cmake-options) below.
+vcpkg port 支持由下面 [CMake 选项](#cmake-options) 派生的某些特性。
 
-| vcpkg feature | Default feature | Related CMake option | Explanation                                           |
+| vcpkg 特性 | 默认特性 | 相关 CMake 选项 | 说明                                           |
 |---------------|-----------------|----------------------|-------------------------------------------------------|
-| freetype      | Yes             | `RMLUI_FONT_ENGINE`  | Include the integrated font engine based on FreeType. |
-| lottie        | No              | `RMLUI_LOTTIE_PLUGIN`| Include the [Lottie plugin](lottie.html).             |
-| lua           | No              | `RMLUI_LUA_BINDINGS` | Include the Lua bindings.                             |
-| svg           | No              | `RMLUI_SVG_PLUGIN`   | Include the [SVG plugin](svg.html).                   |
+| freetype      | 是             | `RMLUI_FONT_ENGINE`  | 包含基于 FreeType 的集成字体引擎。 |
+| lottie        | 否              | `RMLUI_LOTTIE_PLUGIN`| 包含 [Lottie 插件](lottie.html)。             |
+| lua           | 否              | `RMLUI_LUA_BINDINGS` | 包含 Lua 绑定。                             |
+| svg           | 否              | `RMLUI_SVG_PLUGIN`   | 包含 [SVG 插件](svg.html)。                   |
 
-Note that vcpkg will not install the samples which we recommend to check out before integrating the library into your own project. For this, we need to download and build RmlUi manually, but luckily vcpkg can help ease this process by handling the dependencies.
+请注意，vcpkg 不会安装示例，而我们建议在将库集成到你自己的项目之前先查看这些示例。为此，我们需要手动下载并构建 RmlUi，但幸运的是，vcpkg 可以通过处理依赖来简化这一过程。
 
-First install the necessary dependencies. Here, we choose to use [GLFW](https://www.glfw.org/) as our backend, and proceed to install this dependency as well. Other backends are available as seen on the [repository readme](https://github.com/mikke89/RmlUi?tab=readme-ov-file#rmlui-backends).
+首先安装必要的依赖。这里我们选择使用 [GLFW](https://www.glfw.org/) 作为后端，并继续安装该依赖。其他后端可参见[仓库自述文件](https://github.com/mikke89/RmlUi?tab=readme-ov-file#rmlui-backends)。
 ```
 vcpkg install freetype glfw
 ```
 
-Then you can run the following commands to download and build RmlUi with the samples. Make sure to replace the path to vcpkg.
+然后你可以运行以下命令来下载并构建带示例的 RmlUi。请确保替换 vcpkg 的路径。
 ```
 git clone https://github.com/mikke89/RmlUi.git
 cd RmlUi
 cmake -B Build -S . --preset samples -DRMLUI_BACKEND=GLFW_GL3 -DCMAKE_TOOLCHAIN_FILE=<vcpkg-path>/scripts/buildsystems/vcpkg.cmake
 cmake --build Build
 ```
-Now please try out the freshly built `invader` sample (`rmlui_sample_invaders` target) and all the rest, enjoy! The executables should be located somewhere in the `Build` directory.
+现在请试试刚构建好的 `invader` 示例（`rmlui_sample_invaders` 目标）以及其余所有示例，尽情享受吧！可执行文件应位于 `Build` 目录中的某处。
 
-If you want to check out the remaining samples you can also install `lua lunasvg rlottie harfbuzz` and use the preset `samples-all` during the CMake configuration. There is also a comprehensive testing framework available, which can be built by additionally passing the option `-DBUILD_TESTING=ON`, or the CMake preset `dev` or `dev-all`.
+如果你想查看其余示例，还可以安装 `lua lunasvg rlottie harfbuzz`，并在 CMake 配置期间使用 `samples-all` 预设。此外还有一个全面的测试框架可用，可以通过额外传递 `-DBUILD_TESTING=ON` 选项来构建，或使用 CMake 预设 `dev` 或 `dev-all`。
 
-If the version of RmlUi provided with vcpkg is out of date or somehow does not meet certain needs, then contributions would be welcome at the [vcpkg repository](https://github.com/microsoft/vcpkg).
+如果 vcpkg 提供的 RmlUi 版本已过时或无法满足某些需求，欢迎向 [vcpkg 仓库](https://github.com/microsoft/vcpkg) 贡献。
 
 
-### Building using Conan
+### 使用 Conan 构建
 {:#conan}
 
-[Conan](https://conan.io) is a C/C++ package manager which can be used for integrating and building the library, and managing its dependencies in an effortless way. If you are new to Conan, then it might be worth looking through the [Conan Tutorial](https://docs.conan.io/2/tutorial.html). Information on the RmlUi package itself is available at [ConanCenter: RmlUi](https://conan.io/center/recipes/rmlui).
+[Conan](https://conan.io) 是一个 C/C++ 包管理器，可用于以轻松的方式集成与构建库，并管理其依赖。如果你不熟悉 Conan，那么值得浏览一下 [Conan 教程](https://docs.conan.io/2/tutorial.html)。关于 RmlUi 包本身的信息可在 [ConanCenter: RmlUi](https://conan.io/center/recipes/rmlui) 获取。
 
-The Conan recipe that environment-specific packages are generated from supports certain options derived from the [CMake options](#cmake-options) below. The following table explains options exclusive to RmlUi available in the recipe. Please bear in mind that in general the Conan community discourages double negation that would arise from naming options with one negation included (e.g. `RMLUI_THIRDPARTY_CONTAINERS`); this is why certain recipe options have the opposite meaning of their CMake counterpart.
+生成环境特定包的 Conan recipe 支持由下面 [CMake 选项](#cmake-options) 派生的某些选项。下表说明了 recipe 中可用的、RmlUi 专属的选项。请记住，通常 Conan 社区不鼓励因选项名称中包含否定词而产生的双重否定（例如 `RMLUI_THIRDPARTY_CONTAINERS`）；这就是为什么某些 recipe 选项与其 CMake 对应项的语义相反。
 
-| Conan option               | Possible values               | Default value  | Related CMake option          | Explanation                                                             |
+| Conan 选项               | 可能的值               | 默认值  | 相关 CMake 选项          | 说明                                                             |
 |----------------------------|-------------------------------|----------------|-------------------------------|-------------------------------------------------------------------------|
 | enable_rtti_and_exceptions | [True, False]                 | True           | `RMLUI_CUSTOM_RTTI`           | --                                                                      |
-| font_interface             | ["freetype", None]            | "freetype"     | `RMLUI_FONT_ENGINE`           | The CMake option is defined when the Conan option is set to `None`      |
-| matrix_mode                | ["column_major", "row_major"] | "column_major" | `RMLUI_MATRIX_ROW_MAJOR`      | The CMake option is defined when the Conan option is set to `row_major` |
+| font_interface             | ["freetype", None]            | "freetype"     | `RMLUI_FONT_ENGINE`           | 当 Conan 选项设置为 `None` 时定义该 CMake 选项      |
+| matrix_mode                | ["column_major", "row_major"] | "column_major" | `RMLUI_MATRIX_ROW_MAJOR`      | 当 Conan 选项设置为 `row_major` 时定义该 CMake 选项 |
 | with_lua_bindings          | [True, False]                 | False          | `RMLUI_LUA_BINDINGS`          | --                                                                      |
 | with_thirdparty_containers | [True, False]                 | True           | `RMLUI_THIRDPARTY_CONTAINERS` | --                                                                      |
 
-The options outlined above can be set in one's [conanfile.py](https://docs.conan.io/2/reference/conanfile.html) or [conanfile.txt](https://docs.conan.io/2/reference/conanfile_txt.html), depending on preference.
+上述选项可以根据个人偏好写在 [conanfile.py](https://docs.conan.io/2/reference/conanfile.html) 或 [conanfile.txt](https://docs.conan.io/2/reference/conanfile_txt.html) 中。
 
-The CMake options that are not supported along with a bit of reasoning are as follows:
-- `RMLUI_SAMPLES` builds example uses of the library, which would significantly increase the size of pre-built binary packages that Conan generates. In order to avoid this, the option is not offered and is always disabled. However, the recipe can always be edited locally to try them out.
-- `RMLUI_PRECOMPILED_HEADERS` requires a minimum CMake version that Conan can always provide and results in build time reduction with no apparent drawbacks, so it is sensible for it to be always enabled.
-- `RMLUI_TRACY_PROFILING` requires a dependency that is not available from Conan's central repository as of writing this, so it cannot be supported.
+不受支持的 CMake 选项及其原因如下：
+- `RMLUI_SAMPLES` 会构建库的示例用法，这将显著增加 Conan 生成的预构建二进制包的大小。为避免这种情况，该选项不被提供且始终禁用。不过，可以随时在本地编辑 recipe 来试用它们。
+- `RMLUI_PRECOMPILED_HEADERS` 要求的最低 CMake 版本 Conan 总是可以提供，并且它能在没有明显缺点的情况下缩短构建时间，因此始终启用它是合理的。
+- `RMLUI_TRACY_PROFILING` 需要一个截至撰写本文时无法从 Conan 中央仓库获取的依赖，因此无法支持。
 
-The `RMLUI_CUSTOM_CONFIGURATION` CMake option and others related to it (`RMLUI_CUSTOM_CONFIGURATION_FILE`, `RMLUI_CUSTOM_INCLUDE_DIRS` and `RMLUI_CUSTOM_LINK_LIBRARIES`) make it possible for the embedded [robin-hood-hashing](https://conan.io/center/recipes/robin-hood-hashing) library to be upgradable.
+`RMLUI_CUSTOM_CONFIGURATION` CMake 选项及与其相关的其他选项（`RMLUI_CUSTOM_CONFIGURATION_FILE`、`RMLUI_CUSTOM_INCLUDE_DIRS` 和 `RMLUI_CUSTOM_LINK_LIBRARIES`）使得内嵌的 [robin-hood-hashing](https://conan.io/center/recipes/robin-hood-hashing) 库可以被升级。
 
-If the recipe is out of date or somehow does not meet certain needs, then contributions would be welcome at [conan-center-index](https://github.com/conan-io/conan-center-index).
+如果 recipe 已过时或无法满足某些需求，欢迎向 [conan-center-index](https://github.com/conan-io/conan-center-index) 贡献。
 
 
-### Building using Devbox
+### 使用 Devbox 构建
 {:#devbox}
 
-[Devbox](https://www.jetify.com/docs/devbox) is a package manager based on Nix which offers over 120,000 packages in many different programming languages, not just C/C++. Its design goals are to make consuming Nix packages simple, and not require users to know the Nix language. You can search for packages on [nixos.org](https://search.nixos.org/packages) or [nixhub.io](https://www.nixhub.io/). Here's how to build RmlUi with Devbox:
+[Devbox](https://www.jetify.com/docs/devbox) 是一个基于 Nix 的包管理器，提供超过 120,000 个包，涵盖许多不同的编程语言，而不仅仅是 C/C++。它的设计目标是让使用 Nix 包变得简单，并且不要求用户了解 Nix 语言。你可以在 [nixos.org](https://search.nixos.org/packages) 或 [nixhub.io](https://www.nixhub.io/) 上搜索包。下面介绍如何使用 Devbox 构建 RmlUi：
 
-1. Install the [Devbox package manager](https://www.jetify.com/docs/devbox/installing-devbox)
+1. 安装 [Devbox 包管理器](https://www.jetify.com/docs/devbox/installing-devbox)
 2. `git clone https://github.com/mikke89/RmlUi.git`
 3. `cd RmlUi`
 4. `devbox init`
-5. Optionally, add the CMake package globally: `devbox global add cmake`
+5. 可选：全局添加 CMake 包：`devbox global add cmake`
 6. `devbox add freetype freetype.dev glfw3`
 7. `devbox shell`
-8. Build the project:
+8. 构建项目：
 ```
 cmake -B Build -S . --preset samples \
       -DRMLUI_BACKEND=GLFW_GL3 \
@@ -141,208 +141,208 @@ cmake --build Build
 ```
 
 
-### Building on Windows
+### 在 Windows 上构建
 {:#windows}
 
-This section is aimed at users of Visual Studio, however the procedure should be transferable to other environments.
+本节面向 Visual Studio 用户，但该过程也应当可以移植到其他环境。
 
-In addition to CMake, you need a copy of the FreeType library, version 2.13.3 is officially supported, although newer versions are normally backward compatible. You can find prebuilt dynamic Windows binaries [here](https://github.com/ubawurinna/freetype-windows-binaries). Create the directory `RmlUi/Dependencies/freetype`{:.path} if it does not exist, and copy the FreeType files here. Move the FreeType library file `RmlUi/Dependencies/freetype/release dll/win64/freetype.lib`{:.path} to the new location `RmlUi/Dependencies/lib/freetype.lib`{:.path}, and the include directory `RmlUi/Dependencies/freetype/include`{:.path} to the parent directory `RmlUi/Dependencies/include`{:.path}.
+除 CMake 之外，你还需要一份 FreeType 库，官方支持版本 2.13.3，不过较新的版本通常向后兼容。你可以从[这里](https://github.com/ubawurinna/freetype-windows-binaries)找到预构建的 Windows 动态二进制文件。如果目录 `RmlUi/Dependencies/freetype`{:.path} 不存在，请创建它，并将 FreeType 文件复制到这里。将 FreeType 库文件 `RmlUi/Dependencies/freetype/release dll/win64/freetype.lib`{:.path} 移动到新位置 `RmlUi/Dependencies/lib/freetype.lib`{:.path}，并将包含目录 `RmlUi/Dependencies/freetype/include`{:.path} 移动到父目录 `RmlUi/Dependencies/include`{:.path}。
 
-Next, start up `cmake-gui` and browse here to your RmlUi source code. Choose to build the binaries under `RmlUi/Build`{:.path}. Click configure and select your Visual Studio version. Now there will be a few options appearing. See the CMake options in the section below for a description of some of them. If you'd like to take a look at the included samples, enable the `RMLUI_SAMPLES` option and set the `RMLUI_BACKEND` to `Win32_GL2`. You might want to select another backend later for [additional features](https://github.com/mikke89/RmlUi#rmlui-backends), but this is easy to get started with. Finally, click `Generate`. If it was successful, your Visual Studio solution file should be located at `RmlUi/Build/RmlUi.sln`{:.path}.
+接下来，启动 `cmake-gui` 并在这里浏览到你的 RmlUi 源码。选择在 `RmlUi/Build`{:.path} 下构建二进制文件。点击 configure 并选择你的 Visual Studio 版本。现在会出现一些选项。有关其中一些选项的说明，请参阅下面章节中的 CMake 选项。如果你想查看随附的示例，请启用 `RMLUI_SAMPLES` 选项并将 `RMLUI_BACKEND` 设置为 `Win32_GL2`。你可能稍后想为[附加功能](https://github.com/mikke89/RmlUi#rmlui-backends)选择其他后端，但从这个入手很容易。最后，点击 `Generate`。如果成功，你的 Visual Studio 解决方案文件应该位于 `RmlUi/Build/RmlUi.sln`{:.path}。
 
 ![cmake-gui](../../assets/images/cmake-gui.png)
 
-If you use the dynamic binary version of FreeType, copy the `RmlUi/Dependencies/freetype/release dll/win64/freetype.dll`{:.path} file into a place where the RmlUi applications can see it, such as  `RmlUi/Build`{:.path}. By default, this will be the working directory when starting applications from Visual Studio.
+如果你使用 FreeType 的动态二进制版本，请将 `RmlUi/Dependencies/freetype/release dll/win64/freetype.dll`{:.path} 文件复制到 RmlUi 应用程序可以找到它的位置，例如 `RmlUi/Build`{:.path}。默认情况下，从 Visual Studio 启动应用程序时，这里就是工作目录。
 
-Open up the generated Visual Studio solution file. Now there should be several samples available in addition to the `rmlui_core` and `rmlui_debugger` projects. If you set the CMake option to build the samples, you can now right-click on `rmlui_samples_invaders`, and click `Set as Startup Project`. Finally, press `F5` to start building and open the invaders demo when done. Enjoy!
+打开生成的 Visual Studio 解决方案文件。现在除了 `rmlui_core` 和 `rmlui_debugger` 项目之外，应该还有几个示例可用。如果你设置了构建示例的 CMake 选项，现在可以右键点击 `rmlui_samples_invaders`，然后点击 `Set as Startup Project`。最后，按 `F5` 开始构建，并在完成后打开 invaders 演示。尽情享受吧！
 
 
-### Building on macOS and Linux
+### 在 macOS 和 Linux 上构建
 {:#macos-and-linux}
 
-Open a terminal window, navigate to the RmlUi folder, and run the following commands:
+打开终端窗口，导航到 RmlUi 文件夹，并运行以下命令：
 
 ```
 cmake -B Build -S . -DRMLUI_SAMPLES=ON
 cmake --build Build -j
 ```
 
-This will build RmlUi together with all the samples, please see below for a list of all available [CMake options](#cmake-options). Assuming everything went well, the samples will be located under the `Build`{:.path} folder. For example, to check out the `invaders` sample, run the following command:
+这将连同所有示例一起构建 RmlUi，请参阅下面的所有可用 [CMake 选项](#cmake-options) 列表。假设一切顺利，示例将位于 `Build`{:.path} 文件夹下。例如，要查看 `invaders` 示例，请运行以下命令：
 
 ```
 Build/rmlui_sample_invaders
 ```
 
-And enjoy!
+尽情享受吧！
 
-Alternatively, a more interactive experience is available with the `ccmake` tool, which allows you to list and set all available CMake options. Again, navigate to the RmlUi folder in your terminal window, and execute the following command:
+或者，`ccmake` 工具可提供更具交互性的体验，它允许你列出并设置所有可用的 CMake 选项。同样，在终端窗口中导航到 RmlUi 文件夹，然后执行以下命令：
 
 ```
 ccmake -B Build -S .
 ```
 
-*NOTE*: The `-B` parameter sets the target build directory, while `-S` denotes the source directory where the `CMakeLists.txt`{:.path} is located.
+*注意*：`-B` 参数设置目标构建目录，而 `-S` 表示 `CMakeLists.txt`{:.path} 所在的源目录。
 
-This will open a text mode application that lets you choose which parts of RmlUi you want to build and how you want to build it. Before you can alter any options you'll need to press `C` so that CMake can scan your system configuration. Once it's complete you will see a list of options. If you'd like to take a look at the included samples, enable the `RMLUI_SAMPLES` option.
+这将打开一个文本模式应用程序，让你选择要构建 RmlUi 的哪些部分以及如何构建。在你能更改任何选项之前，需要按 `C` 以便 CMake 扫描你的系统配置。完成后你将看到一个选项列表。如果你想查看随附的示例，请启用 `RMLUI_SAMPLES` 选项。
 
-Make your selection and press `C` again so that CMake can recalculate build settings based on your selection. Once CMake is happy you'll be able to press `G` to generate the build configuration and then exit.
+做出选择后，再次按 `C`，以便 CMake 根据你的选择重新计算构建设置。一旦 CMake 满意，你将能够按 `G` 生成构建配置，然后退出。
 
-At this point you should be back at the terminal and your `Makefile`{:.path} will have been created. You can now build RmlUi by executing make.
+此时你应该回到终端，`Makefile`{:.path} 已经创建。现在你可以通过执行 make 来构建 RmlUi。
 
 ```
 cmake --build Build -j
 ```
 
-*NOTE*: The `-j` parameter tells the build tool to use parallel build.
+*注意*：`-j` 参数告诉构建工具使用并行构建。
 
-Once the build is complete, you may want to have a look at the samples.
+构建完成后，你可能想要查看一下示例。
 
 
-### Building using Emscripten
+### 使用 Emscripten 构建
 {:#emscripten}
 
-RmlUi can be compiled using [Emscripten](https://emscripten.org/) into WebAssembly, which makes it possible to run the library on the Web or with other wasm runtimes. Follow the instructions on the Emscripten website to get started, make sure you have downloaded and installed the software for your platform. If you are on Windows we recommend to follow the instructions below using [WSL](https://learn.microsoft.com/en-us/windows/wsl/install). Verify that everything is in order by running `emcc -v` in your terminal which should output version information.
+RmlUi 可以使用 [Emscripten](https://emscripten.org/) 编译为 WebAssembly，这使得库可以在 Web 上或其他 wasm 运行时中运行。按照 Emscripten 网站上的说明开始操作，确保你已为你的平台下载并安装了该软件。如果你在 Windows 上，我们建议按照下面的说明使用 [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)。通过在终端中运行 `emcc -v`（应输出版本信息）来验证一切正常。
 
-The CMake configuration in RmlUi enables the included samples to target Emscripten. To build the samples, first find the RmlUi source directory in your terminal, make a subdirectory, and enter it.
+RmlUi 中的 CMake 配置使随附的示例能够以 Emscripten 为目标。要构建示例，首先在终端中找到 RmlUi 源目录，创建一个子目录并进入。
 ```
 mkdir Build
 cd Build
 ```
-Then enter the following commands to configure CMake and build the WebAssembly targets for each sample.
+然后输入以下命令来配置 CMake 并为每个示例构建 WebAssembly 目标。
 ```
 emcmake cmake .. -DRMLUI_SAMPLES=ON -DBUILD_SHARED_LIBS=OFF
 emmake make -j8
 ```
-Each target should now be compiled into its generated WebAssembly `.wasm` file, together with a `.data` file containing all associated assets, as well as `.html` and `.js` files which allow the samples to be launched in a web browser. Note that, the web assembly program will not run when opening its html file directly, instead it must be served through a local webserver as described in the [Emscripten tutorial](https://emscripten.org/docs/getting_started/Tutorial.html#generating-html).
+现在每个目标都应该被编译成其生成的 WebAssembly `.wasm` 文件，以及一个包含所有相关资源的 `.data` 文件，还有允许在 Web 浏览器中启动示例的 `.html` 和 `.js` 文件。请注意，直接打开其 html 文件时 web assembly 程序不会运行，而是必须像 [Emscripten 教程](https://emscripten.org/docs/getting_started/Tutorial.html#generating-html) 中描述的那样通过本地 web 服务器提供。
 
-To launch the compiled samples, first start a webserver in the same directory such as the one included with Python 3.
+要启动编译好的示例，首先在同一目录中启动一个 web 服务器，例如 Python 3 自带的那个。
 ```
 python3 -m http.server
 ```
-After that, you can open your web browser and navigate to any of the samples. For example the `demo` sample should be located at `http://localhost:8000/demo.html` and the `invaders` sample at `http://localhost:8000/invaders.html`.
+之后，你可以打开 Web 浏览器并导航到任意示例。例如 `demo` 示例应位于 `http://localhost:8000/demo.html`，`invaders` 示例位于 `http://localhost:8000/invaders.html`。
 
-The samples all use the [`SDL_GL3`](https://github.com/mikke89/RmlUi/blob/master/Backends/RmlUi_Backend_SDL_GL3.cpp) backend to target Emscripten. Feel free to take a look at its source code to understand how you can do the same for your application.
+所有示例都使用 [`SDL_GL3`](https://github.com/mikke89/RmlUi/blob/master/Backends/RmlUi_Backend_SDL_GL3.cpp) 后端来面向 Emscripten。欢迎查看其源代码，了解如何为你的应用程序做同样的事情。
 
 
-### CMake presets
+### CMake 预设
 {:#cmake-presets}
 
-RmlUi provides [CMake presets](https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html) for some common workflows:
+RmlUi 为一些常见工作流提供了 [CMake 预设](https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html)：
 
-- `samples` Enable samples but only those without extra dependencies.
-- `samples-all` Enable all samples, also those with extra dependencies.
-- `standalone` Build the library without any dependencies, featuring the `bitmap_font` sample.
-- `dev` Enable testing in addition to samples.
-- `dev-all` Enable testing in addition to samples, including those that require extra dependencies.
+- `samples` 启用示例，但仅限那些没有额外依赖的示例。
+- `samples-all` 启用所有示例，包括需要额外依赖的示例。
+- `standalone` 不依赖任何库构建，以 `bitmap_font` 示例为特色。
+- `dev` 在示例之外启用测试。
+- `dev-all` 在示例之外启用测试，包括需要额外依赖的测试。
 
-These can be used during CMake configure, e.g. `cmake -B Build --preset <preset> ...`. The presets should be combined with any options needed by your toolchain, such as `CMAKE_BUILD_TYPE` to select the desired build type when using single-configuration generators. You can also specify your own presets, possibly inheriting the provided ones, in a `CMakeUserPresets.json` file.
+这些可以在 CMake 配置期间使用，例如 `cmake -B Build --preset <preset> ...`。预设应与工具链所需的任何选项组合使用，例如在使用单配置生成器时通过 `CMAKE_BUILD_TYPE` 选择所需的构建类型。你也可以在 `CMakeUserPresets.json` 文件中指定自己的预设，可能继承提供的预设。
 
 
-### CMake options
+### CMake 选项
 {:#cmake-options}
 
-This sections lists RmlUi options that can be passed during CMake configuration along with their default values. Each option can be configured on the command line, defined in a [CMake user presets](https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html) file, or set in a parent CMake project. As an example, the following command will configure the library to build with samples, using the GLFW with OpenGL 3 backend, in debug mode:
+本节列出可以在 CMake 配置期间传递的 RmlUi 选项及其默认值。每个选项都可以在命令行上配置、在 [CMake 用户预设](https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html) 文件中定义，或在父级 CMake 项目中设置。例如，以下命令将配置库以构建示例，使用 GLFW 配合 OpenGL 3 后端，调试模式：
 
 ```
 cmake -B Build -S . -DRMLUI_SAMPLES=ON -DRMLUI_BACKEND=GLFW_GL3 -DCMAKE_BUILD_TYPE=DEBUG
 ```
 
-The following also lists any exported macros, which must be defined in the consuming project when changing certain default options. When using the generated CMake targets, these are normally handled automatically when importing the library, otherwise, they need to be defined manually.
+以下列表还列出了导出的宏，当更改某些默认选项时，必须在消费项目中定义这些宏。使用生成的 CMake 目标时，这些通常在导入库时自动处理，否则需要手动定义。
 
 
-#### CMake standard options
+#### CMake 标准选项
 
 `BUILD_SHARED_LIBS` `ON`{:.value}
-: Build shared libraries (dynamic libraries, .dll/.so/.dylib) as opposed to static libraries (.lib/.a).<br>
-    *Exports macro:* `RMLUI_STATIC_LIB` when `OFF`{:.value}
+: 构建共享库（动态库，.dll/.so/.dylib），而非静态库（.lib/.a）。<br>
+    *导出宏：* 当为 `OFF`{:.value} 时 `RMLUI_STATIC_LIB`
 
 `BUILD_TESTING` `OFF`{:.value}
-: Build the included tests and benchmarks. This enables three separate executables, see the [Test Suite readme](https://github.com/mikke89/RmlUi/tree/master/Tests) for details.
-    - `rmlui_benchmarks`{:.value}. Benchmarks various components of the library to find performance hotspots and keep track of any regressions.
-    - `rmlui_unit_tests`{:.value}. Tests smaller units of the library to ensure correctness.
-    - `rmlui_visual_tests`{:.value}. A comprehensive test suite for visually testing the layout engine in particular, with automated screenshots and comparisons.
+: 构建随附的测试和基准测试。这会启用三个独立的可执行文件，详情参见 [测试套件 readme](https://github.com/mikke89/RmlUi/tree/master/Tests)。
+    - `rmlui_benchmarks`{:.value}。对库的各个组件进行基准测试，以发现性能热点并跟踪任何回归。
+    - `rmlui_unit_tests`{:.value}。测试库的较小单元以确保正确性。
+    - `rmlui_visual_tests`{:.value}。一个全面的测试套件，特别用于可视化测试布局引擎，并带有自动截图和比较。
 
 `CMAKE_BUILD_TYPE`
-: CMake standard option to choose the build type for single configuration generators. One of the options: Debug, Release, RelWithDebInfo, MinSizeRel.
+: CMake 标准选项，用于为单配置生成器选择构建类型。可选值之一：Debug、Release、RelWithDebInfo、MinSizeRel。
 
-#### Common options
+#### 常见选项
 
 `RMLUI_BACKEND` `auto`{:.value}
-: Choose the backend to use for the samples, based on a [supported combination](https://github.com/mikke89/RmlUi#rmlui-backends) of platform and renderer (e.g. `GLFW_GL3`{:.value}), or `auto`{:.value}, or `native`{:.value}.
+: 根据[受支持的组合](https://github.com/mikke89/RmlUi#rmlui-backends)选择用于示例的后端，该组合由平台和渲染器组成（例如 `GLFW_GL3`{:.value}），或 `auto`{:.value}，或 `native`{:.value}。
 
 `RMLUI_SAMPLES` `OFF`{:.value}
-: Enable to build the included samples.
+: 启用以构建随附的示例。
 
-#### Plugins and dependencies
+#### 插件与依赖
 
 `RMLUI_FONT_ENGINE` `freetype`{:.value}
-: Select the default font engine from the following options:
-    - `freetype`. Use FreeType for generating text.
-    - `none`. Use no default font engine, thereby allowing users to completely remove the FreeType dependency. If set, a custom font engine must be created and set through `Rml::SetFontEngineInterface` before initialization. See the `bitmapfont` sample for an example implementation of a custom font engine.
+: 从以下选项中选择默认字体引擎：
+    - `freetype`。使用 FreeType 生成文本。
+    - `none`。不使用默认字体引擎，从而允许用户完全移除 FreeType 依赖。如果设置，则必须在初始化之前通过 `Rml::SetFontEngineInterface` 创建并设置自定义字体引擎。有关自定义字体引擎的示例实现，请参阅 `bitmapfont` 示例。
 
 `RMLUI_HARFBUZZ_SAMPLE` `OFF`{:.value}
-: Enables the `harfbuzz` sample. Requires the [HarfBuzz](https://github.com/harfbuzz/harfbuzz) dependency.
+: 启用 `harfbuzz` 示例。需要 [HarfBuzz](https://github.com/harfbuzz/harfbuzz) 依赖。
 
 `RMLUI_LOTTIE_PLUGIN` `OFF`{:.value}
-: Enables the [Lottie plugin](lottie.html) and sample. Requires the [rlottie](https://github.com/Samsung/rlottie) dependency.
+: 启用 [Lottie 插件](lottie.html) 和示例。需要 [rlottie](https://github.com/Samsung/rlottie) 依赖。
 
 `RMLUI_LUA_BINDINGS` `OFF`{:.value}
-: Build the required bindings for Lua support. You'll need Lua installed. Enables the following option:
+: 构建 Lua 支持所需的绑定。你需要安装 Lua。启用以下选项：
     - `RMLUI_LUA_BINDINGS_LIBRARY` `lua`{:.value}<br>
-    Select the Lua library to use for the Lua bindings, one of the options:
-        - `lua`. Link to Lua.
-        - `lua_as_cxx`. Link to Lua compiled as C++, disables the `extern C` header wrappers. *Exports macro:* `RMLUI_LUA_AS_CXX`.
-        - `luajit`. Link to LuaJIT.
+    选择用于 Lua 绑定的 Lua 库，选项之一：
+        - `lua`。链接到 Lua。
+        - `lua_as_cxx`。链接到以 C++ 编译的 Lua，禁用 `extern C` 头文件包装器。*导出宏：* `RMLUI_LUA_AS_CXX`。
+        - `luajit`。链接到 LuaJIT。
 
 `RMLUI_SVG_PLUGIN` `OFF`{:.value}
-: Enables the [SVG plugin](svg.html) and sample, requires the [LunaSVG](https://github.com/sammycage/lunasvg) dependency.
+: 启用 [SVG 插件](svg.html) 和示例，需要 [LunaSVG](https://github.com/sammycage/lunasvg) 依赖。
 
 `RMLUI_TRACY_PROFILING` `OFF`{:.value}
-: RmlUi has parts of the library tagged with markers for profiling with [Tracy Profiler](https://github.com/wolfpld/tracy). This enables a visual inspection of bottlenecks and slowdowns on individual frames. To compile the library with profiling support, ensure that Tracy Profiler is made available to CMake, such as by installing the library in your package manager, or by adding it to `/Dependencies/tracy/`{:.path} within the RmlUi directory. Then, enable this option and compile. Follow the Tracy Profiler instructions to build and connect the separate viewer. Enables the following options:
+: RmlUi 在库的部分位置使用标记标注了 [Tracy Profiler](https://github.com/wolfpld/tracy) 的分析标记。这样可以直观地检查单个帧上的瓶颈和卡顿。要使用分析支持编译库，请确保 Tracy Profiler 对 CMake 可用，例如通过包管理器安装库，或将其添加到 RmlUi 目录中的 `/Dependencies/tracy/`{:.path}。然后，启用此选项并编译。按照 Tracy Profiler 的说明构建并连接单独的查看器。启用以下选项：
     - `RMLUI_TRACY_CONFIGURATION` `ON`{:.value}<br>
-    The CMake setup will try to add a new configuration called 'Tracy' which can be selected in e.g. Visual Studio next to the 'Debug' and 'Release' configurations, otherwise the profiler will be enabled on the entire project.
+    CMake 设置将尝试添加一个名为 'Tracy' 的新配置，可以在例如 Visual Studio 中 'Debug' 和 'Release' 配置旁边选择，否则分析器将在整个项目上启用。
     - `RMLUI_TRACY_MEMORY_PROFILING` `ON`{:.value}<br>
-    By default, RmlUi will override the global new and delete operators in C++ when Tracy profiling is enabled, to make allocation statistics available. Turn this `OFF`{:.value} to disable overriding the global operators.
+    默认情况下，启用 Tracy profiling 时，RmlUi 将覆盖 C++ 中的全局 new 和 delete 运算符，以提供分配统计信息。将其关闭为 `OFF`{:.value} 以禁用对全局运算符的覆盖。
 
-    *Exports macro:* `RMLUI_TRACY_PROFILING` for enabled configurations when `ON`{:.value}.
+    *导出宏：* 当为 `ON`{:.value} 时，为启用的配置导出 `RMLUI_TRACY_PROFILING`。
 
-#### Backend options
+#### 后端选项
 
 `RMLUI_BACKEND_SIMULATE_TOUCH` `OFF`{:.value}
-: Simulate touch events from mouse events in the backend. This is useful for testing touch input on platforms without touch support. Only implemented in selected backends, a CMake warning will be emitted if it's not supported in the current configuration.
+: 在后端中从鼠标事件模拟触摸事件。这对于在没有触摸支持的平台上测试触摸输入很有用。仅在选定的后端中实现，如果当前配置不支持，将发出 CMake 警告。
 
-#### Build and install options
+#### 构建与安装选项
 
 `RMLUI_COMPILER_OPTIONS` `ON`{:.value}
-: Let RmlUi set certain compiler-specific options on provided targets, such as for supported warning flags and multi-process builds.
+: 让 RmlUi 在提供的目标上设置某些编译器特定的选项，例如受支持的警告标志和多进程构建。
 
 `RMLUI_INSTALL_RUNTIME_DEPENDENCIES` `ON`{:.value}
-: Automatically install runtime dependencies on supported platforms (e.g. DLLs).
+: 在受支持的平台上自动安装运行时依赖（例如 DLL）。
 
 `RMLUI_PRECOMPILED_HEADERS` `ON`{:.value}
-: Enables the use of precompiled headers on supported compilers for speeding up compilation times. This requires CMake version 3.16 or greater.
+: 在受支持的编译器上启用预编译头文件的使用，以加快编译时间。这需要 CMake 3.16 或更高版本。
 
-#### Sample-specific options
+#### 示例特定选项
 
 `RMLUI_IME_SAMPLE_USE_NOTO_FONTS` `OFF`{:.value}
-: Enable to download Noto fonts at build-time for the `ime` sample. This is required to enable the sample when using SDL backends.
+: 启用后可在构建时下载 Noto 字体，用于 `ime` 示例。使用 SDL 后端启用该示例时需要此项。
 
-#### Advanced customization
+#### 高级自定义
 
 `RMLUI_CUSTOM_CONFIGURATION` `OFF`{:.value}
-: RmlUi's default configuration `<RmlUi/Config/Config.h>`{:.incl} can be overridden by enabling this option. In this way it is possible to replace several types including containers to other STL-compatible containers (such as [EASTL](https://github.com/electronicarts/EASTL)), or to STL containers with custom allocators. After enabling this option, three new variables can be set:
+: RmlUi 的默认配置 `<RmlUi/Config/Config.h>`{:.incl} 可以通过启用此选项来覆盖。通过这种方式，可以将包括容器在内的若干类型替换为其他 STL 兼容容器（例如 [EASTL](https://github.com/electronicarts/EASTL)），或替换为带有自定义分配器的 STL 容器。启用此选项后，可以设置三个新变量：
     - `RMLUI_CUSTOM_CONFIGURATION_FILE`<br>
-        Set the path to the new configuration file, the default configuration can be used as a template to create this file. E.g. `MyRmlUiConfig.h`{:.path}.<br>
-        *Exports macro:* `RMLUI_CUSTOM_CONFIGURATION_FILE`.
+        设置新配置文件的路径，默认配置可以作为创建该文件的模板。例如 `MyRmlUiConfig.h`{:.path}。<br>
+        *导出宏：* `RMLUI_CUSTOM_CONFIGURATION_FILE`。
     - `RMLUI_CUSTOM_INCLUDE_DIRS`<br>
-        Optionally set additional include directories that may be required by the new configuration file. E.g. `C:\MyProject\`{:.path}.
+        可选地设置新配置文件可能需要的附加包含目录。例如 `C:\MyProject\`{:.path}。
     - `RMLUI_CUSTOM_LINK_LIBRARIES`<br>
-        Optionally set additional libraries to link with.
+        可选地设置要链接的附加库。
 
 `RMLUI_MATRIX_ROW_MAJOR` `OFF`{:.value}
-: By default, RmlUi uses a column-major matrix implementation. By enabling this option, the matrix type is changed to a row-major representation.<br>
-    *Exports macro:* `RMLUI_MATRIX_ROW_MAJOR` when `ON`{:.value}.
+: 默认情况下，RmlUi 使用列主序矩阵实现。启用此选项后，矩阵类型将更改为行主序表示。<br>
+    *导出宏：* 当为 `ON`{:.value} 时 `RMLUI_MATRIX_ROW_MAJOR`。
 
 `RMLUI_THIRDPARTY_CONTAINERS` `ON`{:.value}
-: RmlUi comes bundled with some third-party container libraries for improved performance. For users that would rather use the `std` counter-parts, this option can be turned off. Selected containers are included using a preprocessor definition.<br>
-    *Exports macro:* `RMLUI_NO_THIRDPARTY_CONTAINERS` when `OFF`{:.value}.
+: RmlUi 附带了一些第三方容器库以提高性能。对于希望使用 `std` 对应物的用户，可以关闭此选项。选定的容器通过预处理器定义引入。<br>
+    *导出宏：* 当为 `OFF`{:.value} 时 `RMLUI_NO_THIRDPARTY_CONTAINERS`。

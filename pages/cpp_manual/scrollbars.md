@@ -1,34 +1,34 @@
 ---
 layout: page
-title: Element scrollbars
+title: 元素滚动条
 parent: cpp_manual
 next: documents
 ---
 
-When appropriate, RmlUi automatically generates hidden scrollbar elements for elements with content overflow. The size and positioning of the scrollbar elements can be influenced through RCSS properties. Custom elements can make use of the scrollbar functionality to generate scrollbars of their own.
+在适当的情况下，RmlUi 会自动为内容溢出的元素生成隐藏的滚动条元素。滚动条元素的大小和定位可以通过 RCSS 属性影响。自定义元素可以利用滚动条功能来生成自己的滚动条。
 
-### Hidden elements
+### 隐藏元素
 
-Scrollbar elements are tagged `scrollbarvertical`{:.tag} or `scrollbarhorizontal`{:.tag} depending on their orientation, and are parented directly to the elements that generated them. Each scrollbar element contains four hidden child elements:
+滚动条元素根据其方向被标记为 `scrollbarvertical`{:.tag} 或 `scrollbarhorizontal`{:.tag}，并直接作为生成它们的元素的子元素。每个滚动条元素包含四个隐藏的子元素：
 
-* `sliderarrowdec`{:.tag}: The button at the top (or left) of the scrollbar which can be clicked to scroll further up (or to the left) the element.
-* `sliderarrowinc`{:.tag}: The button at the bottom (or right) of the scrollbar which can be clicked to scroll further down (or to the right) the element.
-* `slidertrack`{:.tag}: The track that runs between the two arrow buttons.
-* `sliderbar`{:.tag}: The bar that runs on the track. It represents the size and position of the visible segment of the element's content. It can be dragged to scroll the visible window around.
+* `sliderarrowdec`{:.tag}：滚动条顶部（或左侧）的按钮，可以点击以进一步向上（或向左）滚动元素。
+* `sliderarrowinc`{:.tag}：滚动条底部（或右侧）的按钮，可以点击以进一步向下（或向右）滚动元素。
+* `slidertrack`{:.tag}：在两个箭头按钮之间运行的轨道。
+* `sliderbar`{:.tag}：在轨道上运行的滑块。它表示元素内容的可见段的大小和位置。它可以被拖动以四处滚动可见窗口。
 
 ![scrollbars_1.gif](scrollbars_1.gif)
 
-When both horizontal and vertical scrollbars are present on an element, they are both shortened by the amount necessary to avoid an intersection. Another element is created and placed in this intersection point, placed and sized appropriately. This corner element is tagged scrollbarcorner and exists only for decoration purposes.
+当元素上同时存在水平和垂直滚动条时，它们都会被缩短所需量以避免交叉。另一个元素会被创建并放置在这个交叉点，适当地放置和调整大小。这个角落元素被标记为 scrollbarcorner，仅用于装饰目的。
 
-#### Applying RCSS properties
+#### 应用 RCSS 属性
 
-See the [style guide](../style_guide.html) for documentation on applying properties to a scroll bar.
+请参阅[样式指南](../style_guide.html)了解如何向滚动条应用属性的文档。
 
-### Generating scrollbars
+### 生成滚动条
 
-Custom elements can generate scrollbars using the element's scroll interface. This is done, for example, by the [text area](element_packages/form.html#text-area) form control.
+自定义元素可以使用元素的滚动接口生成滚动条。例如，[文本区域](element_packages/form.html#text-area)表单控件就是这样做的。
 
-Scrollbar generation is usually done in a custom element in response to the `resize`{:.evt} event, sent during layout. To retrieve a pointer to an element's scroll interface, call `GetElementScroll()` on the element. This will return a `Rml::ElementScroll` object.
+滚动条生成通常在自定义元素中响应布局期间发送的 `resize`{:.evt} 事件完成。要检索指向元素的滚动接口的指针，请在元素上调用 `GetElementScroll()`。这将返回一个 `Rml::ElementScroll` 对象。
 
 ```cpp
 // Returns the element's scrollbar functionality.
@@ -36,7 +36,7 @@ Scrollbar generation is usually done in a custom element in response to the `res
 Rml::ElementScroll* GetElementScroll() const;
 ```
 
-To enable or disable one of the element's scrollbars, call `EnableScrollbar()` or `DisableScrollbar()`:
+要启用或禁用元素的一个滚动条，请调用 `EnableScrollbar()` 或 `DisableScrollbar()`：
 
 ```cpp
 // Enables and sizes one of the scrollbars.
@@ -49,9 +49,9 @@ void EnableScrollbar(Rml::ElementScroll::Orientation orientation, float element_
 void DisableScrollbar(Rml::ElementScroll::Orientation orientation);
 ```
 
-As the object will remember the state of both previous scrollbars, it is recommended you explicitly enable or disable both scrollbars.
+由于该对象会记住两个先前滚动条的状态，建议你显式启用或禁用两个滚动条。
 
-Call `FormatScrollbars()` once you have set the state of both scrollbars and set the size (and content size) of the scrolling element.
+一旦你设置了两个滚动条的状态并设置了滚动元素的大小（和内容大小），请调用 `FormatScrollbars()`。
 
 ```cpp
 // Formats the enabled scrollbars based on the current size of the host element.

@@ -1,11 +1,11 @@
 ---
 layout: page
-title: HTML Style Sheet
+title: HTML 样式表
 parent: rml
 next: deprecated
 ---
 
-This sample style sheet is based on the recommended CSS 2 style sheet found [here](https://drafts.csswg.org/css2/#html-stylesheet). It introduces default rules that we recommend you use as a basis for your own style sheet.
+此示例样式表基于[此处](https://drafts.csswg.org/css2/#html-stylesheet)的推荐 CSS 2 样式表。它引入了一些默认规则，我们建议您将其作为自己样式表的基础。
 
 ```css
 body, div,

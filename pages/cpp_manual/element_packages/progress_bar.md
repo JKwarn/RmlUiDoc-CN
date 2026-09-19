@@ -1,20 +1,20 @@
 ---
 layout: page
-title: Progress
+title: 进度条
 parent: cpp_manual/element_packages
 grandparent: cpp_manual
 ---
 
-The `<progress>`{:.tag} element can display progress bars and gauges. The bar or gauge will be filled according to the provided value.
+`<progress>`{:.tag} 元素可以显示进度条和仪表盘。条形或仪表盘将根据提供的值填充。
 
-You can find the RML documentation for the progress element [here]({{"pages/rml/data_display.html#progress"|relative_url}}).
+你可以在此处找到 progress 元素的 RML 文档：{{"pages/rml/data_display.html#progress"|relative_url}}。
 
 
-### Interface
+### 接口
 
-The `Rml::ElementProgress` class (found in `<RmlUi/Core/Elements/ElementProgress.h>`{:.incl}) defines the interface to the progress element.
+`Rml::ElementProgress` 类（位于 `<RmlUi/Core/Elements/ElementProgress.h>`{:.incl}）定义了 progress 元素的接口。
 
-The progress value and maximum value can be set through the C++ interface.
+进度值和最大值可以通过 C++ 接口设置。
 
 ```cpp
 /// Returns the value of the progress bar.
@@ -28,35 +28,35 @@ float GetMax() const;
 void SetMax(float max_value);
 ```
 
-Otherwise, the value and the other attributes can be set using the `Element::SetAttribute` function.
+否则，可以使用 `Element::SetAttribute` 函数设置 value 和其他标记属性（attribute）。
 
 
-### Styling
+### 样式
 
-The `progress`{:.tag} element generates a non-dom `fill`{:.tag} child element which can be used to style the filled part of the bar. The `fill`{:.tag} element can use normal properties such as `background-color`{:.prop}, `border`{:.prop}, and `decorator`{:.prop} to style it. The `fill`{:.tag} element will automatically be positioned and sized to cover the content region of the parent `progress`{:.tag} element, then scaled down according to its `value` and `direction` attributes.
+`progress`{:.tag} 元素生成一个非 DOM 的 `fill`{:.tag} 子元素，可用于设置条形图已填充部分的样式。`fill`{:.tag} 元素可以使用常规样式属性（property），例如 `background-color`{:.prop}、`border`{:.prop} 和 `decorator`{:.prop} 来设置样式。`fill`{:.tag} 元素将自动定位和调整大小以覆盖父级 `progress`{:.tag} 元素的内容区域，然后根据其 `value` 和 `direction` 标记属性缩小。
 
-Alternatively, use the `fill-image`{:.prop} property to style the filled part of the progress bar. This property enables one to set an image which will be clipped according to the progress `value`. The `fill-image`{:.prop} property is the only way to style circular progress bars (`clockwise` and `counter-clockwise` directions). The `fill`{:.tag} element is still available but it will always be fixed in size independent of the `value` attribute.
+或者，使用 `fill-image`{:.prop} 属性设置进度条已填充部分的样式。此属性允许你设置一个图像，该图像将根据进度 `value` 被裁剪。`fill-image`{:.prop} 属性是设置圆形进度条（`clockwise` 和 `counter-clockwise` 方向）样式的唯一方法。`fill`{:.tag} 元素仍然可用，但它的大小将始终固定，与 `value` 标记属性无关。
 
 
-#### RCSS property
+#### RCSS 属性
 {:#fill-image}
 
 `fill-image`{:.prop}
 
-Value: | \<string\>
-Initial: | *empty*
-Applies to: | `progress`{:.tag} element
-Inherited: | no
-Percentages: | N/A
+值： | \<string\>
+初始值： | *empty*
+适用于： | `progress`{:.tag} 元素
+继承： | 否
+百分比： | 不适用
 
-The `fill-image`{:.prop} property sets an image to represent the filled part of the progress element. It will be sized according to the progress bar's `value`. This property is the only way to style circular progress bars (`clockwise` and `counter-clockwise` directions).
+`fill-image`{:.prop} 属性设置一个图像来表示 progress 元素的已填充部分。它将根据进度条的 `value` 调整大小。此属性是设置圆形进度条（`clockwise` 和 `counter-clockwise` 方向）样式的唯一方法。
 
-The value \<string\> refers to a sprite name or an image url.
+值 \<string\> 指的是精灵图名称或图像 URL。
 
 
-### Examples
+### 示例
 
-The following RCSS styles three different progress bars.
+以下 RCSS 设置了三个不同进度条的样式。
 ```css
 @spritesheet progress_bars
 {
@@ -96,13 +96,13 @@ The following RCSS styles three different progress bars.
 	background-color: #7AE857;
 }
 ```
-Now they can be used in RML as follows.
+现在它们可以在 RML 中如下使用。
 ```html
 <progress class="gauge" direction="clockwise" start-edge="bottom" value="0.3"/>
 <progress class="horizontal" value="75" max="100"/>
 <progress class="vertical" direction="top" value="0.6"/>
 ```
 
-The result can be seen in the following animation where text labels have been added as well.
+结果可以在下面的动画中看到，其中还添加了文本标签。
 
 ![progress bars](progress_bar.gif)

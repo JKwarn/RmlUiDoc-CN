@@ -1,12 +1,12 @@
 ---
 layout: page
-title: Tiled Horizontal decorator
+title: 水平平铺装饰器
 parent: rcss/decorators
 grandparent: rcss
 next: tiled_vertical
 ---
 
-The `tiled-horizontal`{:.prop} decorator can render three sprites or images, horizontally across an element. One image is placed on the left edge, another on the right edge, and the last is stretched across the middle.
+`tiled-horizontal`{:.prop} 装饰器可以横跨元素渲染三个精灵或图像。一个图像放置在左边缘，另一个放置在右边缘，最后一个横跨中间拉伸。
 
 ```css
 decorator: tiled-horizontal(
@@ -17,40 +17,40 @@ decorator: tiled-horizontal(
 ```
 
 
-### Properties
+### 属性
 
 `*x*-image-src`{:.prop}
 
-Value: | \<string\>
-Initial: | N/A
-Percentages: | N/A
+取值： | \<string\>
+初始值： | 不适用
+百分比： | 不适用
 
-This property defines either a [sprite name](../sprite_sheets.html) or a relative path to an image file.
+此属性定义[精灵名称](../sprite_sheets.html)或图像文件的相对路径。
 
 `*x*-image-orientation`{:.prop}
 
-Value: | none \| flip-horizontal \| flip-vertical \| rotate-180
-Initial: | none
-Percentages: | N/A
+取值： | none \| flip-horizontal \| flip-vertical \| rotate-180
+初始值： | none
+百分比： | 不适用
 
-Flips or rotates the image.
+翻转或旋转图像。
 
 `paint-area`{:.prop}
 
-Value: | border-box \| padding-box \| content-box
-Initial: | padding-box
-Percentages: | N/A
+取值： | border-box \| padding-box \| content-box
+初始值： | padding-box
+百分比： | 不适用
 
-Declares the box area to render the decorator onto.
+声明渲染装饰器的盒区域。
 
 
-### Examples
+### 示例
 
-In each of the following examples an image is displayed at its native size first, and then the `tiled-horizontal`{:.prop} decorator is applied to it with its element stretched horizontally.
+在下面的每个示例中，图像首先以自然大小显示，然后对其应用 `tiled-horizontal`{:.prop} 装饰器，并将其元素水平拉伸。
 
 ![Horizontally tiled image](../../../assets/images/decorators/tiled-horizontal.png)
 
-The following RCSS is used for the above result.
+以下 RCSS 用于生成上述结果。
 
 ```css
 @spritesheet demo-sheet
@@ -82,8 +82,8 @@ The following RCSS is used for the above result.
 ```
 
 
-#### Orientation
+#### 方向
 
-The result of using the `*x*-image-orientation`{:.prop} properties is demonstrated in the following, which can be applied to each tile individually.
+使用 `*x*-image-orientation`{:.prop} 属性的结果如下所示，可以单独应用于每个平铺块。
 
 ![image-orientation.png](../../../assets/images/decorators/image-orientation.png)

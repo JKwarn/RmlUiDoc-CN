@@ -1,49 +1,49 @@
 ---
 layout: page
-title: Font effects
+title: 字体效果
 parent: rcss
 next: property_index
 ---
 
-Font effects are an extension to CSS for RCSS for applying effects, such as outlining or shadowing, to text. Similarly to [decorators](decorators.html), font effects are declared and named in a style sheet like a property, and configured with font-effect-specific properties. Custom font effects can be developed to apply arbitrary effects onto text.
+字体效果是 RCSS 对 CSS 的扩展，用于对文本应用效果，例如描边或阴影。与[装饰器](decorators.html)类似，字体效果在样式表中像属性一样被声明和命名，并使用字体效果特有的属性进行配置。可以开发自定义字体效果，将任意效果应用到文本上。
 
-### RmlUi font effects
+### RmlUi 字体效果
 
-RmlUi comes with the following built-in font effects:
+RmlUi 附带以下内置字体效果：
 
-| Font effect                          | Types             | Description                    |
+| 字体效果                              | 类型             | 说明                          |
 |--------------------------------------|-------------------|--------------------------------|
-| [Glow](font_effects/glow.html)       | `glow`{:.prop}    | Glowing text and drop shadows. |
-| [Outline](font_effects/outline.html) | `outline`{:.prop} | Outlining text.                |
-| [Shadow](font_effects/shadow.html)   | `shadow`{:.prop}  | Rendering shadows.             |
-| [Blur](font_effects/blur.html)       | `blur`{:.prop}    | Blurring text.                 |
+| [发光](font_effects/glow.html)       | `glow`{:.prop}    | 发光文本与投影。 |
+| [描边](font_effects/outline.html) | `outline`{:.prop} | 为文本描边。                |
+| [阴影](font_effects/shadow.html)   | `shadow`{:.prop}  | 渲染阴影。             |
+| [模糊](font_effects/blur.html)       | `blur`{:.prop}    | 模糊文本。                 |
 
 
-### Properties
+### 属性
 {:#font-effect}
 
-Font effects are declared and configured within style sheets similar to how decorators are declared.
+字体效果在样式表内的声明和配置方式与装饰器类似。
 
 `font-effect`{:.prop}
 
-Value: | none \| \[\<type\>( \<properties\> )\]<span class="prop-def-symbol" title="One or more comma-separated occurrences">#+</span>
-Initial: | none
-Inherited: | yes
-Percentages: | N/A
+取值： | none \| \[\<type\>( \<properties\> )\]<span class="prop-def-symbol" title="One or more comma-separated occurrences">#+</span>
+初始值： | none
+继承： | 是
+百分比： | 不适用
 
-`<type>`{:.prop} is a font effect type, and `<properties>`{:.prop} specify the properties of the given decorator type.
+`<type>`{:.prop} 是字体效果类型，`<properties>`{:.prop} 指定给定装饰器类型的属性。
 
-Multiple font effects can also be specified, eg.
+也可以指定多个字体效果，例如：
 ```css
 font-effect: <type>( <properties> ), <type>( <properties> ), ... ;
 ```
-Multiple font effects are applied in reverse order.
+多个字体效果按相反顺序应用。
 
-Note that there is no RCSS at-rule for font effects as there is for decorators. Thus, the `font-effect`{:.prop} property cannot take a name.
+请注意，字体效果没有像装饰器那样的 RCSS at-rule。因此，`font-effect`{:.prop} 属性不能使用名称。
 
-#### Inheritance
+#### 继承
 
-Unlike decorators, font effects are inherited from parent elements. For example, the following declaration:
+与装饰器不同，字体效果会从父元素继承。例如，以下声明：
 
 ```css
 h1
@@ -52,7 +52,7 @@ h1
 }
 ```
 
-will add an outline to the text within all `h1`{:.tag} elements and their descendants. To prevent inheritance, override the effect with `none`{:.value}. For example, to prevent the `h1`{:.tag} outline effect from affecting `span`{:.tag} elements, you could specify the following:
+将为所有 `h1`{:.tag} 元素及其后代中的文本添加描边。要阻止继承，请用 `none`{:.value} 覆盖该效果。例如，要阻止 `h1`{:.tag} 的描边效果影响 `span`{:.tag} 元素，可以指定以下内容：
 
 ```css
 h1 span

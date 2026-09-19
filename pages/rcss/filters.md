@@ -1,97 +1,97 @@
 ---
 layout: page
-title: Filters
+title: 滤镜
 parent: rcss
 next: font_effects
 ---
 
-Filters allow for various visual effects to be applied to elements, such as color adjustments, blurring, and shadows. Filters can be declared and configured in a style sheet. This way, a filter can be applied to an entire element, or to the backdrop of an element. In addition, filters are used internally to apply certain effects, like the blur effect used on [box shadows](colours_backgrounds.html#box-shadow). RmlUi supports all [filters specified in CSS](https://www.w3.org/TR/filter-effects-1/#supported-filter-functions).
+滤镜允许对元素应用各种视觉效果，例如颜色调整、模糊和阴影。滤镜可以在样式表中声明和配置。这样，滤镜可以应用于整个元素，或应用于元素的背景（backdrop）。此外，滤镜在内部用于应用某些效果，例如用于[盒阴影](colours_backgrounds.html#box-shadow)的模糊效果。RmlUi 支持 [CSS 中指定的所有滤镜](https://www.w3.org/TR/filter-effects-1/#supported-filter-functions)。
 
-To use filters, the backend renderer must support advanced rendering features, see the [render interface feature table](../cpp_manual/interfaces/render.html#feature-table) for details. See also the related [C++ documentation](../cpp_manual/filters.html) for how to define custom filters.
+要使用滤镜，后端渲染器必须支持高级渲染功能，详见[渲染接口功能表](../cpp_manual/interfaces/render.html#feature-table)。关于如何定义自定义滤镜，另请参阅相关的 [C++ 文档](../cpp_manual/filters.html)。
 
 
-### RmlUi filters
+### RmlUi 滤镜
 {:#filters}
 
-RmlUi comes with several built-in filter functions for applying visual effects to elements and other inputs.
+RmlUi 附带了几种内置滤镜函数，用于对元素和其他输入应用视觉效果。
 
-| Filter function             | Description                                  |
+| 滤镜函数             | 说明                                  |
 |-----------------------------|----------------------------------------------|
-| [blur](#blur)               | Applies a Gaussian blur effect to the input. |
-| [brightness](#brightness)   | Adjusts the brightness of the input.         |
-| [contrast](#contrast)       | Adjusts the contrast of the input.           |
-| [drop-shadow](#drop-shadow) | Applies a drop shadow effect to the input.   |
-| [grayscale](#grayscale)     | Converts the input colors to grayscale.      |
-| [hue-rotate](#hue-rotate)   | Rotates the hue of the input.                |
-| [invert](#invert)           | Inverts the colors of the input.             |
-| [opacity](#opacity)         | Adjusts the opacity of the input.            |
-| [saturate](#saturate)       | Adjusts the color saturation of the input.   |
-| [sepia](#sepia)             | Applies a sepia tone to the input.           |
+| [blur](#blur)               | 对输入应用高斯模糊效果。 |
+| [brightness](#brightness)   | 调整输入的亮度。         |
+| [contrast](#contrast)       | 调整输入的对比度。           |
+| [drop-shadow](#drop-shadow) | 对输入应用投影效果。   |
+| [grayscale](#grayscale)     | 将输入颜色转换为灰度。      |
+| [hue-rotate](#hue-rotate)   | 旋转输入的色相。                |
+| [invert](#invert)           | 反转输入的颜色。             |
+| [opacity](#opacity)         | 调整输入的不透明度。            |
+| [saturate](#saturate)       | 调整输入的颜色饱和度。   |
+| [sepia](#sepia)             | 对输入应用棕褐色调。           |
 
 
-### Graphic filters: The 'filter' property
+### 图形滤镜：'filter' 属性
 {:#filter}
 
-The filter property is specified as follows.
+滤镜属性按如下方式指定。
 
 `filter`{:.prop}
 
-Value: | none \| \[ \<filter-function\>( \<properties\> ) \]<span class="prop-def-symbol" title="One or more space-separated occurrences">+</span>
-Initial: | none
-Inherited: | no
-Percentages: | N/A
+取值： | none \| \[ \<filter-function\>( \<properties\> ) \]<span class="prop-def-symbol" title="One or more space-separated occurrences">+</span>
+初始值： | none
+继承： | 否
+百分比： | 不适用
 
 \<filter-function\>
-: One of the [supported filter functions](#filter-functions)
+: [受支持的滤镜函数](#filter-functions) 之一
 
 \<properties\>
-: Determines the properties specific to the filter function.
+: 决定滤镜函数特有的属性。
 
-For illustration, a single filter can be used as follows.
+为便于说明，可以像下面这样使用单个滤镜。
 
 ```css
 filter: sepia(1.5);
 ```
 
-Multiple filters can be specified using a space-separated list. Filters are applied in the order they are specified.
+可以使用空格分隔的列表指定多个滤镜。滤镜按指定顺序应用。
 
 ```css
 filter: brightness(1.2) contrast(150%) hue-rotate(90deg);
 ```
 
-### Backdrop filters: The 'backdrop-filter' property
+### 背景滤镜：'backdrop-filter' 属性
 {:#backdrop-filter}
 
-Backdrop filters apply filter effects to the area *behind* an element. This allows you to apply filters to the backdrop without affecting the content of the element itself. The backdrop is the area behind the background of the element, this means that any `background-color`{:.prop} may obscure the backdrop.
+背景滤镜将滤镜效果应用于元素*后面*的区域。这允许你对背景应用滤镜，而不会影响元素本身的内容。背景是元素背景后面的区域，这意味着任何 `background-color`{:.prop} 都可能会遮挡背景。
 
 `backdrop-filter`{:.prop}
 
-Value: | none \| \[ \<filter-function\>( \<properties\> ) \]<span class="prop-def-symbol" title="One or more space-separated occurrences">+</span>
-Initial: | none
-Inherited: | no
-Percentages: | N/A
+取值： | none \| \[ \<filter-function\>( \<properties\> ) \]<span class="prop-def-symbol" title="One or more space-separated occurrences">+</span>
+初始值： | none
+继承： | 否
+百分比： | 不适用
 
-The `backdrop-filter`{:.prop} property uses the same filter functions as the `filter`{:.prop} property. Multiple backdrop filters can be specified using a space-separated list.
+`backdrop-filter`{:.prop} 属性使用与 `filter`{:.prop} 属性相同的滤镜函数。可以使用空格分隔的列表指定多个背景滤镜。
 
-### Examples
+### 示例
 
-The following demonstrates how to declare a variety of filters.
+下面演示了如何声明各种滤镜。
 
 ```css
-/* Apply a grayscale filter */
+/* 应用灰度滤镜 */
 filter: grayscale(0.5);
 
-/* Apply transparency to the entire element, including its children */
+/* 对整个元素应用透明度，包括其子元素 */
 filter: opacity(0.5);
 
-/* Add a red drop shadow with a blur effect */
+/* 添加带模糊效果的红色投影 */
 filter: drop-shadow(#f33f 30px 20px 5px);
 
-/* Apply multiple filters */
+/* 应用多个滤镜 */
 filter: blur(20px) hue-rotate(45deg) brightness(130%);
 ```
 
-The next example creates a frosted glass effect by applying a blur and slight darkening to the area behind the element.
+下一个示例通过对元素后面的区域应用模糊和轻微变暗来创建磨砂玻璃效果。
 
 ```css
 .frosted-glass {
@@ -100,7 +100,7 @@ The next example creates a frosted glass effect by applying a blur and slight da
 }
 ```
 
-The following shows a round orb, blurring the background and itself, with a yellow tint rendered around its edges.
+下面展示了一个圆形球体，模糊背景和自身，并在其边缘周围渲染出黄色色调。
 
 ```css
 .blur_orb {
@@ -114,7 +114,7 @@ The following shows a round orb, blurring the background and itself, with a yell
 }
 ```
 
-Filters can also be animated, as shown in the following.
+滤镜也可以设置动画，如下所示。
 
 ```css
 @keyframes animate-filter {
@@ -126,19 +126,19 @@ Filters can also be animated, as shown in the following.
 }
 ```
 
-### Sample
+### 示例
 
-Make sure to check out the `effects` sample in RmlUi, which showcases all the built-in filters.
+一定要看看 RmlUi 中的 `effects` 示例，它展示了所有内置滤镜。
 
 <a href="../../assets/images/effects-sample-filters.png"><img src="../../assets/images/effects-sample-filters.png" alt="Filters from the `effects` sample" style="max-width: 60%"></a>
 
 
-### Filter functions
+### 滤镜函数
 {:#filter-functions}
 
 #### blur
 
-Applies a Gaussian blur to the input.
+对输入应用高斯模糊。
 
 ```css
 filter: blur( <sigma> );
@@ -146,16 +146,16 @@ filter: blur( <sigma> );
 
 `<sigma>`{:.prop}
 
-Value: | \<length\>
-Initial: | 0px
+取值： | \<length\>
+初始值： | 0px
 
-Specifies the standard deviation of the blur effect. A value of zero means no blur.
+指定模糊效果的标准差。值为零表示不模糊。
 
-*Note:* The [`box-shadow`{:.prop}](colours_backgrounds.html#box-shadow) property uses the *blur radius* rather than the standard deviation to specify the amount of blur to apply. The blur radius is equivalent to `2 * sigma`{:.value}. This difference originates in the CSS specification.
+*注意*：[`box-shadow`{:.prop}](colours_backgrounds.html#box-shadow) 属性使用*模糊半径*而非标准差来指定应用的模糊量。模糊半径相当于 `2 * sigma`{:.value}。这一差异源于 CSS 规范。
 
 #### brightness
 
-Adjusts the brightness of the input.
+调整输入的亮度。
 
 ```css
 filter: brightness( <amount> );
@@ -163,14 +163,14 @@ filter: brightness( <amount> );
 
 `<amount>`{:.prop}
 
-Value: | \<number\> \| \<percentage\>
-Initial: | 1
+取值： | \<number\> \| \<percentage\>
+初始值： | 1
 
-Specifies the brightness level. A value of 0% will create a completely black element, while values higher than 100% will provide brighter results.
+指定亮度级别。值为 0% 将创建一个完全黑色的元素，而高于 100% 的值将提供更亮的结果。
 
 #### contrast
 
-Adjusts the contrast of the input.
+调整输入的对比度。
 
 ```css
 filter: contrast( <amount> );
@@ -178,54 +178,54 @@ filter: contrast( <amount> );
 
 `<amount>`{:.prop}
 
-Value: | \<number\> \| \<percentage\>
-Initial: | 1
+取值： | \<number\> \| \<percentage\>
+初始值： | 1
 
-Specifies the contrast level. A value of 0% will create a completely gray element, while values higher than 100% will provide more contrast.
+指定对比度级别。值为 0% 将创建一个完全灰色的元素，而高于 100% 的值将提供更高的对比度。
 
 #### drop-shadow
 
-Applies a drop shadow effect to the input.
+对输入应用投影效果。
 
 ```css
 filter: drop-shadow( <color>? <offset-x> <offset-y> <sigma>? );
 ```
 
-Values are interpreted like for the [`box-shadow`{:.prop} property](colours_backgrounds.html#box-shadow), except that the third length argument specifies the standard deviation (sigma) instead of the blur radius.
+值的解释与 [`box-shadow`{:.prop} 属性](colours_backgrounds.html#box-shadow) 相同，区别在于第三个长度参数指定标准差（sigma）而不是模糊半径。
 
 `<color>`{:.prop}
 
-Value: | \<color\>
-Initial: | black
+取值： | \<color\>
+初始值： | black
 
-Specifies the color of the shadow.
+指定阴影的颜色。
 
 `<offset-x>`{:.prop}
 
-Value: | \<length\>
-Initial: | 0px
+取值： | \<length\>
+初始值： | 0px
 
-Specifies the horizontal offset of the shadow.
+指定阴影的水平偏移。
 
 `<offset-y>`{:.prop}
 
-Value: | \<length\>
-Initial: | 0px
+取值： | \<length\>
+初始值： | 0px
 
-Specifies the vertical offset of the shadow.
+指定阴影的垂直偏移。
 
 `<sigma>`{:.prop}
 
-Value: | \<length\>
-Initial: | 0px
+取值： | \<length\>
+初始值： | 0px
 
-Specifies the standard deviation of the blur effect to apply to the shadow. A value of zero means no blur.
+指定应用于阴影的模糊效果的标准差。值为零表示不模糊。
 
-*Note:* The [`box-shadow`{:.prop}](colours_backgrounds.html#box-shadow) property uses the *blur radius* rather than the standard deviation to specify the amount of blur to apply. The blur radius is equivalent to `2 * sigma`{:.value}. This difference originates in the CSS specification.
+*注意*：[`box-shadow`{:.prop}](colours_backgrounds.html#box-shadow) 属性使用*模糊半径*而非标准差来指定应用的模糊量。模糊半径相当于 `2 * sigma`{:.value}。这一差异源于 CSS 规范。
 
 #### grayscale
 
-Converts the colors to grayscale.
+将颜色转换为灰度。
 
 ```css
 filter: grayscale( <amount> );
@@ -233,14 +233,14 @@ filter: grayscale( <amount> );
 
 `<amount>`{:.prop}
 
-Value: | \<number\> \| \<percentage\>
-Initial: | 0
+取值： | \<number\> \| \<percentage\>
+初始值： | 0
 
-Specifies the amount of the effect. A value of 100% is completely gray.
+指定效果的量。值为 100% 时为完全灰色。
 
 #### hue-rotate
 
-Rotates the hue of the input colors.
+旋转输入颜色的色相。
 
 ```css
 filter: hue-rotate( <angle> );
@@ -248,14 +248,14 @@ filter: hue-rotate( <angle> );
 
 `<angle>`{:.prop}
 
-Value: | \<angle\>
-Initial: | 0deg
+取值： | \<angle\>
+初始值： | 0deg
 
-Specifies the hue rotation to apply. A value of 0deg leaves the hue unchanged.
+指定要应用的色相旋转。值为 0deg 时色相保持不变。
 
 #### invert
 
-Inverts the colors of the input.
+反转输入的颜色。
 
 ```css
 filter: invert( <amount> );
@@ -263,14 +263,14 @@ filter: invert( <amount> );
 
 `<amount>`{:.prop}
 
-Value: | \<number\> \| \<percentage\>
-Initial: | 0
+取值： | \<number\> \| \<percentage\>
+初始值： | 0
 
-Specifies the amount of the inversion. A value of 100% will completely invert the input colors.
+指定反转的量。值为 100% 将完全反转输入颜色。
 
 #### opacity
 
-Adjusts the opacity of the input.
+调整输入的不透明度。
 
 ```css
 filter: opacity( <amount> );
@@ -278,14 +278,14 @@ filter: opacity( <amount> );
 
 `<amount>`{:.prop}
 
-Value: | \<number\> \| \<percentage\>
-Initial: | 1
+取值： | \<number\> \| \<percentage\>
+初始值： | 1
 
-Specifies the opacity level. A value of 0% makes the element completely transparent, while 100% leaves it unchanged.
+指定不透明度级别。值为 0% 使元素完全透明，而 100% 使其保持不变。
 
 #### saturate
 
-Adjusts the color saturation of the input.
+调整输入的颜色饱和度。
 
 ```css
 filter: saturate( <amount> );
@@ -293,14 +293,14 @@ filter: saturate( <amount> );
 
 `<amount>`{:.prop}
 
-Value: | \<number\> \| \<percentage\>
-Initial: | 100%
+取值： | \<number\> \| \<percentage\>
+初始值： | 100%
 
-Specifies the saturation amount. A value of 0% is completely unsaturated (gray), while values higher than 100% provide over-saturated results.
+指定饱和度。值为 0% 时完全不饱和（灰色），而高于 100% 的值提供过饱和的结果。
 
 #### sepia
 
-Applies a sepia tone to the input.
+对输入应用棕褐色调。
 
 ```css
 filter: sepia( <amount> );
@@ -308,7 +308,7 @@ filter: sepia( <amount> );
 
 `<amount>`{:.prop}
 
-Value: | \<number\> \| \<percentage\>
-Initial: | 0%
+取值： | \<number\> \| \<percentage\>
+初始值： | 0%
 
-Specifies the amount of the effect. A value of 100% is completely sepia toned.
+指定效果的量。值为 100% 时完全为棕褐色调。

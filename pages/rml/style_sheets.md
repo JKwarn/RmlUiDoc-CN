@@ -1,27 +1,27 @@
 ---
 layout: page
-title: RML Style Sheets
+title: RML 样式表
 parent: rml
 next: templates
 ---
 
-Styles can be included in an RML document in three ways: included from an external style sheet, declared in the header, or declared inline inside a specific tag.
+样式可以通过三种方式包含在 RML 文档中：从外部样式表包含、在头部声明、或在特定标签内以内联方式声明。
 
-### External Style Sheets {#link}
+### 外部样式表 {#link}
 
-Style sheets are included from an external source with the `<link>`{:.tag} tag. See [Link Element](documents.html#link).
+样式表通过 `<link>`{:.tag} 标签从外部来源包含。参见[链接元素](documents.html#link)。
 
-### Header Style Information {#style}
+### 头部样式信息 {#style}
 
-RCSS can be included directly inside the header, with the `<style>`{:.tag} tag.
+RCSS 可以通过 `<style>`{:.tag} 标签直接包含在头部内。
 
-*No attributes*
+*无属性*
 
-### Inline Style Declaration
+### 内联样式声明
 
-RCSS can be declared directly inside an element with the style attribute.
+RCSS 可以通过 style 属性直接在元素内声明。
 
-_Attributes_
+_属性_
 
 `style`{:.attr} = style (CN)
-: This attribute specifies a list of RCSS properties to be applied to the current element.
+: 该属性指定要应用于当前元素的 RCSS 属性列表。

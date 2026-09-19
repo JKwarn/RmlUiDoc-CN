@@ -1,218 +1,218 @@
 ---
 layout: page
-title: Visual formatting model details
+title: 视觉格式化模型细节
 parent: rcss
 next: visual_effects
 ---
 
-### Definition of 'containing block'
+### '包含块' 的定义
 
-During layout, the containing block of an element is fixed when the element is encountered in the document tree. It is sized as follows:
+在布局期间，当元素在文档树中被遇到时，其包含块即被固定。其尺寸确定如下：
 
-1. For the root element of the document (the `body`{:.tag} element), the containing block is the size of the document's context.
-2. For other elements (other than absolutely positioned elements), the containing block is the size of the nearest block container's content area.
-3. If the element is absolutely positioned (`position`{:.prop} value set to `absolute`{:.value} or `fixed`{:.value}), its containing block is given by the padding area of the nearest positioned element (`position`{:.prop} value other than `static`{:.value}), or the root if no such element exists.
+1. 对于文档的根元素（`body`{:.tag} 元素），包含块是文档上下文的尺寸。
+2. 对于其他元素（绝对定位元素除外），包含块是最近的块级容器的内容区域尺寸。
+3. 如果元素是绝对定位的（`position`{:.prop} 值设置为 `absolute`{:.value} 或 `fixed`{:.value}），则其包含块由最近的已定位元素（`position`{:.prop} 值非 `static`{:.value}）的内边距区域给出；如果不存在这样的元素，则由根元素给出。
 
-### Content width: the 'width' property
+### 内容宽度：'width' 属性
 {:#width}
 
 `width`{:.prop}
 
-Value: | \<length\> \| \<percentage\> \| auto
-Initial: | auto
-Applies to: | block and replaced inline elements
-Inherited: | no
-Percentages: | relative to the width of the containing block
+取值： | \<length\> \| \<percentage\> \| auto
+初始值： | auto
+适用于： | 块级元素和可替换行内元素
+继承： | 否
+百分比： | 相对于包含块的宽度
 
-This property only applies to block boxes and inline boxes with an intrinsic width. Other inline boxes are sized by their content.
+此属性仅适用于块级盒子和具有固有宽度的行内盒子。其他行内盒子由其内容决定大小。
 
-Values have the following meaning:
+取值含义如下：
 
 `<length>`{:.value}
-: Specifies a fixed width.
+: 指定一个固定的宽度。
 
 `<percentage>`{:.value}
-: Specifies a width relative to the width of the box's containing block.
+: 指定相对于盒子包含块宽度的宽度。
 
 `auto`{:.value}
-: The width depends on the values of other properties. See below.
+: 宽度取决于其他属性的值。见下文。
 
 ```css
-/* Fixes the width of input elements of class 'text' to 12 times their line height. */
+/* 将类为 'text' 的输入元素的宽度固定为其行高的 12 倍。 */
 input.text
 {
 	width: 12em;
 }
 ```
 
-### Calculating widths and margins
+### 计算宽度和外边距
 
-If any of a box's `width`{:.prop}, `margin-left`{:.prop} or `margin-right`{:.prop} are set to `auto`{:.value}, then they are evaluated when the box is sized. Depending on the box type, they are set as follows:
+如果盒子的 `width`{:.prop}、`margin-left`{:.prop} 或 `margin-right`{:.prop} 中有任何一项设置为 `auto`{:.value}，则会在盒子确定大小时进行计算。根据盒子类型，其设置方式如下：
 
-- For an inline non-replaced box, any `auto`{:.value} margins are set to '0'. `width`{:.prop} is ignored.
-- For an inline replaced box, `auto`{:.value} margins are set to '0'. A `width`{:.prop} of `auto`{:.value} is set to the element's intrinsic width.
-- For a block box, the equation
+- 对于行内非替换盒子，任何 `auto`{:.value} 外边距都被设置为 '0'。忽略 `width`{:.prop}。
+- 对于行内可替换盒子，`auto`{:.value} 外边距被设置为 '0'。`width`{:.prop} 为 `auto`{:.value} 时设置为元素的固有宽度。
+- 对于块级盒子，以下方程
 
   ```
   margin-left + border-left-width + padding-left + width + padding-right + border-right-width + margin-right
-  = containing block width
+  = 包含块宽度
   ```
 
-  must hold true. If `width`{:.prop} is `auto`{:.value}, then any `auto`{:.value} margins are set to '0' and the box width is set to the appropriate value. Otherwise, the inequality in the equation is split evenly between the auto-margins.
-- For absolutely positioned boxes, `left`{:.prop} and `right`{:.prop} are additionally added to the left-hand-side of the above equation.
-- Inline-block boxes, absolutely positioned boxes, and floated boxes will have any `auto`{:.value} width determined by their 'shrink-to-fit' width, if the above equation is under-constrained.
+  必须成立。如果 `width`{:.prop} 为 `auto`{:.value}，则任何 `auto`{:.value} 外边距都被设置为 '0'，盒子宽度被设置为适当的值。否则，方程中的差额在 auto 外边距之间均分。
+- 对于绝对定位的盒子，`left`{:.prop} 和 `right`{:.prop} 额外加在上述方程的左侧。
+- 如果上述方程欠约束，则行内块级盒子、绝对定位盒子和浮动盒子的任何 `auto`{:.value} 宽度都由其"收缩适配（shrink-to-fit）"宽度决定。
 
-### Minimum and maximum widths: 'min-width' and 'max-width'
+### 最小和最大宽度：'min-width' 和 'max-width'
 {:#min-width}
 
 `min-width`{:.prop}
 
-Value: | \<length\> \| \<percentage\>
-Initial: | 0px
-Applies to: | block and replaced inline elements
-Inherited: | no
-Percentages: | relative to the width of the containing block
+取值： | \<length\> \| \<percentage\>
+初始值： | 0px
+适用于： | 块级元素和可替换行内元素
+继承： | 否
+百分比： | 相对于包含块的宽度
 
 `max-width`{:.prop}
 {:#max-width}
 
-Value: | \<length\> \| \<percentage\> \| none
-Initial: | none
-Applies to: | block and replaced inline elements
-Inherited: | no
-Percentages: | relative to the width of the containing block
+取值： | \<length\> \| \<percentage\> \| none
+初始值： | none
+适用于： | 块级元素和可替换行内元素
+继承： | 否
+百分比： | 相对于包含块的宽度
 
-Values have the following meaning:
+取值含义如下：
 
 `<length>`{:.value}
-: Specifies a fixed minimum or maximum width.
+: 指定一个固定的最小或最大宽度。
 
 `<percentage>`{:.value}
-: Specifies a minimum or maximum width relative to the width of the containing block.
+: 指定相对于包含块宽度的最小或最大宽度。
 
 `none`{:.value}
-: Specifies that there is no maximum width.
+: 指定没有最大宽度。
 
-When evaluating `width`{:.prop}, if the calculated width is greater than `max-width`{:.prop}, then the width is calculated again, this time substituting `max-width`{:.prop} for `width`{:.prop}. If the calculated value is less than `min-width`{:.prop}, the the width is calculated again, this time substituting `min-width`{:.prop} for `width`{:.prop}.
+在计算 `width`{:.prop} 时，如果计算出的宽度大于 `max-width`{:.prop}，则重新计算宽度，此时用 `max-width`{:.prop} 代替 `width`{:.prop}。如果计算出的值小于 `min-width`{:.prop}，则重新计算宽度，此时用 `min-width`{:.prop} 代替 `width`{:.prop}。
 
-### Content height: the 'height' property
+### 内容高度：'height' 属性
 {:#height}
 
 `height`{:.prop}
 
-Value: | \<length\> \| \<percentage\> \| auto
-Initial: | auto
-Applies to: | block and replaced inline elements
-Inherited: | no
-Percentages: | relative to the height of the containing block
+取值： | \<length\> \| \<percentage\> \| auto
+初始值： | auto
+适用于： | 块级元素和可替换行内元素
+继承： | 否
+百分比： | 相对于包含块的高度
 
-This property only applies to block boxes and inline boxes with an intrinsic height. Other inline boxes are sized by their content.
+此属性仅适用于块级盒子和具有固有高度的行内盒子。其他行内盒子由其内容决定大小。
 
-Values have the following meaning:
+取值含义如下：
 
 `<length>`{:.value}
-: Specifies a fixed height.
+: 指定一个固定的高度。
 
 `<percentage>`{:.value}
-: Specifies a height relative to the height of the box's containing block.
+: 指定相对于盒子包含块高度的百分比高度。
 
 `auto`{:.value}
-: The height depends on the values of other properties. See below.
+: 高度取决于其他属性的值。见下文。
 
 ```css
-/* Fixes the height of the background div to 100% of its containing block. */
+/* 将背景 div 的高度固定为其包含块的 100%。 */
 div#background
 {
 	height : 100%;
 }
 ```
 
-### Calculating heights and margins
+### 计算高度和外边距
 
-If any of a box's `height`{:.prop}, `margin-top`{:.prop} or `margin-bottom`{:.prop} are set to `auto`{:.value}, then they are evaluated when the box is sized. Depending on the box type, they are set as follows:
+如果盒子的 `height`{:.prop}、`margin-top`{:.prop} 或 `margin-bottom`{:.prop} 中有任何一项设置为 `auto`{:.value}，则会在盒子确定大小时进行计算。根据盒子类型，其设置方式如下：
 
-- For an inline non-replaced box, any `auto`{:.value} margins are set to '0'. `height`{:.prop} is ignored.
-- For an inline replaced box, `auto`{:.value} margins are set to '0'. A `height`{:.prop} of `auto`{:.value} is set to the element's intrinsic width.
-- For a block box with a fixed height, the equation
+- 对于行内非替换盒子，任何 `auto`{:.value} 外边距都被设置为 '0'。忽略 `height`{:.prop}。
+- 对于行内可替换盒子，`auto`{:.value} 外边距被设置为 '0'。`height`{:.prop} 为 `auto`{:.value} 时设置为元素的固有宽度。
+- 对于具有固定高度的块级盒子，以下方程
 
   ```
   margin-top + border-top-width + padding-top + height + padding-bottom + border-bottom-width + margin-bottom
-  = containing block height
+  = 包含块高度
   ```
 
-  must hold true. The inequality in the equation is split evenly between the auto-margins.
-- For a block box with an `auto`{:.value} height, any `auto`{:.value} margins are set to '0', and the height will be set to fit its contents exactly.
-- For absolutely positioned boxes, `top`{:.prop} and `bottom`{:.prop} are additionally added to the left-hand-side of the above equation.
+  必须成立。方程中的差额在 auto 外边距之间均分。
+- 对于 `height`{:.prop} 为 `auto`{:.value} 的块级盒子，任何 `auto`{:.value} 外边距都被设置为 '0'，高度将被设置为恰好适合其内容。
+- 对于绝对定位的盒子，`top`{:.prop} 和 `bottom`{:.prop} 额外加在上述方程的左侧。
 
-In RCSS, block boxes with a fixed height will resolve `auto`{:.value} vertical margins similarly to horizontal margins.
+在 RCSS 中，具有固定高度的块级盒子会像水平外边距一样解析 `auto`{:.value} 垂直外边距。
 
-### Minimum and maximum heights: 'min-height' and 'max-height'
+### 最小和最大高度：'min-height' 和 'max-height'
 {:#min-height}
 
 `min-height`{:.prop}
 
-Value: | \<length\> \| \<percentage\>
-Initial: | 0px
-Applies to: | block and replaced inline elements
-Inherited: | no
-Percentages: | relative to the height of the containing block
+取值： | \<length\> \| \<percentage\>
+初始值： | 0px
+适用于： | 块级元素和可替换行内元素
+继承： | 否
+百分比： | 相对于包含块的高度
 
 `max-height`{:.prop}
 {:#max-height}
 
-Value: | \<length\> \| \<percentage\> \| none
-Initial: | none
-Applies to: | block and replaced inline elements
-Inherited: | no
-Percentages: | relative to the height of the containing block
+取值： | \<length\> \| \<percentage\> \| none
+初始值： | none
+适用于： | 块级元素和可替换行内元素
+继承： | 否
+百分比： | 相对于包含块的高度
 
-Values have the following meaning:
+取值含义如下：
 
 `<length>`{:.value}
-: Specifies a fixed minimum or maximum height.
+: 指定一个固定的最小或最大高度。
 
 `<percentage>`{:.value}
-: Specifies a minimum or maximum height relative to the height of the containing block.
+: 指定相对于包含块高度的最小或最大高度。
 
 `none`{:.value}
-: Specifies that there is no maximum height.
+: 指定没有最大高度。
 
-When evaluating `height`{:.prop}, if the calculated height is greater than `max-height`{:.prop}, then the height is calculated again, this time substituting `max-height`{:.prop} for `height`{:.prop}. If the calculated value is less than `min-height`{:.prop}, then the height is calculated again, this time substituting `min-height`{:.prop} for `height`{:.prop}. A block box with a `height`{:.prop} of `auto`{:.value} will never set its height below `min-height`{:.prop} or above `max-height`{:.prop}; this may result in overflow.
+在计算 `height`{:.prop} 时，如果计算出的高度大于 `max-height`{:.prop}，则重新计算高度，此时用 `max-height`{:.prop} 代替 `height`{:.prop}。如果计算出的值小于 `min-height`{:.prop}，则重新计算高度，此时用 `min-height`{:.prop} 代替 `height`{:.prop}。`height`{:.prop} 为 `auto`{:.value} 的块级盒子绝不会将其高度设置到 `min-height`{:.prop} 以下或 `max-height`{:.prop} 以上；这可能导致溢出。
 
-### Line height calculations: the 'line-height' and 'vertical-align' properties
+### 行高计算：'line-height' 和 'vertical-align' 属性
 {:#line-height}
 
-The height of a line box is determined as follows:
+行盒的高度按如下方式确定：
 
-1. The height of each inline element is calculated.
-2. The inline boxes are aligned vertically (by their `vertical-align`{:.prop} property).
-3. The line box height is given by distance between the top edge of the highest box and the bottom edge of the lowest box.
+1. 计算每个行内元素的高度。
+2. 行内盒子垂直对齐（通过其 `vertical-align`{:.prop} 属性）。
+3. 行盒高度由最高盒子的顶边与最低盒子的底边之间的距离给出。
 
-Note that vertical padding, margins and borders of inline boxes are not taken into account when determining line box height, although they are rendered.
+请注意，确定行盒高度时不会考虑行内盒子的垂直内边距、外边距和边框，尽管它们会被渲染。
 
 `line-height`{:.prop}
 
-Value: | \<number\> \| \<length\> \| \<percentage\>
-Initial: | 1.2
-Applies to: | all elements
-Inherited: | yes
-Percentages: | relative to the the font size of the element itself
+取值： | \<number\> \| \<length\> \| \<percentage\>
+初始值： | 1.2
+适用于： | 所有元素
+继承： | 是
+百分比： | 相对于元素自身的字体大小
 
-This property determines the *minimal* height of line boxes within the element.
+此属性确定元素内行盒的*最小*高度。
 
-Values for this property have the following meanings:
+该属性取值含义如下：
 
 `<number>`{:.value}
-: The line height is set to the element's font height scaled by this number.
+: 行高设置为元素的字体高度乘以该数字。
 
 `<length>`{:.value}
-: The line height is set to this fixed value.
+: 行高设置为该固定值。
 
 `<percentage>`{:.value}
-: The line height is set to the element's font height scaled by the percentage.
+: 行高设置为元素的字体高度乘以该百分比。
 
 ```css
-/* Three ways of setting the same line-height. */
+/* 设置相同 line-height 的三种方式。 */
 div
 {
 	line-height: 1.3;
@@ -224,51 +224,51 @@ div
 `vertical-align`{:.prop}
 {:#vertical-align}
 
-Value: | baseline \| sub \| super \| text-top \| text-bottom \| middle \| top \| center \| bottom \| \<percentage\> \| \<length\>
-Initial: | baseline
-Applies to: | inline-level elements
-Inherited: | no
-Percentages: | relative to the element's line-height
+取值： | baseline \| sub \| super \| text-top \| text-bottom \| middle \| top \| center \| bottom \| \<percentage\> \| \<length\>
+初始值： | baseline
+适用于： | 行内级元素
+继承： | 否
+百分比： | 相对于元素的 line-height
 
-This property affects the vertical positioning of an inline box within the line box.
+此属性影响行内盒子在行盒内的垂直定位。
 
-The values have the following meanings:
+取值含义如下：
 
 `baseline`{:.value}
-: Align the baseline of the inline box with the baseline of its parent box.
+: 将行内盒子的基线与其父盒子的基线对齐。
 
 `sub`{:.value}
-: Set the baseline of the inline box to an appropriate height for rendering subscript.
+: 将行内盒子的基线设置为适合渲染下标的高度。
 
 `super`{:.value}
-: Set the baseline of the inline box to an appropriate height for rendering superscript.
+: 将行内盒子的基线设置为适合渲染上标的高度。
 
 `text-top`{:.value}
-: Align the top of the inline box with the top of the parent box's font.
+: 将行内盒子的顶部与父盒子字体的顶部对齐。
 
 `text-bottom`{:.value}
-: Align the bottom of the inline box with the bottom of the parent box's font.
+: 将行内盒子的底部与父盒子字体的底部对齐。
 
 `middle`{:.value}
-: Align the midpoint of the box with the baseline of the parent box plus half its ex height.
+: 将盒子的中点与父盒子的基线加上其半个 ex 高度对齐。
 
 `top`{:.value}
-: Align the top of the inline box with the top of the line box.
+: 将行内盒子的顶部与行盒的顶部对齐。
 
 `center`{:.value}
-: Align the center of the inline box with the center of the line box.
+: 将行内盒子的中心与行盒的中心对齐。
 
 `bottom`{:.value}
-: Align the bottom of the inline box with the bottom of the line box.
+: 将行内盒子的底部与行盒的底部对齐。
 
 `<percentage>`{:.value}
-: Raise or lower the element from the baseline by the line-height scaled by this percentage.
+: 将元素从基线向上或向下移动该百分比乘以行高的距离。
 
 `<length>`{:.value}
-: Raise or lower the element from the baseline by a fixed amount.
+: 将元素从基线向上或向下移动固定的距离。
 
 ```css
-/* Sample RCSS for defining a superscript tag. */
+/* 定义上标标签的示例 RCSS。 */
 super
 {
 	vertical-align: super;
@@ -276,7 +276,7 @@ super
 ```
 
 ```html
-<!-- Sample RML demonstrating rendering a superscript. -->
+<!-- 演示渲染上标的示例 RML。 -->
 <p>
 	Better than ever before!<super>*</super>
 </p>

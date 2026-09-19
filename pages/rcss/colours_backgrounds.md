@@ -1,98 +1,97 @@
 ---
 layout: page
-title: Colours, backgrounds, and rounded corners
+title: 颜色、背景与圆角
 parent: rcss
 next: fonts
 ---
 
-### Foreground colour: the 'color' property
+### 前景色：'color' 属性
 {:#color}
 
 `color`{:.prop}
 
-Value: | \<colour\>
-Initial: | black
-Applies to: | all elements
-Inherited: | yes
-Percentages: | N/A
+取值： | \<colour\>
+初始值： | black
+适用于： | 所有元素
+继承： | 是
+百分比： | 不适用
 
-This property sets the colour of rendered text and text decorations.
+此属性设置所渲染文本和文本装饰的颜色。
 
-### Background colour
+### 背景颜色
 {:#background-color}
 
-In RCSS, an element's background can be set as a flat colour but not an image. This functionality (and much more!) instead lies with [decorators](decorators.html).
+在 RCSS 中，元素的背景可以设置为纯色，但不能设置为图像。此功能（以及更多功能！）由[装饰器](decorators.html)提供。
 
 `background-color`{:.prop}
 
-Value: | \<colour\>
-Initial: | transparent
-Applies to: | all elements
-Inherited: | no
-Percentages: | N/A
+取值： | \<colour\>
+初始值： | transparent
+适用于： | 所有元素
+继承： | 否
+百分比： | 不适用
 
-This property sets the color of the element's generated boxes. The background colour is rendered under a box's padded area.
+此属性设置元素生成的盒子的颜色。背景颜色渲染在盒子的内边距区域下方。
 
 `background`{:.prop}
 
-An alias for `background-color`{:.prop}.
+`background-color`{:.prop} 的别名。
 
-### Box shadows
+### 盒阴影
 {:#box-shadow}
 
-Box shadows produce a shadow effect around or inside the element's box. The shadow is placed on the background of the element.
+盒阴影在元素盒子的周围或内部产生阴影效果。阴影被放置在元素的背景上。
 
-To use box shadows, the backend renderer must support advanced rendering features, see the [render interface feature table](../cpp_manual/interfaces/render.html#feature-table) for details.
+要使用盒阴影，后端渲染器必须支持高级渲染功能，详见[渲染接口功能表](../cpp_manual/interfaces/render.html#feature-table)。
 
 `box-shadow`{:.prop}
 
-Value: | none \| \[ \<color\>? \<offset-x\> \<offset-y\> \<blur-radius\>? \<spread-radius\>? inset? \]<span class="prop-def-symbol" title="One or more comma-separated occurrences">#+</span>
-Initial: | none
-Applies to: | all elements
-Inherited: | no
-Percentages: | N/A
+取值： | none \| \[ \<color\>? \<offset-x\> \<offset-y\> \<blur-radius\>? \<spread-radius\>? inset? \]<span class="prop-def-symbol" title="One or more comma-separated occurrences">#+</span>
+初始值： | none
+适用于： | 所有元素
+继承： | 否
+百分比： | 不适用
 
-The values have the following meaning.
+取值含义如下。
 
 \<color\>
-: The color of the shadow.
+: 阴影的颜色。
 
 \<offset-x\> \<offset-y\> = \<length\> \<length\>
-: These two values set the offset of the shadow from the element. Positive values will place the shadow to the right and
-down from the element.
+: 这两个值设置阴影相对于元素的偏移。正值会将阴影放置在元素右下方。
 
 \<blur-radius\> = \<length\>
-: Determines how large the blur effect is. It defaults to zero, which means no blur effect.
+: 决定模糊效果的大小。默认为零，即没有模糊效果。
 
-*Note:* The blur and drop shadow [filters](filters.html) use the *standard deviation* rather than the blur radius to specify the amount of blur to apply. The standard deviation is equivalent to half the blur radius. This difference originates in the CSS specification.
+*注意*：模糊和投影 [滤镜](filters.html) 使用*标准差*而非模糊半径来指定应用的模糊量。标准差相当于模糊半径的一半。这一差异源于 CSS 规范。
 
 \<spread-radius\> = \<length\>
-: Determines how large the *spread* of the shadow is. Essentially, this makes the shadow larger in all directions. Negative values are allowed to make it smaller. It defaults to zero, making the shadow the same size as the element itself.
+: 决定阴影*扩散（spread）*的大小。本质上，它使阴影在全方位上变大。允许负值使其变小。默认为零，使阴影与元素本身大小相同。
 
 inset
-: By specifying this keyword, the shadow will be placed inside the box instead of outside it.
+: 通过指定此关键字，阴影将被放置在盒子内部而不是外部。
 
 <img alt="border-radius" src="../../assets/images/box-shadow.png" style="max-width: 70%">
 
-The following shows some box shadow examples.
+下面展示了一些盒阴影示例。
 
 ```css
-/* Single box shadow */
+/* 单个盒阴影 */
 box-shadow: #000a 5px 5px 5px;
 
-/* Multiple box shadows */
+/* 多个盒阴影 */
 box-shadow: #f008 40px 30px 0px 0px, #00f8 -40px -30px 0px 0px;
 
-/* Inset box shadow */
+/* 内阴影 */
 box-shadow: #000a 5px 5px 5px inset;
 
-/* Stacked box shadows */
+/* 堆叠的盒阴影 */
 box-shadow:
     #f66 30px 30px 0 0,
     #c88 60px 60px 0 0,
     #baa 90px 90px 0 0;
 
-/* Colorful box shadows */
+/* 彩色盒阴影 */
 box-shadow:
     #f00f  40px  30px 25px 0px,
     #00ff -40px -30px 45px 0px,
@@ -100,56 +99,56 @@ box-shadow:
     #333a  0px  0px 30px 15px inset;
 ```
 
-### Rounded corners
+### 圆角
 {:#border-radius}
 
 <img alt="border-radius" src="../../assets/images/border-radius.png" style="max-width: 50%">
 
-The border radius properties can be used to draw rounded backgrounds and borders.
+边界半径属性可用于绘制圆角背景和边框。
 
-`border-top-left-radius`{:.prop}, `border-top-right-radius`{:.prop}, `border-bottom-right-radius`{:.prop}, `border-bottom-left-radius`{:.prop}
+`border-top-left-radius`{:.prop}、`border-top-right-radius`{:.prop}、`border-bottom-right-radius`{:.prop}、`border-bottom-left-radius`{:.prop}
 
-Value: | \<length\>
-Initial: | 0px
-Applies to: | all elements
-Inherited: | no
-Percentages: | N/A
+取值： | \<length\>
+初始值： | 0px
+适用于： | 所有元素
+继承： | 否
+百分比： | 不适用
 
-The properties set the radius of the outer border edge for the given corner. Backgrounds and borders will be shaped accordingly. Decorators do not always respect this property, currently, only the [gradient decorator](decorators/gradient.html) will properly clip to the rounded corner. Note that unlike CSS, RmlUi does not support percentages or elliptic values (two values per corner).
+这些属性为给定的角设置外边框边缘的半径。背景和边框将相应地被塑形。装饰器并不总是遵循此属性，目前只有[渐变装饰器](decorators/gradient.html)会正确地裁剪到圆角。请注意，与 CSS 不同，RmlUi 不支持百分比或椭圆值（每个角两个值）。
 
-*Note*: For decent looking results, the renderer should have anti-aliasing enabled when drawing the geometry generated by this property.
+*注意*：为了获得美观的效果，渲染器在绘制此属性生成的几何体时应启用抗锯齿。
 
 `border-radius`{:.prop}
 
-A shorthand property for setting all four border radii properties at once. If there is only one value, it applies to all corners. If there are two values, the first applies to the top-left and bottom-right, the second to bottom-left and top-right. If there are three values, the first applies to the top-left, the second to bottom-left and top-right, the third to the bottom-right. If there are four values, they are applied to top-left, top-right, bottom-right, bottom-left respectively.
+一个用于一次性设置全部四个边界半径属性的简写属性。如果只有一个值，则应用于所有角。如果有两个值，第一个应用于左上角和右下角，第二个应用于左下角和右上角。如果有三个值，第一个应用于左上角，第二个应用于左下角和右上角，第三个应用于右下角。如果有四个值，则分别应用于左上、右上、右下、左下。
 
-### Opacity
+### 不透明度
 {:#opacity}
 
-Opacity can be set on any element. Then, the generated geometry for the element will multiply the alpha channel of the vertex colors by the opacity.
+可以在任何元素上设置不透明度。然后，为该元素生成的几何体会将顶点颜色的 alpha 通道乘以该不透明度。
 
 `opacity`{:.prop}
 
-Value: | \<number\>
-Initial: | 1
-Applies to: | all elements
-Inherited: | yes
-Percentages: | N/A
+取值： | \<number\>
+初始值： | 1
+适用于： | 所有元素
+继承： | 是
+百分比： | 不适用
 
-### Image colour: the 'image-color' property
+### 图像颜色：'image-color' 属性
 {:#image-color}
 
 `image-color`{:.prop}
 
-Value: | \<colour\>
-Initial: | white
-Applies to: | \<img\> elements and [decorators](decorators.html)
-Inherited: | no
-Percentages: | N/A
+取值： | \<colour\>
+初始值： | white
+适用于： | \<img\> 元素和[装饰器](decorators.html)
+继承： | 否
+百分比： | 不适用
 
-An extension to CSS for RCSS which multiplies a colour with images in `<img>`{:.tag} tags and image decorators. Useful for `:hover`{:.cls} pseudo-class and for applying transparency.
+RCSS 对 CSS 的扩展，它将一种颜色与 `<img>`{:.tag} 标签和图像装饰器中的图像相乘。可用于 `:hover`{:.cls} 伪类和应用透明度。
 
-Example:
+示例：
 ```css
 image-color: rgba(255, 160, 160, 200);
 decorator: image( background.png );

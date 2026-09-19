@@ -1,11 +1,11 @@
 ---
 layout: page
-title: Custom properties and variables
+title: 自定义属性与变量
 parent: rcss
 next: media_queries
 ---
 
-RCSS supports custom properties and the `var()` function for referencing them, commonly known as CSS variables (see [CSS custom properties specification](https://www.w3.org/TR/css-variables-1/)). They let you store a value once and reuse it across many declarations.
+RCSS 支持自定义属性以及用于引用它们的 `var()` 函数，通常称为 CSS 变量（参见 [CSS 自定义属性规范](https://www.w3.org/TR/css-variables-1/)）。它们允许你存储一个值并在许多声明中重复使用。
 
 ```css
 body {
@@ -18,16 +18,16 @@ h1 {
 }
 ```
 
-### Differences from CSS
+### 与 CSS 的差异
 
-For the most part, the behavior matches that of CSS. The following lists some smaller deviations:
+在大多数情况下，其行为与 CSS 一致。下面列出一些较小的差异：
 
-- Custom properties cannot themselves be animated. However, regular properties and shorthands that use `var()` can.
-- Fallback values are only used when a referenced variable is missing. They are *not* used when a dependency cycle is detected.
+- 自定义属性本身不能设置动画。但是，使用 `var()` 的常规属性和简写可以。
+- 回退值只在引用的变量缺失时使用。检测到依赖循环时*不*使用回退值。
 
-### Declaring custom properties
+### 声明自定义属性
 
-A custom property is any property whose name begins with two dashes (`--`). The value is stored as written, and is only interpreted when substituted into another property with `var()`.
+自定义属性是其名称以两个连字符（`--`）开头的任何属性。值按原样存储，只有在通过 `var()` 替换到另一个属性中时才被解释。
 
 ```css
 body {
@@ -38,9 +38,9 @@ body {
 }
 ```
 
-### Using variables: the `var()` function
+### 使用变量：'var()' 函数
 
-Reference a custom property with the `var()` function. It can be used in any regular property, in another custom property, or in a shorthand. The function may form part of a larger value, and a declaration can contain any number of references.
+使用 `var()` 函数引用自定义属性。它可以用于任何常规属性、另一个自定义属性或简写中。该函数可以构成更大值的一部分，一条声明可以包含任意数量的引用。
 
 ```css
 h1 {
@@ -48,35 +48,35 @@ h1 {
 	font-size: var(--title-size);
 }
 #panel {
-	/* Variables substituted into a function. */
+	/* 变量被替换到函数中。 */
 	background-color: rgba(var(--rgb-accent), 200);
 }
 .swatch {
-	/* A custom property built from another. */
+	/* 由另一个自定义属性构建的自定义属性。 */
 	--brand-faded: var(--brand);
 }
 ```
 
-Variables are substituted at compute time and parsed for the property they are used in. Any syntax errors during parsing are therefore logged at compute time.
+变量在计算时被替换，并针对其所在的属性进行解析。因此，解析过程中的任何语法错误都会在计算时被记录到日志中。
 
-### Fallback values
+### 回退值
 
-`var()` accepts an optional fallback value, used when the referenced custom property is not defined.
+`var()` 接受一个可选的回退值，在引用的自定义属性未定义时使用。
 
 ```css
 color: var(--brand, black);
 ```
 
-The fallback itself may contain a `var()` or other function, and may consist of multiple values.
+回退值本身可以包含 `var()` 或其他函数，也可以由多个值组成。
 
 ```css
 color:   var(--accent, var(--brand, black));
 padding: var(--inset, 10px 5px);
 ```
 
-### Cascading and inheritance
+### 层叠与继承
 
-Custom properties participate in the [cascade](cascade.html) like regular properties, and they are inherited. A custom property defined on an element is visible to that element and all of its descendants, and may be overridden further down the tree.
+自定义属性像常规属性一样参与[层叠](cascade.html)，并且会被继承。在元素上定义的自定义属性对该元素及其所有后代可见，并且可以在树的更深层被覆盖。
 
 ```css
 body     { --color-bg: #ffffff; }
@@ -84,9 +84,9 @@ body     { --color-bg: #ffffff; }
 .panel   { background-color: var(--color-bg); }
 ```
 
-Whenever a variable changes, every property that references it is recomputed automatically.
+每当变量发生变化时，所有引用它的属性都会自动重新计算。
 
-Together with [media queries](media_queries.html), variables provide a compact way to implement themes. Declare the tokens once, override them inside a `@media` block, and reference them throughout the style sheet:
+结合[媒体查询](media_queries.html)，变量提供了一种实现主题的简洁方式。声明一次标记，在 `@media` 块内覆盖它们，并在整个样式表中引用它们：
 
 ```css
 body {
@@ -105,11 +105,11 @@ body {
 }
 ```
 
-The theme can then be toggled from C++ with [`Context::ActivateTheme()`](../cpp_manual/contexts.html#themes), and all variable-based declarations update accordingly.
+然后可以在 C++ 中使用 [`Context::ActivateTheme()`](../cpp_manual/contexts.html#themes) 切换主题，所有基于变量的声明都会相应更新。
 
-### Variables in shorthands
+### 简写中的变量
 
-`var()` works in shorthand properties, and each component is resolved independently. A single variable may also expand to several values.
+`var()` 可用于简写属性，每个分量独立解析。单个变量也可以展开为多个值。
 
 ```css
 body { --inset: 20px 5px; }
@@ -120,35 +120,35 @@ div {
 }
 ```
 
-When a shorthand and one of its longhand components are both declared, normal cascade rules apply. The declaration that comes last wins. For example, `padding: var(--inset)`{:.value} followed by `padding-top: 0px`{:.value} keeps the explicit top padding while the remaining edges come from the variable.
+当简写与其某个长写分量同时声明时，适用正常的层叠规则。后声明的声明胜出。例如，`padding: var(--inset)`{:.value} 后跟 `padding-top: 0px`{:.value} 会保留显式的顶部内边距，而其余边缘来自变量。
 
-### Animations and transitions
+### 动画与过渡
 
-Regular properties and shorthands that reference variables can be [animated and transitioned](animations_transitions_transforms.html) as usual. The variable is resolved to a concrete value when the animation is built. This includes variables used inside `@keyframes` blocks.
+引用变量的常规属性和简写可以像往常一样被[动画和过渡](animations_transitions_transforms.html)。变量在构建动画时被解析为具体值。这包括在 `@keyframes` 块内部使用的变量。
 
-Custom properties themselves cannot be animated or transitioned.
+自定义属性本身不能设置动画或过渡。
 
-### Reading and writing variables from C++
+### 从 C++ 读写变量
 
-Custom properties are accessed through the regular property functions on `Element`{:.cls}, by passing the full name including the `--` prefix.
+自定义属性通过 `Element`{:.cls} 上的常规属性函数访问，传入包含 `--` 前缀的完整名称。
 
 ```cpp
-// Set or change a custom property.
+// 设置或更改自定义属性。
 element->SetProperty("--brand", "#b73a2a");
 
-// The context should be updated before retrieving resolved properties,
+// 在检索解析后的属性之前，应先更新上下文，
 context->Update();
 
-// Read the value with all variables fully resolved.
+// 读取所有变量已完全解析的值。
 if (const Rml::Property* property = element->GetProperty("--brand"))
 	Rml::String value = property->ToString();
 
-// Remove the local override.
+// 移除局部覆盖。
 element->RemoveProperty("--brand");
 ```
 
-`Element::GetProperty()` returns the value after cascading and inheritance, and with `var()` references fully resolved. On the other hand, `Element::GetLocalProperty()` retrieves the *specified value* with any variables left unresolved, and only when set directly on the current element. As with other computed values, resolved variables are only guaranteed to be up-to-date after a [context update](../cpp_manual/elements.html#validity-of-retrieved-values). The returned pointer is only valid until the next call into RmlUi, so copy the property by value if you need to keep it.
+`Element::GetProperty()` 返回层叠和继承之后的值，并且 `var()` 引用已完全解析。另一方面，`Element::GetLocalProperty()` 检索*指定值（specified value）*，其中任何变量都未解析，并且仅当直接在当前元素上设置时才有值。与其他计算值一样，解析后的变量只有在[上下文更新](../cpp_manual/elements.html#validity-of-retrieved-values)之后才保证是最新的。返回的指针仅在下次调用 RmlUi 之前有效，因此如果需要保留该属性，请按值复制。
 
-### Sample
+### 示例
 
-See the `variables` sample (`Samples/basic/variables`{:.path}) for a complete example using design tokens and switchable themes.
+有关使用设计令牌和可切换主题的完整示例，请参阅 `variables` 示例（`Samples/basic/variables`{:.path}）。

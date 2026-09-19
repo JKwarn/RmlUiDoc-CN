@@ -1,27 +1,27 @@
 ---
 layout: page
-title: Custom interfaces
+title: 自定义接口
 parent: cpp_manual
 next: ime
 ---
 
-There are five interfaces that RmlUi provides to control how it interacts with your application.
+RmlUi 提供了五个接口来控制它如何与你的应用程序交互。
 
-* [Render interface](interfaces/render.html)
-* [System interface](interfaces/system.html)
-* [File interface](interfaces/file.html)
-* [Font engine interface](interfaces/font_engine.html)
-* [Text input handler interface](interfaces/text_input_handler.html)
+* [渲染接口](interfaces/render.html)
+* [系统接口](interfaces/system.html)
+* [文件接口](interfaces/file.html)
+* [字体引擎接口](interfaces/font_engine.html)
+* [文本输入处理器接口](interfaces/text_input_handler.html)
 
-Only the render interface is required to be implemented for all applications.
+只有渲染接口是所有应用程序都必须实现的。
 
-The system and file interfaces will use default implementations using standard library methods unless a custom one is installed first. A default font engine will also be installed, which loads fonts and renders glyphs using the FreeType library, unless the user provides their own.
+除非先安装自定义接口，否则系统和文件接口将使用标准库方法的默认实现。还会安装一个默认字体引擎，它使用 FreeType 库加载字体和渲染字形，除非用户提供自己的字体引擎。
 
-The text input handler might be supplied by a [default platform implementation](ime.html#default-implementation) from the backend or by an empty interface.
+文本输入处理器可能由后端的[默认平台实现](ime.html#default-implementation)提供，或由空接口提供。
 
-#### Custom interface installation
+#### 自定义接口的安装
 
-To install a custom interface, instantiate your interface and install it with the appropriate `Rml::Set*Interface()` (or `Rml::SetTextInputHandler()` for the text input handler) before you initialise RmlUi.
+要安装自定义接口，请实例化你的接口，并在初始化 RmlUi 之前使用适当的 `Rml::Set*Interface()`（文本输入处理器则使用 `Rml::SetTextInputHandler()`）安装它。
 
 ```cpp
 auto file_interface = std::make_unique<CustomFileInterface>();
@@ -39,4 +39,4 @@ file_interface.reset();
 
 ```
 
-***Lifetime notice:*** RmlUi takes non-owning pointers to the interfaces, thus, make sure to keep the interface alive until after the call to `Rml::Shutdown()`, and clean it up afterwards.
+***生命周期注意事项：*** RmlUi 持有接口的非拥有指针，因此请确保保持接口存活到调用 `Rml::Shutdown()` 之后，并在之后清理它。

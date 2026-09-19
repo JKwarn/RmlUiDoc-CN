@@ -1,37 +1,36 @@
 ---
 layout: page
-title: RML Data Display Elements
+title: RML 数据展示元素
 parent: rml
 next: element_index
 ---
 
-See also [data bindings](../data_bindings.html) for dynamically displaying and updating data from the client application.
+另请参阅[数据绑定](../data_bindings.html)，了解如何从客户端应用程序动态显示和更新数据。
 
 ### \<progress\>
 
-The `<progress>`{:.tag} element can display progress bars and gauges. For a detailed description and styling information see the [progress element]({{"pages/cpp_manual/element_packages/progress_bar.html"|relative_url}}) in the C++ Manual.
+`<progress>`{:.tag} 元素可以显示进度条和仪表。详细说明与样式信息请参阅 C++ 手册中的 [progress 元素]({{"pages/cpp_manual/element_packages/progress_bar.html"|relative_url}})。
 
-_Attributes_
+_属性_
 
 `value`{:.attr} = number (CN)
-: A number between `0` and `max`, representing the fraction of the progress element that is filled and where `max` means completely filled.
+: 介于 `0` 和 `max` 之间的数字，表示 progress 元素被填充的比例，其中 `max` 表示完全填满。
 
 `max`{:.attr} = number (CN)
-: A positive number representing the maximum value, defaults to `1`.
+: 表示最大值的正数，默认为 `1`。
 
 `direction`{:.attr} = cdata (CI)
-: The direction the progress bar expands with increasing values. Must be one of:
+: 进度条随值增大而扩展的方向。必须为以下之一：
 * `top`{:.value}
-* `right`{:.value} (default)
+* `right`{:.value}（默认）
 * `bottom`{:.value}
 * `left`{:.value}
 * `clockwise`{:.value}
 * `counter-clockwise`{:.value}
 
 `start-edge`{:.attr} = cdata (CI)
-: Only applies to `clockwise`{:.value} or `counter-clockwise`{:.value} directions. Defines which edge the
-circle should start expanding from. Must be one of:
-* `top`{:.value} (default)
+: 仅适用于 `clockwise`{:.value} 或 `counter-clockwise`{:.value} 方向。定义圆开始扩展的边。必须为以下之一：
+* `top`{:.value}（默认）
 * `right`{:.value}
 * `bottom`{:.value}
 * `left`{:.value}

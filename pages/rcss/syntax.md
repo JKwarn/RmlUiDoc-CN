@@ -1,13 +1,13 @@
 ---
 layout: page
-title: Syntax
+title: 语法
 parent: rcss
 next: selectors
 ---
 
-A style sheet is made up of a number of rules. Each rule has a number of selectors, which define which elements the rule applies to, and properties, which are applied to those elements.
+样式表由若干规则组成。每条规则包含多个选择器，用于界定规则适用的元素，以及应用于这些元素的属性。
 
-The basic syntax of a rule is as follows:
+规则的基本语法如下：
 
 ```css
 selector1,
@@ -20,59 +20,59 @@ selector3
 }
 ```
 
-Selectors are comma-separated, followed by the rule block which is defined by curly braces. Inside the rule block is a list of semi-colon separated property declarations; each property declaration is made up of the property to set, a colon, and a space-separated list of the values to assign to that property. The values accepted by each value, and how many they require, is specific to each value.
+选择器以逗号分隔，后面是花括号定义的规则块。规则块内部是由分号分隔的属性声明列表；每条属性声明由要设置的属性、一个冒号以及以空格分隔的待赋值列表组成。每个属性接受的值以及所需的数量，由该属性自身决定。
 
-### Comments
+### 注释
 
-Comments can be included in a style sheet using the C-style /* and */ characters.
+样式表中可以使用 C 风格的 /* 和 */ 字符来包含注释。
 
-### Values
+### 取值
 
-Which values each property accepts is given in their definition. Values may be keywords, which are set as specific strings such as auto, left, etc, or generic strings (such as font names or file paths), or one of the types described below.
+每个属性接受的取值在其定义中给出。取值可以是关键字（以特定字符串形式设置，如 `auto`、`left` 等）、通用字符串（如字体名称或文件路径），或下述类型之一。
 
-#### Numbers
+#### 数字
 
-Specified as <number> in a property's Values list. A number can be an integer or real number.
+在属性的取值列表中写作 `<number>`。数字可以是整数或实数。
 
 ```css
 z-index: 16;
 ```
 
-#### Lengths
+#### 长度
 
-Specified as <length> in a property's Values list. A length is a horizontal or vertical measurement consisting of a number and a unit. RCSS recognises the following units:
+在属性的取值列表中写作 `<length>`。长度是由一个数字和一个单位组成的水平或垂直度量。RCSS 支持以下单位：
 
-- `px`{:.value}: One px is equivalent to one pixel on the output medium.
-- `dp`{:.value}: One dp is equivalent to one pixel scaled by a globally defined ratio, [see below](#dp-unit).
-- `em`{:.value}: When specified in the `font-size`{:.prop} property, one em is equivalent to the font size of the parent element. For other properties, it is the font size of the element itself.
-- `rem`{:.value}: One rem is equivalent to the font size of the root (body) element.
-- `ex`{:.value}: One ex is equivalent to the height of the current font's lower-case x.
-- `vw`{:.value}: One vw is equivalent to 1% of the width of the context.
-- `vh`{:.value}: One vh is equivalent to 1% of the height of the context.
+- `px`{:.value}：一个 px 等于输出介质上的一个像素。
+- `dp`{:.value}：一个 dp 等于一个像素乘以一个全局定义的比例，[见下文](#dp-unit)。
+- `em`{:.value}：在 `font-size`{:.prop} 属性中指定时，一个 em 等于父元素的字体大小；对于其他属性，则等于元素自身的字体大小。
+- `rem`{:.value}：一个 rem 等于根（body）元素的字体大小。
+- `ex`{:.value}：一个 ex 等于当前字体小写字母 x 的高度。
+- `vw`{:.value}：一个 vw 等于上下文宽度的 1%。
+- `vh`{:.value}：一个 vh 等于上下文高度的 1%。
 
-In addition, units based on pixels-per-inch (PPI) are supported. The PPI units are defined as follows:
+此外，还支持基于每英寸像素数（PPI）的单位。PPI 单位的定义如下：
 
-- `in`{:.value}: One inch is `96dp`{:.value}.
-- `cm`{:.value}: One centimeter is `1/2.54 inch`{:.value}.
-- `mm`{:.value}: One millimeter is `1/25.4 inch`{:.value}.
-- `pt`{:.value}: One point is `1/72 inch`{:.value}.
-- `pc`{:.value}: One pica is `1/6 inch`{:.value}.
+- `in`{:.value}：一英寸等于 `96dp`{:.value}。
+- `cm`{:.value}：一厘米等于 `1/2.54 inch`{:.value}。
+- `mm`{:.value}：一毫米等于 `1/25.4 inch`{:.value}。
+- `pt`{:.value}：一点等于 `1/72 inch`{:.value}。
+- `pc`{:.value}：一派卡等于 `1/6 inch`{:.value}。
 
 ```css
 width: 125px;
 ```
 
-##### Density-independent pixel (dp)
+##### 密度无关像素（dp）
 {:#dp-unit}
 
-The `dp`{:.value} unit behaves like `px`{:.value} except that its size can be set globally to scale relative to pixels. This makes it easy to achieve a scalable user interface. Set the ratio globally on the context by calling:
+`dp`{:.value} 单位的行为与 `px`{:.value} 类似，区别在于其大小可以全局设置，以相对于像素进行缩放。这样便于实现可缩放的用户界面。通过以下调用在上下文上全局设置该比例：
 
 ```c++
 float dp_ratio = 1.5f;
 context->SetDensityIndependentPixelRatio(dp_ratio);
 ```
 
-Usage example in RCSS:
+RCSS 中的用法示例：
 ```css
 div#header
 {
@@ -82,68 +82,68 @@ div#header
 }
 ```
 
-#### Percentages
+#### 百分比
 
-Specified as `<percentage>`{:.value} in the property's Values list. A percentage value is evaluated relative to some other value, which is specified in each property that supports a percentage. For example, width can be expressed as a percentage, which is evaluated against the width of the element's containing block.
+在属性的取值列表中写作 `<percentage>`{:.value}。百分比值相对于某个其他值进行计算，该值在每个支持百分比的属性中都有说明。例如，宽度可以用百分比表示，相对于元素包含块的宽度进行计算。
 
 ```css
 min-height: 50%;
 ```
 
-#### Colours
+#### 颜色
 
-Specified as `<colour>`{:.value} in the property's Values list. Colours can be declared in numerous ways, as follows.
+在属性的取值列表中写作 `<colour>`{:.value}。颜色可以通过多种方式声明，如下所示。
 
-\<colour name\> --- Named colours
-: One of the 16 colours defined in the HTML 4.0 specification: aqua, black, blue, fuchsia, gray, green, lime, maroon, navy, olive, purple, red, silver, teal, white, and yellow. Plus grey (alias for gray), orange, and transparent.
+\<colour name\> —— 具名颜色
+: HTML 4.0 规范中定义的 16 种颜色之一：aqua、black、blue、fuchsia、gray、green、lime、maroon、navy、olive、purple、red、silver、teal、white 和 yellow。另外还有 grey（gray 的别名）、orange 和 transparent。
 
-`#RGB`{:.value}, `#RGBA`{:.value}, `#RRGGBB`{:.value}, `#RRGGBBAA`{:.value} --- Hexadecimal
-: Prefixed with `#` followed by 3, 4, 6, or 8 hexadecimal digits. 3- and 6-digit forms are RGB and opaque. 4- and 8-digit forms include an alpha channel for translucency. The 3- and 4- digit forms expand each component, e.g. `#FE0` → `#FFEE00`.
+`#RGB`{:.value}、`#RGBA`{:.value}、`#RRGGBB`{:.value}、`#RRGGBBAA`{:.value} —— 十六进制
+: 以 `#` 开头，后跟 3、4、6 或 8 位十六进制数字。3 位和 6 位形式为不透明的 RGB。4 位和 8 位形式包含用于半透明的 alpha 通道。3 位和 4 位形式会展开每个分量，例如 `#FE0` → `#FFEE00`。
 
-`rgb(r, g, b)`{:.value}, `rgba(r, g, b, a)`{:.value} --- [sRGB](https://en.wikipedia.org/wiki/SRGB)
-: - `r`, `g`, `b`: Red, green, and blue channel respectively. 0 to 255 (0% to 100%).
-  - `a`: Alpha channel. 0 to 255 (0% to 100%).\
-  **Important**: Note that the declaration of the alpha channel when using the `rgba` keyword differs from the HTML5 specification.
+`rgb(r, g, b)`{:.value}、`rgba(r, g, b, a)`{:.value} —— [sRGB](https://en.wikipedia.org/wiki/SRGB)
+: - `r`、`g`、`b`：分别为红、绿、蓝通道。取值范围 0 到 255（0% 到 100%）。
+  - `a`：Alpha 通道。取值范围 0 到 255（0% 到 100%）。\
+  **重要提示**：使用 `rgba` 关键字声明 alpha 通道的方式与 HTML5 规范不同。
 
-`hsl(h, s, l)`{:.value}, `hsla(h, s, l, a)`{:.value} --- Cylindrical [sRGB](https://en.wikipedia.org/wiki/SRGB)
-: - `h`: Hue in degrees (typed without units).
-  - `s`: Saturation. Percentage value from 0% to 100%.
-  - `l`: Lightness. Percentage value from 0% to 100%.
-  - `a`: Alpha value. 0 to 1.
+`hsl(h, s, l)`{:.value}、`hsla(h, s, l, a)`{:.value} —— 圆柱形 [sRGB](https://en.wikipedia.org/wiki/SRGB)
+: - `h`：以度为单位表示的色相（输入时不带单位）。
+  - `s`：饱和度。百分比值，范围为 0% 到 100%。
+  - `l`：亮度。百分比值，范围为 0% 到 100%。
+  - `a`：Alpha 值。取值范围 0 到 1。
 
-`lab(L a b)`{:.value}, `lab(L a b / A)`{:.value} --- [CIELAB](https://en.wikipedia.org/wiki/CIELAB_color_space)
-: - `L`: Overall lightness. 0 to 100 (0% to 100%).
-  - `a`: Distance along green-to-red axis. Typically -125 to +125 (-100% to +100%), but can be exceeded.
-  - `b`: Distance along blue-to-yellow axis. Typically -125 to +125 (-100% to +100%), but can be exceeded.
-  - `A`: Optional alpha value. 0 to 1 (0% to 100%).
+`lab(L a b)`{:.value}、`lab(L a b / A)`{:.value} —— [CIELAB](https://en.wikipedia.org/wiki/CIELAB_color_space)
+: - `L`：整体亮度。取值范围 0 到 100（0% 到 100%）。
+  - `a`：沿绿到红轴的距离。通常为 -125 到 +125（-100% 到 +100%），但可以超出。
+  - `b`：沿蓝到黄轴的距离。通常为 -125 到 +125（-100% 到 +100%），但可以超出。
+  - `A`：可选的 alpha 值。取值范围 0 到 1（0% 到 100%）。
 
-  All parameters can take the value `none`, which is equivalent to 0.
+  所有参数都可以取 `none`，其等价于 0。
 
-`lch(L C H)`{:.value}, `lch(L C H / A)`{:.value} --- Cylindrical [CIELAB](https://en.wikipedia.org/wiki/CIELAB_color_space)
-: - `L`: Overall lightness. 0 to 100 (0% to 100%).
-  - `C`: Chroma (amount of colour). Typically 0 to 150 (0% to 100%), but can be exceeded.
-  - `H`: Hue angle in degrees (typed without units).
-  - `A`: Optional alpha value. 0 to 1 (0% to 100%).
+`lch(L C H)`{:.value}、`lch(L C H / A)`{:.value} —— 圆柱形 [CIELAB](https://en.wikipedia.org/wiki/CIELAB_color_space)
+: - `L`：整体亮度。取值范围 0 到 100（0% 到 100%）。
+  - `C`：色度（色彩量）。通常为 0 到 150（0% 到 100%），但可以超出。
+  - `H`：以度为单位表示的色相角（输入时不带单位）。
+  - `A`：可选的 alpha 值。取值范围 0 到 1（0% 到 100%）。
 
-  All parameters can take the value `none`, which is equivalent to 0.
+  所有参数都可以取 `none`，其等价于 0。
 
-`oklab(L a b)`{:.value}, `oklab(L a b / A)`{:.value} --- [Oklab](https://en.wikipedia.org/wiki/Oklab_color_space)
-: - `L`: Overall lightness. 0 to 1 (0% to 100%).
-  - `a`: Distance along green-to-red axis. Typically -0.4 to +0.4 (-100% to +100%), but can be exceeded.
-  - `b`: Distance along blue-to-yellow axis. Typically -0.4 to +0.4 (-100% to +100%), but can be exceeded.
-  - `A`: Optional alpha value. 0 to 1 (0% to 100%).
+`oklab(L a b)`{:.value}、`oklab(L a b / A)`{:.value} —— [Oklab](https://en.wikipedia.org/wiki/Oklab_color_space)
+: - `L`：整体亮度。取值范围 0 到 1（0% 到 100%）。
+  - `a`：沿绿到红轴的距离。通常为 -0.4 到 +0.4（-100% 到 +100%），但可以超出。
+  - `b`：沿蓝到黄轴的距离。通常为 -0.4 到 +0.4（-100% 到 +100%），但可以超出。
+  - `A`：可选的 alpha 值。取值范围 0 到 1（0% 到 100%）。
 
-  All parameters can take the value `none`, which is equivalent to 0.
+  所有参数都可以取 `none`，其等价于 0。
 
-`oklch(L C H)`{:.value}, `oklch(L C H / A)`{:.value} --- Cylindrical [Oklab](https://en.wikipedia.org/wiki/Oklab_color_space)
-: - `L`: Overall lightness. 0 to 1 (0% to 100%).
-  - `C`: Chroma (amount of colour). Typically 0 to 0.4 (0% to 100%), but can be exceeded.
-  - `H`: Hue angle in degrees (typed without units).
-  - `A`: Optional alpha value. 0 to 1 (0% to 100%).
+`oklch(L C H)`{:.value}、`oklch(L C H / A)`{:.value} —— 圆柱形 [Oklab](https://en.wikipedia.org/wiki/Oklab_color_space)
+: - `L`：整体亮度。取值范围 0 到 1（0% 到 100%）。
+  - `C`：色度（色彩量）。通常为 0 到 0.4（0% 到 100%），但可以超出。
+  - `H`：以度为单位表示的色相角（输入时不带单位）。
+  - `A`：可选的 alpha 值。取值范围 0 到 1（0% 到 100%）。
 
-  All parameters can take the value `none`, which is equivalent to 0.
+  所有参数都可以取 `none`，其等价于 0。
 
-So, for example, the following colour declarations are identical:
+因此，例如以下颜色声明是等效的：
 
 ```css
 color: red;
@@ -169,37 +169,37 @@ color: oklch(63% 0.25 30);
 color: oklch(63% 0.25 30 / 1.0);
 ```
 
-#### Resolution
+#### 分辨率
 
-Specified as `<resolution>`{:.value} in the property's Values list. Resolution describes the scaling for high DPI displays, and can be used in media queries and sprite sheets.
+在属性的取值列表中写作 `<resolution>`{:.value}。分辨率描述高 DPI 显示器的缩放比例，可用于媒体查询和精灵表中。
 
-In RCSS, resolution is always specificied using a number (the scaling factor) followed by the `x`{:.value} unit.
+在 RCSS 中，分辨率总是用一个数字（缩放因子）后跟 `x`{:.value} 单位来指定。
 
 ```css
 @media (min-resolution: 1.2x) { /* ... */ }
 ```
 
-In this case, the specified number will be compared against the context's [dp-ratio](#dp-unit).
+在这种情况下，指定的数字将与上下文的 [dp 比例](#dp-unit) 进行比较。
 
-#### Ratio
+#### 比率
 
-Specified as `<ratio>`{:.value} in the property's Values list. A ratio is specified using the syntax `<integer> / <integer>`{:.value}.
+在属性的取值列表中写作 `<ratio>`{:.value}。比率使用 `<integer> / <integer>`{:.value} 的语法指定。
 
 ```css
 @media (min-aspect-ratio: 16 / 9) { /* ... */ }
 ```
 
-#### Variables
+#### 变量
 
-The value of a [custom property](custom_properties.html) can be substituted into a declaration using the `var()` function, optionally with a fallback value.
+使用 `var()` 函数可以将[自定义属性](custom_properties.html)的值替换到声明中，还可以附带一个回退值。
 
 ```css
 color: var(--brand, black);
 ```
 
-### Referencing RCSS from RML
+### 从 RML 引用 RCSS
 
-A style sheet can be either stored in an external file (usually with the extension .rcss) and referenced from an RML file, or declared inline inside an RML file. Referencing an external RCSS file is done using the `<link>`{:.tag} tag in the following manner:
+样式表既可以存储在外部文件中（扩展名通常为 .rcss）并从 RML 文件中引用，也可以声明在 RML 文件内部。使用 `<link>`{:.tag} 标签以如下方式引用外部 RCSS 文件：
 
 ```html
 <rml>
@@ -209,9 +209,9 @@ A style sheet can be either stored in an external file (usually with the extensi
 	...
 ```
 
-File paths are relative to the referencing document.
+文件路径相对于引用文档。
 
-Declaring an inline style sheet is done using the `<style>`{:.tag} tag, also within the <head> tag:
+使用 `<style>`{:.tag} 标签声明内联样式表，同样位于 <head> 标签内：
 
 ```html
 <rml>
@@ -226,13 +226,13 @@ Declaring an inline style sheet is done using the `<style>`{:.tag} tag, also wit
 	...
 ```
 
-Multiple style sheets can be included in a single document and combined with inline style declarations. The ordering of style declarations is important, as they may be used to resolve the precedence conflicting style sheet rules.
+单个文档中可以包含多个样式表，并与内联样式声明组合使用。样式声明的顺序很重要，因为它们可用于解决样式表规则冲突的优先级。
 
-Also, style sheet properties can be declared directly on an element. This is done by inserting semi-colon separated style sheet property declarations into the `style`{:.attr} attribute of an element. For example, the following RML fragment:
+此外，样式表属性也可以直接声明在元素上。做法是将以分号分隔的样式表属性声明插入元素的 `style`{:.attr} 属性。例如，以下 RML 片段：
 
 ```html
 <div style="width: 25%; min-width: 55px;">
 </div>
 ```
 
-sets the `width`{:.prop} property to '25%' and the `min-width`{:.prop} property to '55px' on the `div`{:.tag} element.
+在 `div`{:.tag} 元素上设置 `width`{:.prop} 属性为 '25%'、`min-width`{:.prop} 属性为 '55px'。

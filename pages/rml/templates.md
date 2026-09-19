@@ -1,42 +1,42 @@
 ---
 layout: page
-title: RML Templates
+title: RML 模板
 parent: rml
 next: syntax
 ---
 
 ### \<template\>
 
-The `<template>`{:.tag} element has two uses, to define a template and inject a template inline into an existing RML documents.
+`<template>`{:.tag} 元素有两个用途：定义模板，以及将模板内联注入现有的 RML 文档。
 
-When defining a template, `<template>`{:.tag} should be used in place of `<rml>`{:.tag}.
+定义模板时，应使用 `<template>`{:.tag} 代替 `<rml>`{:.tag}。
 
-_Attributes_
+_属性_
 
 `name`{:.attr} = cdata (CI)
-: The name of the template. Must be unique. Is used by other RML documents to reference the template.
+: 模板的名称。必须唯一。其他 RML 文档使用它来引用该模板。
 
 `content`{:.attr} = idref (CI)
-: The id of the element that the content will be put into.
+: 内容将被放入的元素的 id。
 
-When injecting a template, all elements inside the `<template>`{:.tag} tag will be placed inside the template's content element.
+注入模板时，`<template>`{:.tag} 标签内的所有元素都将被放入模板的内容元素中。
 
 `src`{:.attr} = cdata (CS)
-: For inline templates, the name of the template to inject.
+: 对于内联模板，是要注入的模板的名称。
 
 ### \<body\>
 
-The `<body>`{:.tag} element has a `template`{:.attr} attribute that is a shorthand for injecting a template around the body tag.
+`<body>`{:.tag} 元素具有一个 `template`{:.attr} 属性，该属性是在 body 标签周围注入模板的简写形式。
 
-_Attributes_
+_属性_
 
 `template`{:.attr} = cdata (CS)
-: The name of the template to use. All child elements under the `<body>`{:.tag} element will be loaded into the template.
+: 要使用的模板的名称。`<body>`{:.tag} 元素下的所有子元素都将被加载到模板中。
 
 
-### Example
+### 示例
 
-Start by defining a template file `basic.rml`:
+首先定义一个模板文件 `basic.rml`：
 
 ```html
 <template name="basic" content="content">
@@ -50,9 +50,9 @@ Start by defining a template file `basic.rml`:
 </template>
 ```
 
-#### Body template
+#### 正文模板
 
-The template can then be used as a body template in a document as follows.
+然后可以在文档中按如下方式将该模板用作正文模板。
 
 
 ```html
@@ -67,7 +67,7 @@ The template can then be used as a body template in a document as follows.
 </rml>
 ```
 
-The template is then injected with the document body contents inserted into the `#content` element defined in the template. The resulting document structure is as follows:
+然后，将模板注入，文档正文内容被插入到模板中定义的 `#content` 元素内。最终的文档结构如下：
 
 ```
 body.window
@@ -75,9 +75,9 @@ body.window
   p#content  "A paragraph."
 ```
 
-#### Inline template
+#### 内联模板
 
-The template can also be inserted inline into the document using the `<template src="[name]">` element.
+也可以使用 `<template src="[name]">` 元素将模板内联插入到文档中。
 
 ```html
 <rml>
@@ -96,7 +96,7 @@ The template can also be inserted inline into the document using the `<template 
 </rml>
 ```
 
-Which results in the following document structure:
+得到的文档结构如下：
 
 ```
 body
@@ -106,4 +106,4 @@ body
     p#content  "Another paragraph."
 ```
 
-Note that the body class from the template is not inserted in this case. However, headers, including styles, are inserted as normal.
+请注意，在这种情况下，模板中的 body 类不会被插入。不过，头部（包括样式）会正常插入。

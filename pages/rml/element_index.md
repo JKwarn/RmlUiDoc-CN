@@ -1,12 +1,12 @@
 ---
 layout: page
-title: Element Index
+title: 元素索引
 parent: rml
 next: html4_style_sheet
 comment: Please run '_tools/generate_elements_and_properties_index.py' whenever elements or their URLs are added or changed.
 ---
 
-The following is a list of elements supported by RML:
+以下是 RML 支持的元素列表：
 
 - [`<rml>`{:.tag}](documents.html#rml)
 - [`<head>`{:.tag}](documents.html#head)
@@ -28,11 +28,11 @@ The following is a list of elements supported by RML:
 - [`<panel>`{:.tag}](controls.html#panel)
 - [`<progress>`{:.tag}](data_display.html#progress)
 
-See also [element packages]({{"pages/cpp_manual/element_packages.html"|relative_url}}) in the C++ manual for controlling the behavior of several of these elements.
+另请参阅 C++ 手册中的[元素包]({{"pages/cpp_manual/element_packages.html"|relative_url}})，了解如何控制其中多个元素的行为。
 
-RmlUi does not provide a default style sheet, thus, tags which only represent a specific style rule in HTML have no special meaning in RmlUi, such as `<div>`{:.tag}, `<span>`{:.tag} and `<table>`{:.tag}. Users can include the [recommended style sheet](html4_style_sheet.html) to enable common rules for these tags.
+RmlUi 不提供默认样式表，因此，那些在 HTML 中仅代表特定样式规则的标签在 RmlUi 中并无特殊含义，例如 `<div>`{:.tag}、`<span>`{:.tag} 和 `<table>`{:.tag}。用户可以包含[推荐样式表](html4_style_sheet.html)来为这些标签启用通用规则。
 
-The following elements are additionally enabled when including their respective plugins:
+在包含相应插件时，以下元素也会被启用：
 
 - [`<script>`{:.tag}](documents.html#script)
 - [`<lottie>`{:.tag}](../cpp_manual/lottie.html)

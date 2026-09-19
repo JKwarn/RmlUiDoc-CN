@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Planned Features
+title: 计划中的功能
 ---
 
-Have a look at the [discussions]({{page.lib_site}}/issues/) on GitHub for the main features being worked on or considered.
+请查看 GitHub 上的[讨论]({{page.lib_site}}/issues/)，了解正在开发或考虑中的主要功能。

@@ -1,31 +1,31 @@
 ---
 layout: page
-title: RML Events
+title: RML 事件
 parent: rml
 next: images
 ---
 
-The event system is based on the extremely flexible DOM event system. When an event is fired at a target element, it **captures** from the root to the target and then **bubbles** back up to the root. Event listeners can be attached in either capture or bubble phase. Binding done in RML will always attach to the bubble phase.
+事件系统基于极为灵活的 DOM 事件系统。当事件在目标元素上触发时，它会从根元素**捕获**到目标元素，然后再**冒泡**回根元素。事件监听器可以在捕获阶段或冒泡阶段附加。在 RML 中进行的绑定始终附加在冒泡阶段。
 
-Some events do not execute the bubble phase. For additional details, see the [C++ events documentation](../cpp_manual/events.html).
+某些事件不会执行冒泡阶段。更多细节，请参阅 [C++ 事件文档](../cpp_manual/events.html)。
 
-### RML binding
+### RML 绑定
 
-Event listeners can be bound to an element declared in RML by specifying an attribute with the name of the event to bind to prefixed with `on`{:.attr}. For example, to bind a listener to the `click`{:.evt} event, you would declare something like the following:
+可以通过在 RML 中声明的元素上指定一个属性来绑定事件监听器，该属性的名称是要绑定的事件名称，并带有 `on`{:.attr} 前缀。例如，要将监听器绑定到 `click`{:.evt} 事件，可以声明如下内容：
 
 ```html
 <button onclick="load game">Start Game</button>
 ```
 
-Note that this is the only time you prefix the event name with `on`{:.attr}; all other times an event is referenced, it is done so simply with its name.
+请注意，这是唯一需要在事件名称前加 `on`{:.attr} 前缀的地方；其他所有引用事件的地方，都只使用事件名称本身。
 
-By default, the above binds the listener to the bubble phase. In some rare cases, one might instead want to bind the listener to the capture phase. In RmlUi, this can be done by appending `capture`{:.attr} to the attribute, as in `<button onclickcapture="load game">`.
+默认情况下，上述绑定将监听器绑定到冒泡阶段。在少数情况下，可能希望将监听器绑定到捕获阶段。在 RmlUi 中，可以通过在属性名后附加 `capture`{:.attr} 来实现，例如 `<button onclickcapture="load game">`。
 
-### Events
+### 事件
 
-Below is a list of events and their associated event attributes.
+下面是事件列表及其关联的事件属性。
 
-A number of input events send through key modifiers. In this case the following parameters are set to true if the key modifier is active when the action takes place:
+许多输入事件会传递按键修饰符。在这种情况下，如果动作发生时按键修饰符处于激活状态，以下参数将被设为 true：
 
 * ctrl_key
 * shift_key
@@ -35,186 +35,186 @@ A number of input events send through key modifiers. In this case the following 
 * num_lock_key
 * scroll_lock_key
 
-#### General Events
+#### 常规事件
 
 `show`{:.evt}
-: Sent to a document when it is made visible.
+: 当文档变为可见时发送给文档。
 
 `hide`{:.evt}
-: Sent to a document when it is made invisible.
+: 当文档变为不可见时发送给文档。
 
 `resize`{:.evt}
-: Sent to a document when its context has been resized.
+: 当文档的上下文被调整大小时发送给文档。
 
 `scroll`{:.evt}
-: Sent to an element when it is scrolled.
+: 当元素被滚动时发送给该元素。
 
 `focus`{:.evt}
-: Sent to an element when it becomes the main focus.
-* `focus_visible`: Set to true if focus should be visually indicated.
+: 当元素成为主焦点时发送给该元素。
+* `focus_visible`：如果焦点应通过视觉方式指示，则设为 true。
 
 `blur`{:.evt}
-: Sent to an element when it has focus removed.
+: 当元素失去焦点时发送给该元素。
 
 
-#### Keyboard Events
+#### 键盘事件
 
 `keydown`{:.evt}
-: Sent to the focus element when a key is pressed.
-* `key_identifier`: A value from the `Rml::Input::KeyIdentifier` enumeration (found in `<RmlUi/Core/Input.h>`{:.incl}).
-* Key modifiers.
+: 当按下按键时发送给焦点元素。
+* `key_identifier`：来自 `Rml::Input::KeyIdentifier` 枚举（位于 `<RmlUi/Core/Input.h>`{:.incl}）的值。
+* 按键修饰符。
 
 `keyup`{:.evt}
-: Sent to the focus element when a key is released.
-* `key_identifier`: A value from the `Rml::Input::KeyIdentifier` enumeration.
-* Key modifiers.
+: 当松开按键时发送给焦点元素。
+* `key_identifier`：来自 `Rml::Input::KeyIdentifier` 枚举的值。
+* 按键修饰符。
 
 `textinput`{:.evt}
-: Sent to the focus element when one or more text characters are entered.
-* `text`: An `Rml::String` of characters encoded in UTF-8.
+: 当输入一个或多个文本字符时发送给焦点元素。
+* `text`：以 UTF-8 编码的 `Rml::String` 字符。
 
-#### Mouse Events
+#### 鼠标事件
 
-All mouse events send through key modifiers.
+所有鼠标事件都会传递按键修饰符。
 
 `click`{:.evt}
-: Sent to the element under the mouse cursor when a mouse button is clicked. A click is defined as a button press followed by a button release over the same element.
-* `mouse_x`: The mouse x position within the context.
-* `mouse_y`: The mouse y position within the context.
-* `button`: The mouse button number that was clicked.
+: 当鼠标按钮在某个元素上被点击时，发送给鼠标光标下的元素。点击定义为在同一元素上按下按钮并随后释放按钮。
+* `mouse_x`：鼠标在上下文中的 x 位置。
+* `mouse_y`：鼠标在上下文中的 y 位置。
+* `button`：被点击的鼠标按钮编号。
 
 `dblclick`{:.evt}
-: Sent to the element under the mouse cursor when a mouse button is double clicked. Note that the `click`{:.attr} event will always be sent before `dblclick`{:.evt}.
-* `mouse_x`: The mouse x position within the context.
-* `mouse_y`: The mouse y position within the context.
-* `button`: The mouse button number that was clicked.
+: 当鼠标按钮在某个元素上被双击时，发送给鼠标光标下的元素。请注意，`click`{:.attr} 事件总是会在 `dblclick`{:.evt} 之前发送。
+* `mouse_x`：鼠标在上下文中的 x 位置。
+* `mouse_y`：鼠标在上下文中的 y 位置。
+* `button`：被点击的鼠标按钮编号。
 
 `mouseover`{:.evt}
-: Sent to an element as the mouse cursor moves onto it.
-* `mouse_x`: The mouse x position within the context.
-* `mouse_y`: The mouse y position within the context.
+: 当鼠标光标移动到元素上时发送给该元素。
+* `mouse_x`：鼠标在上下文中的 x 位置。
+* `mouse_y`：鼠标在上下文中的 y 位置。
 
 `mouseout`{:.evt}
-: Sent to an element as the mouse cursor moves off it.
-* `mouse_x`: The mouse x position within the context.
-* `mouse_y`: The mouse y position within the context.
+: 当鼠标光标移出元素时发送给该元素。
+* `mouse_x`：鼠标在上下文中的 x 位置。
+* `mouse_y`：鼠标在上下文中的 y 位置。
 
 `mousemove`{:.evt}
-: Sent to the element under the mouse cursor when the mouse is moved.
-* `mouse_x`: The mouse x position within the context.
-* `mouse_y`: The mouse y position within the context.
+: 当鼠标移动时，发送给鼠标光标下的元素。
+* `mouse_x`：鼠标在上下文中的 x 位置。
+* `mouse_y`：鼠标在上下文中的 y 位置。
 
 `mouseup`{:.evt}
-: Sent to the element under the mouse cursor when a mouse button is released.
-* `mouse_x`: The mouse x position within the context.
-* `mouse_y`: The mouse y position within the context.
-* `button`: The mouse button number that was released.
+: 当鼠标按钮被释放时，发送给鼠标光标下的元素。
+* `mouse_x`：鼠标在上下文中的 x 位置。
+* `mouse_y`：鼠标在上下文中的 y 位置。
+* `button`：被释放的鼠标按钮编号。
 
 `mousedown`{:.evt}
-: Sent to the element under the mouse cursor when a mouse button is pressed down.
-* `mouse_x`: The mouse x position within the context.
-* `mouse_y`: The mouse y position within the context.
-* `button`: The mouse button number that was pressed.
+: 当鼠标按钮被按下时，发送给鼠标光标下的元素。
+* `mouse_x`：鼠标在上下文中的 x 位置。
+* `mouse_y`：鼠标在上下文中的 y 位置。
+* `button`：被按下的鼠标按钮编号。
 
 `mousescroll`{:.evt}
-: Sent to the focus element when the mouse's scroll wheel is scrolled, or [autoscroll mode](../cpp_manual/contexts.html#autoscroll) is being initiated. The scroll can be cancelled by stopping the event's propagation.
-* `mouse_x`: The mouse x position within the context.
-* `mouse_y`: The mouse y position within the context.
-* `wheel_delta_x`: The distance the wheel has been scrolled horizontally, as a float value with positive values to the right.
-* `wheel_delta_y`: The distance the wheel has been scrolled vertically, as a float value with positive values down.
-* `autoscroll`: Set to true if autoscroll is being initiated.
+: 当鼠标滚轮被滚动，或正在启动[自动滚动模式](../cpp_manual/contexts.html#autoscroll)时，发送给焦点元素。可以通过停止事件的传播来取消滚动。
+* `mouse_x`：鼠标在上下文中的 x 位置。
+* `mouse_y`：鼠标在上下文中的 y 位置。
+* `wheel_delta_x`：滚轮水平滚动的距离，为浮点值，正值表示向右。
+* `wheel_delta_y`：滚轮垂直滚动的距离，为浮点值，正值表示向下。
+* `autoscroll`：如果正在启动自动滚动，则设为 true。
 
-#### Dragging Events
+#### 拖拽事件
 
-All mouse drag events send through key modifiers.
+所有鼠标拖拽事件都会传递按键修饰符。
 
 `dragstart`{:.evt}
-: Sent to an element when it is first dragged, before the first drag event.
-* `mouse_x`: The mouse x position within the context.
-* `mouse_y`: The mouse y position within the context.
-* `drag_element`: The element that is being dragged.
+: 当元素第一次被拖拽时，在第一个拖拽事件之前发送给该元素。
+* `mouse_x`：鼠标在上下文中的 x 位置。
+* `mouse_y`：鼠标在上下文中的 y 位置。
+* `drag_element`：正在被拖拽的元素。
 
 `dragend`{:.evt}
-: Sent to the dragged element when the mouse button is released.
-* `mouse_x`: The mouse x position within the context.
-* `mouse_y`: The mouse y position within the context.
-* `drag_element`: The element that is being dragged.
+: 当鼠标按钮被释放时，发送给被拖拽的元素。
+* `mouse_x`：鼠标在上下文中的 x 位置。
+* `mouse_y`：鼠标在上下文中的 y 位置。
+* `drag_element`：正在被拖拽的元素。
 
 `drag`{:.evt}
-: Sent to the dragged element when the mouse is moved.
-* `mouse_x`: The mouse x position within the context.
-* `mouse_y`: The mouse y position within the context.
-* `drag_element`: The element that is being dragged.
+: 当鼠标移动时，发送给被拖拽的元素。
+* `mouse_x`：鼠标在上下文中的 x 位置。
+* `mouse_y`：鼠标在上下文中的 y 位置。
+* `drag_element`：正在被拖拽的元素。
 
-The following events are only sent if the dragged element has a drag property of **drag-drop**. They are sent to elements other than the dragged element, usually as the mouse moves across them.
+以下事件仅在拖拽元素具有 **drag-drop** 拖拽属性时发送。它们被发送给被拖拽元素以外的元素，通常在鼠标光标经过这些元素时发送。
 
 `dragover`{:.evt}
-: Sent during a drag operation to an element when the mouse cursor is moved onto the element (similarly to the mouseover event).
-* `mouse_x`: The mouse x position within the context.
-* `mouse_y`: The mouse y position within the context.
-* `drag_element`: The element that is being dragged.
+: 在拖拽操作期间，当鼠标光标移动到某个元素上时发送给该元素（与 mouseover 事件类似）。
+* `mouse_x`：鼠标在上下文中的 x 位置。
+* `mouse_y`：鼠标在上下文中的 y 位置。
+* `drag_element`：正在被拖拽的元素。
 
 `dragout`{:.evt}
-: Sent during a drag operation to an element when the mouse cursor is moved off the element (similarly to the mouseout event).
-* `mouse_x`: The mouse x position within the context.
-* `mouse_y`: The mouse y position within the context.
-* `drag_element`: The element that is being dragged.
+: 在拖拽操作期间，当鼠标光标移出某个元素时发送给该元素（与 mouseout 事件类似）。
+* `mouse_x`：鼠标在上下文中的 x 位置。
+* `mouse_y`：鼠标在上下文中的 y 位置。
+* `drag_element`：正在被拖拽的元素。
 
 `dragmove`{:.evt}
-: Sent during a drag operation to the top-most element being hovered over (excluding the dragged element) when the mouse is moved.
-* `mouse_x`: The mouse x position within the context.
-* `mouse_y`: The mouse y position within the context.
-* `drag_element`: The element that is being dragged.
+: 在拖拽操作期间，当鼠标移动时，发送给鼠标悬停的最顶层元素（不包括被拖拽的元素）。
+* `mouse_x`：鼠标在上下文中的 x 位置。
+* `mouse_y`：鼠标在上下文中的 y 位置。
+* `drag_element`：正在被拖拽的元素。
 
 `dragdrop`{:.evt}
-: Sent at the end of a drag operation to the element the cursor is hovering over.
-* `mouse_x`: The mouse x position within the context.
-* `mouse_y`: The mouse y position within the context.
-* `drag_element`: The element that is being dragged.
+: 在拖拽操作结束时，发送给光标悬停在上方的元素。
+* `mouse_x`：鼠标在上下文中的 x 位置。
+* `mouse_y`：鼠标在上下文中的 y 位置。
+* `drag_element`：正在被拖拽的元素。
 
 
-#### Animation events
+#### 动画事件
 
 `animationend`{:.evt}
-: Sent when an animation has finished executing.
-* `property`: The name of the property which has finished animating.
+: 当动画执行完毕时发送。
+* `property`：已完成动画的属性的名称。
 
 `transitionend`{:.evt}
-: Sent when a transition has finished executing.
-* `property`: The name of the property which has finished transitioning.
+: 当过渡执行完毕时发送。
+* `property`：已完成过渡的属性的名称。
 
-#### Form Events
+#### 表单事件
 
 `submit`{:.evt}
-: Sent to the form when it is submitted.
-* `parameters`: The event object will have an attribute for each named value in the form.
+: 当表单被提交时发送给表单。
+* `parameters`：事件对象将为表单中的每个命名值包含一个属性。
 
-#### Form Control Events
+#### 表单控件事件
 
 `change`{:.evt}
-: Sent to a form control when its value is changed.
-  * `value`: The new value.
+: 当表单控件的值发生变化时发送给该控件。
+  * `value`：新的值。
 
-  Additionally, for checkboxes and radio buttons only:
-  * `checked`: The new boolean checked state of the element.
+  此外，仅适用于复选框和单选按钮：
+  * `checked`：元素新的布尔选中状态。
 
-#### Document Events
+#### 文档事件
 
 `load`{:.evt}
-: Sent to a document when it is initially loaded.
+: 当文档初始加载时发送给文档。
 
 `unload`{:.evt}
-: Sent to a document when it is unloaded.
+: 当文档被卸载时发送给文档。
 
-#### Handle Events
+#### 句柄事件
 
 `handledrag`{:.evt}
-: Sent to the handle when it is moved.
-* `handle_x`: Handle x position.
-* `handle_y`: Handle y position.
+: 当句柄被移动时发送给句柄。
+* `handle_x`：句柄的 x 位置。
+* `handle_y`：句柄的 y 位置。
 
-#### TabSet Events
+#### 选项卡集事件
 
 `tabchange`{:.evt}
-: Sent to the tab set when the active tab is changed.
-* `tab_index`: The new tab index.
+: 当活动标签页被更改时发送给选项卡集。
+* `tab_index`：新的标签页索引。

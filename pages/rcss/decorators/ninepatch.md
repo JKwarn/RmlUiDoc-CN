@@ -1,58 +1,58 @@
 ---
 layout: page
-title: Ninepatch decorator
+title: 九宫格装饰器
 grandparent: rcss
 parent: rcss/decorators
 next: gradient
 ---
 
-The `ninepatch`{:.prop} decorator splits a sprite into a 3x3 grid of patches by declaring another inner sprite. The corners of the ninepatch are rendered at their native size by default, while the inner patches are stretched so that the whole element is filled. In a sense, it can be considered a simplified and more performant version of the `tiled-box`{:.prop} decorator.
+`ninepatch`{:.prop} 装饰器通过声明另一个内部精灵，将一个精灵分割成 3x3 的补丁网格。九宫格的角落默认以自然大小渲染，而内部补丁被拉伸，以便整个元素被填满。从某种意义上说，它可以被视为 `tiled-box`{:.prop} 装饰器的简化且更高性能的版本。
 
 ```css
 decorator: ninepatch( <outer>, <inner>, <edge>? ) <paint-area>?;
 ```
 
 
-### Properties
+### 属性
 
 `outer`{:.prop}
 
-Value: | \<string\>
-Initial: | N/A
-Percentages: | N/A
+取值： | \<string\>
+初始值： | 不适用
+百分比： | 不适用
 
-This property defines a [sprite name](../sprite_sheets.html). The sprite declares the outer rectangle of the decorator. Image urls cannot be used in this decorator.
+此属性定义[精灵名称](../sprite_sheets.html)。该精灵声明装饰器的外矩形。此装饰器不能使用图像 URL。
 
 `inner`{:.prop}
 
-Value: | \<string\>
-Initial: | N/A
-Percentages: | N/A
+取值： | \<string\>
+初始值： | 不适用
+百分比： | 不适用
 
-This property defines a [sprite name](../sprite_sheets.html), and must be located in the same sprite sheet as `outer`{:.prop}. The inner sprite declares the inner rectangle of the decorator.
+此属性定义[精灵名称](../sprite_sheets.html)，并且必须与 `outer`{:.prop} 位于同一精灵表中。内部精灵声明装饰器的内矩形。
 
-The area between the inner and outer rectangle defines the decorator's corners and edges. The corners are fixed in size, the edges only scale in one direction, while the center is stretched to cover the remaining area of the element's boundaries.
+内矩形和外矩形之间的区域定义装饰器的角落和边缘。角落大小固定，边缘只沿一个方向缩放，而中心被拉伸以覆盖元素边界的剩余区域。
 
 `edge`{:.prop}
 
-Value: | \<number-length-percentage-box\>
-Initial: | 0px 0px 0px 0px
-Percentages: | relative to the size of the edge and current dp-ratio
+取值： | \<number-length-percentage-box\>
+初始值： | 0px 0px 0px 0px
+百分比： | 相对于边缘的大小和当前 dp 比例
 
-The edge property is specified in the common `top-right-bottom-left`{:.value} box order. If the property is specified (not all 0px), the rendered size of each edge can be specified as a length, or number/percentage to scale it relative to the natural size of the image edge. The natural size is determined by the sprite's associated [`resolution`{:.prop} property](../sprite_sheets.html#resolution) and the current [dp-ratio](../syntax.html#dp-unit). The normal box shorthands are available, e.g., a single value will be replicated to all edges.
+edge 属性以常见的 `top-right-bottom-left`{:.value} 盒子顺序指定。如果指定了该属性（并非全为 0px），则每个边缘的渲染大小可以指定为长度，或者指定为数字/百分比以相对图像边缘的自然大小进行缩放。自然大小由精灵关联的 [`resolution`{:.prop} 属性](../sprite_sheets.html#resolution)和当前的 [dp 比例](../syntax.html#dp-unit)决定。可以使用常见的盒子简写，例如，单个值将复制到所有边缘。
 
 `paint-area`{:.prop}
 
-Value: | border-box \| padding-box \| content-box
-Initial: | padding-box
-Percentages: | N/A
+取值： | border-box \| padding-box \| content-box
+初始值： | padding-box
+百分比： | 不适用
 
-Declares the box area to render the decorator onto.
+声明渲染装饰器的盒区域。
 
 
-### Example
+### 示例
 
-In this example, a ninepatch decorator for a text area is defined. The decorator is specified by two sprites, defining an outer and an inner rectangle.
+在此示例中，为文本区域定义了一个九宫格装饰器。该装饰器由两个精灵指定，分别定义一个外矩形和一个内矩形。
 
 ```css
 @spritesheet textarea {
@@ -62,13 +62,13 @@ In this example, a ninepatch decorator for a text area is defined. The decorator
 }
 ```
 
-The sprites are illustrated in the following image, where the outer sprite covers the full image, while the inner sprite is located within the displayed border.
+精灵在下面的图像中说明，其中外部精灵覆盖整个图像，而内部精灵位于显示的边框内。
 
 ![Sprites of the ninepatch decorator](../../../assets/images/decorators/ninepatch-sprites.png)
 
-The inner rectangle defines the parts of the sprite that will be stretched when the element is resized.
+内矩形定义元素调整大小时将被拉伸的精灵部分。
 
-The `ninepatch`{:.prop} decorator is applied as follows:
+`ninepatch`{:.prop} 装饰器按如下方式应用：
 
 ```css
 .ninepatch {
@@ -76,17 +76,17 @@ The `ninepatch`{:.prop} decorator is applied as follows:
 }
 ```
 
-When the ninepatch decorator is applied and the element is stretched, the following is rendered. Notice that the corners stay fixed, and the inner sprite is stretched.
+当九宫格装饰器被应用且元素被拉伸时，会渲染出以下效果。请注意，角落保持固定，内部精灵被拉伸。
 
 ![A stretched ninepatch decorator](../../../assets/images/decorators/ninepatch.png)
 
-Furthermore, the ninepatch decorator can have the rendered size of its edges specified manually.
+此外，九宫格装饰器的边缘可以手动指定渲染大小。
 
 ```css
 decorator: ninepatch(textarea, textarea-inner, 19px 12px 25px 12px);
 ```
 
-Percent and numbers can also be used, they will scale relative to the natural size of the given edge. Thus, the following will double the size of all edges.
+也可以使用百分比和数字，它们将相对给定边缘的自然大小进行缩放。因此，以下内容将使所有边缘的大小加倍。
 
 ```css
 decorator: ninepatch(textarea, textarea-inner, 2.0);

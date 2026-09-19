@@ -1,44 +1,44 @@
 ---
 layout: page
-title: Visual formatting model
+title: 视觉格式化模型
 parent: rcss
 next: visual_formatting_model_details
 ---
 
-The visual formatting model used in RCSS is almost identical to that of [CSS](http://www.w3.org/TR/REC-CSS2/visuren.html), and it is recommended you read that for a detailed explanation of how RmlUi builds and places element boxes. A short summary can be found below.
+RCSS 使用的视觉格式化模型与 [CSS](http://www.w3.org/TR/REC-CSS2/visuren.html) 几乎相同，建议你阅读该文档以了解 RmlUi 如何构建和放置元素盒子的详细说明。下面是一个简短总结。
 
-The differences between CSS and RCSS are:
+CSS 与 RCSS 之间的差异：
 
-* The dimensions of the viewport are defined as the dimensions of the context the document is being rendered in.
-* The document element (the root) is always absolutely positioned, and can be positioned within its context using `top`{:.prop}, `right`{:.prop}, `bottom`{:.prop} and `left`{:.prop}.
-* There are no default styles in RCSS, including for built-in elements such as scrollbars and form controls. Please see the [style guide](../style_guide.html) for how to style and size these elements.
-* Generated content is not yet supported.
+* 视口的尺寸被定义为文档渲染所在上下文的尺寸。
+* 文档元素（根元素）始终是绝对定位的，可以使用 `top`{:.prop}、`right`{:.prop}、`bottom`{:.prop} 和 `left`{:.prop} 在其上下文内定位。
+* RCSS 没有默认样式，包括滚动条和表单控件等内置元素。请参阅[样式指南](../style_guide.html)了解如何设置这些元素的样式和尺寸。
+* 尚不支持生成内容。
 
-### Introduction to the visual formatting model
+### 视觉格式化模型简介
 
-During document layout, each element generates zero or more boxes. How these boxes are sized and laid out within their document is governed by:
+在文档布局期间，每个元素生成零个或多个盒子。这些盒子在其文档中的尺寸和布局方式由以下因素决定：
 
-* The box type (either block, for boxes generally laid out top-to-bottom, or inline, for boxes laid out along a line).
-* The box size; this could either be derived from intrinsic dimensions for elements such as images and form controls, or specified directly through RCSS properties, or determined by the contents of the box.
-* Relationships of the box to other boxes in the document tree, such as floating boxes.
+* 盒子类型（块级，用于通常从上到下布局的盒子；或行内，用于沿一行布局的盒子）。
+* 盒子尺寸；这可以从图像和表单控件等元素的固有尺寸推导，也可以通过 RCSS 属性直接指定，或者由盒子的内容决定。
+* 盒子与文档树中其他盒子的关系，例如浮动盒子。
 
-#### Containing blocks
+#### 包含块
 
-Every box has a 'containing block', a rectangular box with a fixed width and height. The dimensions of this box are used to evaluate such things as relative widths and margins. In general, a box will establish the containing block for its descendant elements, depending on the box's type.
+每个盒子都有一个"包含块"，即具有固定宽度和高度的矩形盒子。该盒子的尺寸用于计算相对宽度和外边距等。通常，一个盒子会根据其类型为其后代元素建立包含块。
 
-A box is not necessarily constrained by the dimensions of its containing block, it may overflow along the x- or y-axes.
+盒子不一定受其包含块尺寸的约束，它可以沿 x 轴或 y 轴溢出。
 
-The containing block of the root document element is set by the dimensions of the document's context. The document element will generally establish a containing block for its descendants. However, it if does not have a fixed height, the height of the context will be used.
+根文档元素的包含块由文档上下文的尺寸设置。文档元素通常会为其后代建立包含块。但是，如果它没有固定的高度，则将使用上下文的高度。
 
-### Controlling box generation
+### 控制盒子的生成
 
-#### Block level elements and block boxes
+#### 块级元素与块级盒子
 
-Block-level elements are those that are formatted as blocks, flowing visually down the document from top to bottom (such as paragraphs). Elements with a `display`{:.prop} of `block`{:.value} acts as a block container for its children, as do any `absolute`{:.value} or `fixed`{:.value} positioned elements and floating elements.
+块级元素是那些被格式化为块、在文档中视觉上从上到下流动的元素（如段落）。`display`{:.prop} 为 `block`{:.value} 的元素作为其子元素的块级容器，任何 `absolute`{:.value} 或 `fixed`{:.value} 定位的元素以及浮动元素也是如此。
 
-Block-level elements generate exactly one block box that itself contains only block boxes. If any inline elements are inside this block box, an anonymous block box is created (one not representing any specific element) to hold and place the inline content. The anonymous block box is positioned with the original block box just like any other block box.
+块级元素恰好生成一个块级盒子，该盒子本身只包含块级盒子。如果该块级盒子内部有任何行内元素，则会创建一个匿名块级盒子（一个不代表任何特定元素的盒子）来容纳和放置行内内容。该匿名块级盒子与原始块级盒子一起定位，就像任何其他块级盒子一样。
 
-So, while processing the following RML fragment (assuming `div`{:.tag} and `p`{:.tag} elements are block, and `img`{:.tag} elements are inline):
+因此，在处理以下 RML 片段时（假设 `div`{:.tag} 和 `p`{:.tag} 元素是块级的，`img`{:.tag} 元素是行内的）：
 
 ```html
 <div>
@@ -50,239 +50,239 @@ So, while processing the following RML fragment (assuming `div`{:.tag} and `p`{:
 </div>
 ```
 
-the first `div`{:.tag} would generate a block box. This box would establish the containing block for its descendants. The second `div`{:.tag} would generate a block box using the first's containing block, as would the `p`{:.tag} element. The `img`{:.tag} element would be placed inside an anonymous block box, which would be positioned within the `p`{:.tag} tag and generated with its containing block.
+第一个 `div`{:.tag} 会生成一个块级盒子。该盒子会为其后代建立包含块。第二个 `div`{:.tag} 会使用第一个的包含块生成一个块级盒子，`p`{:.tag} 元素也是如此。`img`{:.tag} 元素会被放置在一个匿名块级盒子中，该盒子会在 `p`{:.tag} 标签内定位，并使用其包含块生成。
 
-#### Inline-level elements and inline boxes
+#### 行内级元素与行内盒子
 
-Inline-level elements are those elements that do not generate blocks of content, but flow their content into lines contained by a block box. Elements with a `display`{:.prop} property of `inline`{:.value} or `inline-block`{:.value} generate inline boxes.
+行内级元素是那些不会生成内容块，而是将其内容流入由块级盒子包含的行的元素。`display`{:.prop} 属性为 `inline`{:.value} 或 `inline-block`{:.value} 的元素生成行内盒子。
 
-Loose text within elements also generates inline boxes.
+元素内的松散文本也会生成行内盒子。
 
-#### The 'display' property
+#### 'display' 属性
 {:#display}
 
 `display`{:.prop}
 
-Value: | inline \| block \| inline-block \| flow-root \| flex \| inline-flex \| table \| inline-table \| table-row-group \| table-row \| table-column-group \| table-column \| table-cell \| none
-Initial: | inline
-Applies to: | all elements
-Inherited: | no
-Percentages: | N/A
+取值： | inline \| block \| inline-block \| flow-root \| flex \| inline-flex \| table \| inline-table \| table-row-group \| table-row \| table-column-group \| table-column \| table-cell \| none
+初始值： | inline
+适用于： | 所有元素
+继承： | 否
+百分比： | 不适用
 
-The values have the following meanings:
+这些取值含义如下：
 
 `block`{:.value}
-: This element generates a block box.
+: 该元素生成一个块级盒子。
 
 `inline`{:.value}
-: This element generates one or more inline boxes.
+: 该元素生成一个或多个行内盒子。
 
 `inline-block`{:.value}
-: This element generates a block container for its descendants, but participates in inline layout itself. This is similar to the behavior of replaced elements (those with intrinsic widths).
+: 该元素为其后代生成一个块级容器，但自身参与行内布局。这与可替换元素（具有固有宽度的元素）的行为类似。
 
 `flow-root`{:.value}
-: This element generates a block box, and always establishes a new block formatting context. This is useful for example to ensure floated children are completely contained within this element.
+: 该元素生成一个块级盒子，并始终建立一个新的块级格式化上下文。例如，这对于确保浮动的子元素完全包含在该元素内很有用。
 
-`flex, inline-flex`{:.value}
-: This element generates a flex container, and all its children are formatted as flex items, see [flexbox layout](flexboxes.html) for details.
+`flex、inline-flex`{:.value}
+: 该元素生成一个 flex 容器，其所有子元素都被格式化为 flex 项目，详见 [flexbox 布局](flexboxes.html)。
 
-`table, inline-table, table-row-group, table-row, table-column-group, table-column, table-cell`{:.value}
-: These values are used for defining and structuring [tables](tables.html).
+`table、inline-table、table-row-group、table-row、table-column-group、table-column、table-cell`{:.value}
+: 这些取值用于定义和构建[表格](tables.html)。
 
 `none`{:.value}
-: This element (including all descendants) generates no boxes, and is not displayed. This implies that the element will not affect layout. The `visibility`{:.prop} property can be used to make an element affect layout but not be rendered.
+: 该元素（包括所有后代）不生成任何盒子，也不显示。这意味着该元素不会影响布局。`visibility`{:.prop} 属性可用于使元素影响布局但不被渲染。
 
-These values all correspond to the ones available for the [CSS display property](https://developer.mozilla.org/en-US/docs/Web/CSS/display).
+这些取值都与 [CSS display 属性](https://developer.mozilla.org/en-US/docs/Web/CSS/display) 可用的取值相对应。
 
-*Animation behavior*: When interpolating between a `none`{:.value} keyword and any other keyword, the other keyword is applied during the entire interpolation period. This is helpful in animations and transition where one wants to apply fade-in or fade-out effects when showing or hiding an element. This behavior ensures that the element is visible during the entire fading procedure.
+*动画行为*：在 `none`{:.value} 关键字与任何其他关键字之间插值时，整个插值期间都会应用另一个关键字。这在显示或隐藏元素时想要应用淡入或淡出效果的动画和过渡中很有帮助。此行为确保元素在整个淡入淡出过程中保持可见。
 
-### Positioning schemes
+### 定位方案
 
-RCSS can position elements according to three schemes:
+RCSS 可以根据三种方案定位元素：
 
-1. Normal flow, which includes placement of block boxes, the flowing of inline boxes and relative positioning of either.
-2. Floats. Floating elements are placed as normal, then shifted as far to the left or right as possible within their containing block. Inline content is then flowed around floating boxes.
-3. Absolute positioning. Elements that are positioned with `absolute`{:.value} or `fixed`{:.value} are removed from the normal flow (therefore having no impact on the layout of other elements) and placed at an explicit location relative to their containing block.
+1. 常规流，包括块级盒子的放置、行内盒子的流动以及两者的相对定位。
+2. 浮动。浮动元素像平常一样放置，然后在其包含块内尽可能向左或向右移动。行内内容随后围绕浮动盒子流动。
+3. 绝对定位。使用 `absolute`{:.value} 或 `fixed`{:.value} 定位的元素会从常规流中移除（因此不会影响其他元素的布局），并被放置在相对于其包含块的明确位置。
 
-#### Choosing a positioning scheme: 'position' property
+#### 选择定位方案：'position' 属性
 {:#position}
 
 `position`{:.prop}
 
-Value: | static \| relative \| absolute \| fixed
-Initial: | static
-Applies to: | all elements
-Inherited: | no
-Percentages: | N/A
+取值： | static \| relative \| absolute \| fixed
+初始值： | static
+适用于： | 所有元素
+继承： | 否
+百分比： | 不适用
 
-The values have the following meanings:
+这些取值含义如下：
 
 `static`{:.value}
-: The element generates boxes that are positioned according to normal flow.
+: 该元素生成按照常规流定位的盒子。
 
 `relative`{:.value}
-: The element generates boxes that are positioned according to normal flow, but then offset according to the values of the `top`{:.prop}, `right`{:.prop}, `bottom`{:.prop} and `left`{:.prop} properties. Other elements are positioned as though the box was in its original location.
+: 该元素生成按照常规流定位的盒子，但随后根据 `top`{:.prop}、`right`{:.prop}、`bottom`{:.prop} 和 `left`{:.prop} 属性的值进行偏移。其他元素的定位方式就好像该盒子仍在其原始位置。
 
 `absolute`{:.value}
-: The element generates a block box that is removed from normal flow. The `top`{:.prop}, `right`{:.prop}, `bottom`{:.prop} and `left`{:.prop} properties will position the box relative to the edges of its containing block.
+: 该元素生成一个从常规流中移除的块级盒子。`top`{:.prop}、`right`{:.prop}、`bottom`{:.prop} 和 `left`{:.prop} 属性将盒子相对于其包含块的边缘定位。
 
 `fixed`{:.value}
-: The element is positioned like an `absolute`{:.value} box, but will not scroll along with other content if it is within an overflowing box.
+: 该元素像 `absolute`{:.value} 盒子一样定位，但如果它位于溢出的盒子内，则不会随其他内容一起滚动。
 
-Note that, a limitation in RmlUi is that positioned elements (i.e. any value other than `static`{:.value}) do not affect when clipping is applied to the element. For example, an element with `overflow: hidden`{:.value} will not clip an absolutely positioned child, unless its in-flow content overflows. Instead, one can use the [`clip: always`{:.value} property](visual_effects.html#clip) together with `overflow: hidden`{:.value} to force clipping to occur.
+请注意，RmlUi 的一个限制是：定位元素（即 `static`{:.value} 以外的任何值）不会影响裁剪何时应用于该元素。例如，`overflow: hidden`{:.value} 的元素不会裁剪绝对定位的子元素，除非其常规流内容溢出。此时，可以使用 [`clip: always`{:.value} 属性](visual_effects.html#clip) 配合 `overflow: hidden`{:.value} 来强制发生裁剪。
 
-#### Box offsets: 'top', 'right', 'bottom', 'left'
+#### 盒子偏移：'top'、'right'、'bottom'、'left'
 {:#top_right_bottom_left}
 
-`top`{:.prop}, `bottom`{:.prop}
+`top`{:.prop}、`bottom`{:.prop}
 
-Value: | auto \| \<length\> \| \<percentage\>
-Initial: | auto
-Applies to: | positioned elements
-Inherited: | no
-Percentages: | relative to the height of the containing block
+取值： | auto \| \<length\> \| \<percentage\>
+初始值： | auto
+适用于： | 已定位元素
+继承： | 否
+百分比： | 相对于包含块的高度
 
-`left`{:.prop}, `right`{:.prop}
+`left`{:.prop}、`right`{:.prop}
 
-Value: | auto \| \<length\> \| \<percentage\>
-Initial: | auto
-Applies to: | positioned elements
-Inherited: | no
-Percentages: | relative to the width of the containing block
+取值： | auto \| \<length\> \| \<percentage\>
+初始值： | auto
+适用于： | 已定位元素
+继承： | 否
+百分比： | 相对于包含块的宽度
 
-The values have the following meanings:
+这些取值含义如下：
 
 `auto`{:.value}
-: Behavior depends on other related properties. For absolutely positioned elements, may adjust position or size to align the box with the containing block.
+: 行为取决于其他相关属性。对于绝对定位元素，可能会调整位置或大小以将盒子与包含块对齐。
 
 `<length>`{:.value}
-: The edge is offset a fixed distance from the reference edge.
+: 边缘从参考边缘偏移固定的距离。
 
 `<percentage>`{:.value}
-: The edge is offset from the reference edge a distance relative to the dimensions of the containing block.
+: 边缘从参考边缘偏移相对于包含块尺寸的距离。
 
 `inset`{:.prop}
 
-A shorthand property for setting the four inset properties (`top`{:.prop}, `right`{:.prop}, `bottom`{:.prop}, `left`{:.prop}) all at once. If there is only one value, it applies to all sides. If there are two values, the first applies to the top and bottom, the second to left and right. If there are three values, the first applies to the top, the second to left and right, the third to the bottom. If there are four values, they are applied to top, right, bottom, left respectively.
+一个用于一次性设置四个内嵌属性（`top`{:.prop}、`right`{:.prop}、`bottom`{:.prop}、`left`{:.prop}）的简写属性。如果只有一个值，则应用于所有边。如果有两个值，第一个应用于顶部和底部，第二个应用于左右。如果有三个值，第一个应用于顶部，第二个应用于左右，第三个应用于底部。如果有四个值，则分别应用于上、右、下、左。
 
 ```css
-/* Positions the element 20px away from its container's top and bottom edges, and 40px from its container's right and left edges. */
+/* 将元素定位在距其容器顶部和底部边缘 20px、距右和左边缘 40px 的位置。 */
 div.inset {
     position: absolute;
     inset: 20px 40px;
 }
 ```
 
-### Normal flow
+### 常规流
 
-#### Block formatting
+#### 块级格式化
 
-Certain elements establish a new block formatting context for their content, including the document element, floats, absolutely positioned elements, scroll containers, and elements with `display: flow-root`{:.value}.
+某些元素会为其内容建立新的块级格式化上下文，包括文档元素、浮动元素、绝对定位元素、滚动容器以及 `display: flow-root`{:.value} 的元素。
 
-In a block formatting context, boxes are laid out vertically one after the other. The bottom edge of a block box will touch the top edge of the block box following it. The left edge of a block box will touch the left edge of its containing block. Block elements do not themselves flow around floating elements, but their inline content will.
+在块级格式化上下文中，盒子垂直地一个接一个地排列。块级盒子的底边会接触到其后块级盒子的顶边。块级盒子的左边会接触到其包含块的左边。块级元素本身不会围绕浮动元素流动，但其行内内容会。
 
-#### Inline formatting
+#### 行内格式化
 
-Inline boxes are positioned horizontally on a line, one after the other, from the top of the containing block. Horizontal padding, borders and margins are respected when positioning the boxes. Inline boxes on a single line are said to be laid out in a line box.
+行内盒子沿一条线水平定位，一个接一个，从包含块的顶部开始。定位盒子时，水平内边距、边框和外边距都会生效。位于同一条线上的行内盒子被称为布局在一个行盒（line box）中。
 
-Each line box is generally the same width as its containing block, with its left edge touching the left edge of the containing block and its right edge touching the right edge of the containing block. However, floating elements may force a line box to be shorter along one or both of its edges. The height of a line box is governed by the height of the box's inline content. Inline boxes are positioned vertically within the line box using the `vertical-align`{:.prop} property.
+每个行盒通常与其包含块的宽度相同，其左边接触包含块的左边，右边接触包含块的右边。然而，浮动元素可能会迫使行盒沿一条或两条边缩短。行盒的高度由盒子行内内容的高度决定。行内盒子使用 `vertical-align`{:.prop} 属性在行盒内垂直定位。
 
-If inline boxes cannot fit horizontally onto a single line box, they are flowed into new vertically-stacked line boxes.
+如果行内盒子无法水平地容纳在单个行盒中，它们会流入新的垂直堆叠的行盒。
 
-The `text-align`{:.prop} property governs how the excess horizontal space between the widths of the inline boxes and the width of the line box is distributed.
+`text-align`{:.prop} 属性控制行内盒子宽度与行盒宽度之间多余水平空间的分配方式。
 
-Inline boxes may be split across several line boxes. When this occurs, any horizontal margins, borders and padding will only be present at the beginning and end of the inline box, not on each line.
+行内盒子可能被拆分到多个行盒中。发生这种情况时，任何水平外边距、边框和内边距只会出现在行内盒子的开头和结尾，而不是每一行上。
 
-#### Relative positioning
+#### 相对定位
 
-Once a block or inline box has been positioned, it can be moved from its location if its `position`{:.prop} is set to `relative`{:.value}. It is offset from its position using the `top`{:.prop}, `right`{:.prop}, `bottom`{:.prop} and `left`{:.prop} properties. Note that it affects the positioning of further elements from its original location, not its new one.
+一旦块级或行内盒子被定位，如果其 `position`{:.prop} 设置为 `relative`{:.value}，它可以从其位置移动。它使用 `top`{:.prop}、`right`{:.prop}、`bottom`{:.prop} 和 `left`{:.prop} 属性从其位置偏移。请注意，它影响后续元素定位的是其原始位置，而不是新位置。
 
-### Floats
+### 浮动
 
-A float is a box that is shifted horizontally to the left or right edge of its containing block. They do not affect placement of further block boxes, however line boxes will be shortened to avoid running over them. In this way, inline content will be flowed around them. Block boxes can be forced vertically past floating boxes using the `clear`{:.prop} property.
+浮动是被水平移动到其包含块左边缘或右边缘的盒子。它们不会影响后续块级盒子的放置，但行盒会缩短以避免越过它们。这样，行内内容会围绕它们流动。可以使用 `clear`{:.prop} 属性强制块级盒子垂直越过浮动盒子。
 
-Floated elements only affect the placement of other elements within the same block formatting context.
+浮动元素只影响同一块级格式化上下文内其他元素的放置。
 
-See the [CSS2 documentation](http://www.w3.org/TR/REC-CSS2/visuren.html#floats) on floating elements for a description on the full float model, and interesting uses of floats.
+关于浮动模型的完整描述和浮动的有趣用法，请参阅 [CSS2 文档](http://www.w3.org/TR/REC-CSS2/visuren.html#floats) 中关于浮动元素的内容。
 
-#### Positioning the float: the 'float' property
+#### 定位浮动：'float' 属性
 {:#float}
 
 `float`{:.prop}
 
-Value: | left \| right \| none
-Initial: | none
-Applies to: | all
-Inherited: | no
-Percentages: | N/A
+取值： | left \| right \| none
+初始值： | none
+适用于： | 所有元素
+继承： | 否
+百分比： | 不适用
 
-The values of this property have the following meanings:
+该属性取值含义如下：
 
 `left`{:.value}
-: The element generates a block box that is floated to the left.
+: 该元素生成一个向左浮动的块级盒子。
 
 `right`{:.value}
-: The element generates a block box that is floated to the right.
+: 该元素生成一个向右浮动的块级盒子。
 
 `none`{:.value}
-: The element's boxes are not floated.
+: 该元素的盒子不浮动。
 
-#### Controlling flow next to floats: the 'clear' property
+#### 控制浮动旁的流动：'clear' 属性
 {:#clear}
 
 `clear`{:.prop}
 
-Value: | left \| right \| both \| none
-Initial: | none
-Applies to: | block-level elements
-Inherited: | no
-Percentages: | N/A
+取值： | left \| right \| both \| none
+初始值： | none
+适用于： | 块级元素
+继承： | 否
+百分比： | 不适用
 
-The values of this property have the following meanings:
+该属性取值含义如下：
 
 `left`{:.value}
-: The box's position is pushed far enough vertically so its top edge is below the bottom edge of all previously placed left-floating elements.
+: 盒子的位置在垂直方向上被推得足够远，使其顶边位于所有先前放置的左浮动元素底边之下。
 
 `right`{:.value}
-: The box's position is pushed far enough vertically so its top edge is below the bottom edge of all previously placed right-floating elements.
+: 盒子的位置在垂直方向上被推得足够远，使其顶边位于所有先前放置的右浮动元素底边之下。
 
 `both`{:.value}
-: The box's position is pushed far enough vertically so its top edge is below the bottom edge of all previously placed floating elements.
+: 盒子的位置在垂直方向上被推得足够远，使其顶边位于所有先前放置的浮动元素底边之下。
 
 `none`{:.value}
-: The box's position is placed irrespective of floating elements.
+: 盒子的位置与浮动元素无关。
 
-Floating boxes themselves can be cleared.
+浮动盒子本身也可以被清除。
 
-### Absolute positioning
+### 绝对定位
 
-An absolutely positioned box (one with a `position`{:.prop} of `absolute`{:.tag} or `fixed`{:.tag}) is explicitly offset from the edges of its containing block. Floating boxes are ignored when laying out its inline content.
+绝对定位的盒子（`position`{:.prop} 为 `absolute`{:.tag} 或 `fixed`{:.tag} 的盒子）被明确地相对于其包含块的边缘偏移。在布局其行内内容时，浮动盒子会被忽略。
 
-Note that in RCSS, `fixed`{:.value} positioned boxes are not placed relative to the viewport, but identically to `absolute`{:.value} boxes.
+请注意，在 RCSS 中，`fixed`{:.value} 定位的盒子不是相对于视口放置的，而是与 `absolute`{:.value} 盒子完全相同。
 
-### Layered presentation
+### 分层呈现
 
-Each box has a stacking level within a single stacking context. Boxes within a stacking context are rendered in stacking level order, from lowest to highest (so boxes with the highest stacking level will appear on top). All the boxes within a single stacking context are rendered at once; they will not intermingle rendering with the members of another stacking context.
+每个盒子在单个堆叠上下文中都有一个堆叠级别。堆叠上下文中的盒子按堆叠级别顺序渲染，从最低到最高（因此堆叠级别最高的盒子将显示在最上层）。单个堆叠上下文中的所有盒子会一次性渲染完毕；它们不会与另一个堆叠上下文的成员交错渲染。
 
-The root element of a document establishes a stacking context for its descendants. Other elements within a document may establish local stacking contexts of their own. An element which does so has two stacking levels; one within the stacking context it is a member of (given by the `z-index`{:.prop} property) and another inside the stacking context it establishes (always '0').
+文档的根元素会为其后代建立一个堆叠上下文。文档中的其他元素可以建立各自的局部堆叠上下文。这样做的元素有两个堆叠级别：一个在其所属的堆叠上下文内（由 `z-index`{:.prop} 属性给出），另一个在其建立的堆叠上下文内（始终为 '0'）。
 
-#### Specifying the stacking level: the 'z-index' property
+#### 指定堆叠级别：'z-index' 属性
 {:#z-index}
 
 `z-index`{:.prop}
 
-Value: | \<number\> \| auto
-Initial: | auto
-Applies to: | all elements
-Inherited: | no
-Percentages: | N/A
+取值： | \<number\> \| auto
+初始值： | auto
+适用于： | 所有元素
+继承： | 否
+百分比： | 不适用
 
-Values have the following meanings:
+取值含义如下：
 
 `<number>`{:.value}
-: The number is the stack level within the current stacking context. It also establishes a local stacking context in which its own stack level is '0'.
+: 该数字是当前堆叠上下文中的堆叠级别。它还在其自身堆叠级别为 '0' 的情况下建立一个局部堆叠上下文。
 
 `auto`{:.value}
-: The stack level of the box is the same as its parent's. It does not establish a local stacking context.
+: 盒子的堆叠级别与其父元素相同。它不建立局部堆叠上下文。
 
-Note that in RCSS any element can have the z-index property, not just positioned elements.
+请注意，在 RCSS 中，任何元素都可以具有 z-index 属性，而不仅仅是已定位元素。

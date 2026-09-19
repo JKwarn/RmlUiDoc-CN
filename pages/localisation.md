@@ -1,19 +1,19 @@
 ---
 layout: page
-title: Localisation
+title: 本地化
 ---
 
-RmlUi fully supports localisation through the interface described in the following.
+RmlUi 通过下述接口完整支持本地化。
 
-### String encoding
+### 字符串编码
 
-RmlUi assumes all data it is given, whether read in from RML or provided procedurally, is in UTF-8 encoding. This means if you're using 8-bit ASCII you don't need to change anything, but allows you to specify multi-byte Unicode characters if required.
+RmlUi 假定它接收的所有数据（无论是从 RML 中读取还是以程序方式提供的）都是 UTF-8 编码。这意味着如果你使用的是 8 位 ASCII，则无需更改任何内容，但如果需要，你也可以指定多字节 Unicode 字符。
 
-### Translation
+### 翻译
 
-All raw text that RmlUi reads while parsing RML (i.e., everything other than XML tags) is sent through the `TranslateString()` function on the [system interface](cpp_manual/interfaces/system.html). The function is given the raw string as read, and the application can make any modifications necessary before returning the translated string (and the number of substitutions made) back to RmlUi.
+RmlUi 在解析 RML 时读取的所有原始文本（即除 XML 标签之外的所有内容）都会通过[系统接口](cpp_manual/interfaces/system.html)上的 `TranslateString()` 函数发送。该函数接收读取到的原始字符串，应用程序可以在将翻译后的字符串（以及所做替换的数量）返回给 RmlUi 之前进行任何必要的修改。
 
-A pass-through translator would do the following:
+一个直接透传的翻译器可以这样实现：
 
 ```cpp
 #include <RmlUi/Core/SystemInterface.h>
@@ -27,9 +27,9 @@ class SampleSystemInterface : public Rml::SystemInterface
 	}
 ```
 
-#### String tables
+#### 字符串表
 
-The `TranslateString()` method can be used in conjunction with an application's string table to make text substitutions on a document's text. For example, take the pause.rml file in the _Rocket Invaders_ sample:
+`TranslateString()` 方法可以与应用程序的字符串表结合使用，对文档的文本进行替换。例如，以 _Rocket Invaders_ 示例中的 pause.rml 文件为例：
 
 ```html
 <rml>
@@ -44,7 +44,7 @@ The `TranslateString()` method can be used in conjunction with an application's 
 </rml>
 ```
 
-If we were to localise _Rocket Invaders_, we'd want to move all of the English strings out from the RML and into a string table. The raw text in the RML would then be replaced with the string table tokens:
+如果我们要对 _Rocket Invaders_ 进行本地化，我们希望将所有英文字符串从 RML 中移出并放入字符串表。然后，RML 中的原始文本将被替换为字符串表的标记：
 
 ```html
 <rml>
@@ -59,7 +59,7 @@ If we were to localise _Rocket Invaders_, we'd want to move all of the English s
 </rml>
 ```
 
-Assuming the appliation has a `StringTable` class that has loaded the appropriate string table for the language, our sample translator would then become:
+假设应用程序有一个 `StringTable` 类，并且已为相应语言加载了合适的字符串表，那么我们的示例翻译器将变成：
 
 ```cpp
 	int TranslateString(Rml::String& translated, const Rml::String& input) override
@@ -74,6 +74,6 @@ Assuming the appliation has a `StringTable` class that has loaded the appropriat
 	}
 ```
 
-Now the strings will be valid for whatever language we specify a string table for. In practice, you might need a more sophisticated translator that could replace multiple tokens within a string.
+现在，无论我们为哪种语言指定字符串表，这些字符串都将有效。在实践中，你可能需要一个更复杂的翻译器，能够在字符串中替换多个标记。
 
-Note that you can place RML into the translated string, and it will be parsed appropriately. For example, you could replace a token with an `<img>`{:.tag} tag to render an icon for a controller button.
+请注意，你可以将 RML 放入翻译后的字符串中，它将被适当地解析。例如，你可以用一个 `<img>`{:.tag} 标签替换某个标记，以渲染控制器按钮的图标。

@@ -1,16 +1,16 @@
 ---
 layout: page
-title: Element packages
+title: 元素包
 parent: cpp_manual
 next: scrollbars
 ---
 
-The included element packages contain custom elements for form controls (radio buttons, range sliders, etc), tabbed windows, and other useful RML elements. You are free to use the elements as-is in your application, or use the elements as a starting point for more specialised controls in your application. The elements are located in the `Include/RmlUi/Core/Elements/`{:.path} and `Source/Core/Elements/`{:.path} directories.
+随附的元素包包含用于表单控件（单选按钮、范围滑块等）、选项卡窗口和其他有用的 RML 元素的自定义元素。你可以自由地在应用程序中原样使用这些元素，或将它们作为起点，为你的应用程序创建更专业的控件。这些元素位于 `Include/RmlUi/Core/Elements/`{:.path} 和 `Source/Core/Elements/`{:.path} 目录中。
 
-The provided elements can serve as great examples of creating new elements and writing custom XML parsing. Have you created an element which could be useful for others? Perhaps you would like to contribute to the library by making a pull request on the [main repository]({{page.lib_site}}).
+提供的元素可以作为创建新元素和编写自定义 XML 解析的绝佳示例。你是否创建了对其他人有用的元素？也许你想通过在[主仓库]({{page.lib_site}})上提交 pull request 来为库做出贡献。
 
-The following element packages are included with the core RmlUi library:
+核心 RmlUi 库附带了以下元素包：
 
-- [Form controls](element_packages/form.html): a comprehensive set of form controls.
-- [Tab sets](element_packages/tab_set.html): elements for partitioning content into panels.
-- [Progress](element_packages/progress_bar.html): element for displaying progress bars.
+- [表单控件](element_packages/form.html)：一套全面的表单控件。
+- [选项卡集](element_packages/tab_set.html)：用于将内容划分为面板的元素。
+- [进度条](element_packages/progress_bar.html)：用于显示进度条的元素。

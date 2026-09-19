@@ -1,34 +1,34 @@
 ---
 layout: page
-title: Window Templating Tutorial
+title: 窗口模板教程
 ---
 
-This tutorial will take you step-by-step through the development of the RML and RCSS of the window template we used for _Rocket Invaders from Mars_. By the end of this tutorial you'll be able to create complex, flexible templates for your own application.
+本教程将逐步带你完成我们为 _Rocket Invaders from Mars_ 所使用的窗口模板的 RML 和 RCSS 开发。学完本教程后，你将能够为你的应用程序创建复杂而灵活的模板。
 
-To go through this tutorial you'll need an understanding of [RML](../rml.html) and [RCSS](../rcss.html).
+要完成本教程，你需要了解 [RML](../rml.html) 和 [RCSS](../rcss.html)。
 
-### Step 1: Taking a look
+### 第 1 步：初步查看
 
-Compile the template tutorial (at `/Samples/tutorials/template/`{:.path}) and run the program; you should end up seeing this:
+编译模板教程（位于 `/Samples/tutorials/template/`{:.path}）并运行程序；最终你应看到以下画面：
 
 ![window_template_1.gif](window_template_1.gif)
 
-All the the program does is load and show the document defined in `data/tutorial.rml`{:.path}. The RML itself file references `data/tutorial.rcss`{:.path} and `/Samples/assets/invader.tga`{:.path}. All we're interested in is the RML file and the RCSS file; open them both and take a look.
+这个程序所做的只是加载并显示 `data/tutorial.rml`{:.path} 中定义的文档。RML 文件本身引用了 `data/tutorial.rcss`{:.path} 和 `/Samples/assets/invader.tga`{:.path}。我们只需要关注 RML 文件和 RCSS 文件；打开这两个文件看一看。
 
-All we've got to start with in the RML is a simple document with no child elements. It has a class of 'window' which, as you'll see in the RCSS, is what is giving it the glassy background decorator. The style declared in the document's header tag specifies a fixed width and height for the document (so it has some dimensions), and gives it auto margins to centre it within the context. As for the RCSS, we've got nothing more than the a font specification and a tiled-box decorator for drawing the background. And that's it! Simple, but not very useful as a window template yet.
+我们在 RML 中最初拥有的只是一个没有子元素的简单文档。它有一个 'window' 类，正如你在 RCSS 中会看到的，正是这个类为它提供了玻璃质感的背景装饰器。文档头部标签中声明的样式为文档指定了固定的宽度和高度（因此它有一定的尺寸），并赋予其自动外边距以在上下文中居中。至于 RCSS，我们只有字体规范和用于绘制背景的平铺盒（tiled-box）装饰器。就是这样！虽然简单，但作为窗口模板还不是很有用。
 
-### Step 2: Adding a title bar
+### 第 2 步：添加标题栏
 
-We're going to look at adding the title bar first. What we need for this is:
+我们首先来看如何添加标题栏。为此我们需要：
 
-* an element in the top-left of the window
-* a horizontal tiling decorator on the element to render the title bar
-* a way to set the text on the element so we can procedurally change the title
-* a handle on the element so we can drag the window
+* 位于窗口左上角的元素
+* 元素上的水平平铺装饰器，用于渲染标题栏
+* 一种在元素上设置文本的方法，以便我们能够以编程方式更改标题
+* 元素上的手柄（handle），以便我们能够拖拽窗口
 
-#### Defining the title elements
+#### 定义标题元素
 
-Add a `<div>`{:.tag} element into the body, and give it an ID of `title-bar`{:.value}. The `<div>`{:.tag} is a block-level element, as defined in the base style sheet, so by default it will size itself horizontally to take up the entire length of its parent element, the window. We could put the decorator straight into this element, but then it will be as long as the window; we only want it as long as the title text. So inside the `<div>`{:.tag} element, add a `<span>`{:.tag} element, and give it an ID of `title`{:.value}. Add a dummy title string inside the span, so we can easily get some text up there. By now, you should have this:
+在 body 中添加一个 `<div>`{:.tag} 元素，并为其指定 ID `title-bar`{:.value}。`<div>`{:.tag} 是块级元素（如基础样式表所定义），因此默认情况下它会水平伸展，占据其父元素（窗口）的整个长度。我们可以把装饰器直接放在这个元素上，但那样它会和窗口一样长；我们只希望它与标题文本一样长。所以，在 `<div>`{:.tag} 元素内部添加一个 `<span>`{:.tag} 元素，并为其指定 ID `title`{:.value}。在 span 中添加一个虚拟标题字符串，这样我们就能轻松地在上面显示一些文本。到目前为止，你应该得到这样的结构：
 
 ```html
 <body class="window">
@@ -38,9 +38,9 @@ Add a `<div>`{:.tag} element into the body, and give it an ID of `title-bar`{:.v
 </body>
 ```
 
-Fire up the application; not much to look at yet, but we'll get there!
+运行应用程序；目前还看不出什么效果，但我们会逐步实现！
 
-The title text is rendering with the body text; we'll need something much bigger and bolder. In the RCSS file, add a new rule for the title span, assigning it a font size of 22, and a weight of bold. And why not a black text shadow while we're here? The rule should look something like this:
+标题文本目前与正文文本一起渲染；我们需要更大更粗的字体。在 RCSS 文件中，为标题 span 添加一条新规则，为其指定 22 的字号（font-size）和加粗（bold）的字重。既然要做，为什么不顺便添加一个黑色文本阴影呢？规则应该大致如下：
 
 ```css
 div#title-bar span
@@ -52,11 +52,11 @@ div#title-bar span
 }
 ```
 
-That looks a bit better, but still no decorator.
+看起来好一些了，但还没有装饰器。
 
-#### Setting up the sprite sheet
+#### 设置精灵图表
 
-If you open up the file `/Samples/assets/invader.tga`{:.path}., you'll see it contains sprites for the title bar among other things. We'll now define the sprite sheet used in the decorators in this tutorial. First, find the sprite sheet `theme`{:.value} at the top of the file. The sprites for the window has already been declared, but add the sprites for the title bar.
+如果你打开 `/Samples/assets/invader.tga`{:.path} 文件，你会看到它包含标题栏等内容的精灵图。现在我们定义本教程中装饰器所用的精灵图表。首先，在文件顶部找到 `theme`{:.value} 精灵图表。窗口的精灵图已经声明过了，但需要添加标题栏的精灵图。
 
 ```css
 @spritesheet theme
@@ -71,12 +71,12 @@ If you open up the file `/Samples/assets/invader.tga`{:.path}., you'll see it co
 }
 
 ```
-Each sprite is defined by a name and rectangle. The rectangle is specified in the order `x y width height`{:.prop} and must be in pixel units. You can open up your favorite image editor or viewer to find the proper coordinates to use.
+每个精灵图都由名称和矩形定义。矩形按 `x y width height`{:.prop} 的顺序指定，且必须使用像素单位。你可以打开你喜欢的图像编辑器或查看器来找到合适的坐标。
 
 
-#### Setting up the decorator
+#### 设置装饰器
 
-With decorators we can give a nice look to any element. We'll begin by defining the title element's decorator using the recently declared sprites. So, in the same rule that you added before, declare the decorator:
+借助装饰器，我们可以让任何元素看起来都很漂亮。我们先使用刚刚声明的精灵图来定义标题元素的装饰器。所以，在你之前添加的同一条规则中声明装饰器：
 
 ```css
 div#title-bar span
@@ -87,39 +87,39 @@ div#title-bar span
 }
 ```
 
-This decorator makes the center sprite stretch, while each side stays fixed. Thus, the title bar can easily scale horizontally when its text content changes.
+这个装饰器会让中间的精灵图拉伸，而两侧保持固定。因此，当文本内容变化时，标题栏可以轻松地进行水平缩放。
 
-Run the application again and see what we've got.
+再次运行应用程序，看看效果。
 
 ![window_template_2.gif](window_template_2.gif)
 
-Well that looks pretty crap! Because the `<span>`{:.tag} element is inline, its height is derived from the height of its content; in this case, the dummy title text. The decorator squishes itself down to fit into the element. We can't throw a height RCSS property in there either, as inline elements (except in a few cases) cannot have their heights set directly. So what do we do? Padding! Margins, padding and borders can all be set on inline elements and, while they don't affect the vertical positioning of the element, they do affect the size of the element and influence the position of child elements. So we can use padding to set the element to the right size and position the text right in the middle of the title bar.
+嗯，看起来相当糟糕！因为 `<span>`{:.tag} 元素是内联元素，其高度由其内容的高度决定；在本例中，就是虚拟标题文本。装饰器会压缩自身以适应元素。我们也不能在那里添加 height RCSS 属性，因为内联元素（除少数情况外）不能直接设置高度。那我们该怎么办？内边距！外边距、内边距和边框都可以设置在内联元素上，虽然它们不影响元素的垂直定位，但确实会影响元素的大小并影响子元素的位置。所以我们可以使用内边距将元素设置为合适的大小，并让文本正好位于标题栏的中间。
 
-Add some padding along the top of the span to begin with:
+首先在 span 的顶部添加一些内边距：
 
 ```css
 	padding-top: 50px;
 ```
 
-Take a look at the result. The element is now 50 pixels bigger, so the title bar is looking a bit healthier, and the text has been pushed to the bottom of the element. So how big do we need to make the title bar? If you look at the decorator declaration, you can see the title bar image is 85 pixels high. Therefore ideally the element should also be 85 pixels high. So we've got to add padding to get it that high - but how high is it now?
+看看结果。元素现在大了 50 像素，标题栏看起来好了一些，文本被推到了元素的底部。那么我们需要把标题栏做成多大呢？看一下装饰器声明，你会发现标题栏图像高 85 像素。因此理想情况下，元素也应该是 85 像素高。所以我们需要添加内边距使其达到这个高度——但它现在有多高呢？
 
-To find out, you can use the debugger; press F8 to open the debugging menu. Click on the 'Element Info' button, and then click on the title bar element. The info pane should change to show you a heap of information on the element, including the properties defined on it and their source, dimensions, children and ancestor elements. You can see the height of the element under the 'Position' heading; it work out to be 80px. So, we have to add another 5px of vertical padding.
+要找出答案，你可以使用调试器；按 F8 打开调试菜单。点击 'Element Info' 按钮，然后点击标题栏元素。信息面板会改变，显示关于该元素的大量信息，包括其上定义的属性及其来源、尺寸、子元素和祖先元素。你可以在 'Position' 标题下看到元素的高度；算下来是 80px。所以，我们还需要再添加 5px 的垂直内边距。
 
-Set the padding to 55px and take a look; the element should now be 85px high. Now shift some of the padding to the bottom and have a play around to get the text centered. I found the following combination got the text to look in the right place:
+将内边距设置为 55px 并查看效果；元素现在应该是 85px 高。接下来将部分内边距移到底部，并调整使文本居中。我发现以下组合能让文本看起来位置合适：
 
 ```css
 	padding-top: 13px;
 	padding-bottom: 42px;
 ```
 
-There's not much space to the left or right of the text yet; easy fixed, just add some left and right padding! We used the following for _Rocket Invaders from Mars_:
+文本左右的空间还不多；这很容易解决，只需添加左右内边距！我们在 _Rocket Invaders from Mars_ 中使用了以下值：
 
 ```css
 	padding-left: 85px;
 	padding-right: 25px;
 ```
 
-But have a play and see what works best. By now the title bar rule should look something like this:
+但可以自己调整，看看哪种效果最好。到目前为止，标题栏的规则应该大致如下：
 
 ```css
 div#title-bar span
@@ -138,13 +138,13 @@ div#title-bar span
 }
 ```
 
-And the application should be looking like this:
+此时应用程序应该看起来像这样：
 
 ![window_template_3.gif](window_template_3.gif)
 
-#### Placing the title bar
+#### 放置标题栏
 
-As I'm sure you'll have noticed by now, the title bar's in the wrong place! This can be fixed a number of ways, such as negative margins on the containing title element, margins on the body, etc, but we chose to solve it by positioning the title-bar element. To do this, add a new rule for the `title-bar`{:.value} element, declaring it as absolutely positioned.
+相信你已经注意到，标题栏的位置不对！这个问题可以通过多种方式修复，例如在包含标题的元素上使用负外边距、在 body 上使用外边距等，但我们选择通过定位 title-bar 元素来解决。为此，为 `title-bar`{:.value} 元素添加一条新规则，将其声明为绝对定位。
 
 ```css
 div#title-bar
@@ -153,11 +153,11 @@ div#title-bar
 }
 ```
 
-That in itself won't do much, but now we can play around with its position to the pixel with the `top`{:.attr} and `left`{:.attr} properties.
+这本身不会有什么效果，但现在我们可以使用 `top`{:.attr} 和 `left`{:.attr} 属性精确到像素地调整它的位置。
 
-If you don't set the `top`{:.attr} or `left`{:.attr} (or `right`{:.attr} or `bottom`{:.attr}) to change the height of an absolutely positioned element, it will stay where the layout engine positioned it, but be removed from flow so it will not affect the layout of future elements. If you do change its position, with the `top`{:.attr} property for example, its top edge will be aligned against the top padded edge of its offset parent (in our case, the window), offset by the amount of the property.
+如果你不设置 `top`{:.attr} 或 `left`{:.attr}（或 `right`{:.attr}、`bottom`{:.attr}）来改变绝对定位元素的位置，它将停留在布局引擎定位它的位置，但会脱离文档流，因此不会影响后续元素的布局。如果你确实更改了它的位置（例如使用 `top`{:.attr} 属性），它的顶部边缘将与偏移父元素（在我们的例子中是窗口）的顶部内边距边缘对齐，偏移量由属性值决定。
 
-We need to shift the element up, so we use the 'top' property to do this. If we declare `top: 0px;`, it will be aligned at the very top of the window; so, exactly where it is now. To move it up, specify a negative number. 40 pixels seems to do the trick.
+我们需要将元素向上移动，因此使用 'top' 属性来实现。如果声明 `top: 0px;`，它将与窗口的最顶部对齐；也就是现在的位置。要向上移动，需要指定一个负数。40 像素似乎正好合适。
 
 ```css
 div#title-bar
@@ -167,9 +167,9 @@ div#title-bar
 }
 ```
 
-#### Adding a handle
+#### 添加手柄
 
-We still need a handle so we can drag the window around. This is easy; RmlUi ships with a `<handle>`{:.tag} element that can do just that (or resize an element). In the RML, wrap the contents of the `title-bar`{:.value} element with a `<handle>`{:.tag} element. You can set its move target with the `move_target`{:.attr} attribute; set it to `#document`{:.value} so it knows to move its parent document when it is dragged. You should end up with this:
+我们还需要一个手柄，以便拖拽窗口。这很容易；RmlUi 内置了一个 `<handle>`{:.tag} 元素，正是用于实现这一点（或调整元素大小）。在 RML 中，用 `<handle>`{:.tag} 元素包裹 `title-bar`{:.value} 元素的内容。你可以通过 `move_target`{:.attr} 属性设置其移动目标；将其设置为 `#document`{:.value}，这样它就知道在拖拽时移动其父文档。最终你应该得到这样的结构：
 
 ```html
 <div id="title-bar">
@@ -179,18 +179,18 @@ We still need a handle so we can drag the window around. This is easy; RmlUi shi
 </div>
 ```
 
-Now you should be able to drag the window around by holding onto the title. The application should now be looking something like this:
+现在你应该可以通过按住标题来拖拽窗口了。应用程序现在应该看起来像这样：
 
 ![window_template_4.gif](window_template_4.gif)
 
-### Step 3: Placing the content
+### 第 3 步：放置内容
 
-Now we've got a title bar, we need somewhere to place the actual page content. What we're after is:
+现在我们有标题栏了，需要一个地方来放置实际页面内容。我们的目标是：
 
-* an empty block element we can put our page content into
-* a vertical scrollbar in case the contents of the page overflow
+* 一个空的块级元素，我们可以把页面内容放进去
+* 一个垂直滚动条，以防页面内容溢出
 
-Add the block content element now; within the `<body>`{:.tag} tag, just below the `title-bar`{:.value} element. Give it an ID of `content`{:.value} so we can identify it.
+现在添加块级内容元素；在 `<body>`{:.tag} 标签内、紧挨着 `title-bar`{:.value} 元素的下方。为其指定 ID `content`{:.value}，以便我们能识别它。
 
 ```html
 	<div id="title-bar">
@@ -202,22 +202,22 @@ Add the block content element now; within the `<body>`{:.tag} tag, just below th
 	</div>
 ```
 
-Why do we do this, rather than put the content directly into the `<body>`{:.tag} element? When we come to convert this document into a reusable document template, we'll need an empty element that all of a document's content is put into.
+为什么我们要这样做，而不是把内容直接放到 `<body>`{:.tag} 元素中？因为当我们把这个文档转换为可复用的文档模板时，我们需要一个空的元素，用来放置文档的所有内容。
 
-Put some dummy content text into the new element and see what we've got.
+在新元素中放入一些虚拟内容文本，看看效果。
 
 ![window_template_5.gif](window_template_5.gif)
 
-So we've got a couple of issues already:
+于是我们遇到了几个问题：
 
-* the title bar's reflection is displaying over the content
-* the content is rendering outside of the window's border
+* 标题栏的倒影显示在内容之上
+* 内容渲染在窗口边框之外
 
-#### Using z-index
+#### 使用 z-index
 
-All elements have a default `z-index`{:.attr} of `0`{:.value}, so normally they would be rendered in the order they are declared in the document. This means elements declared further down in the RML are usually rendered on top of earlier elements. However, floating and positioned elements jump to the front of the queue and are always rendered after normal elements with a similar `z-index`{:.attr}.
+所有元素的默认 `z-index`{:.attr} 都是 `0`{:.value}，因此通常它们会按照在文档中声明的顺序进行渲染。这意味着在 RML 中声明位置靠后的元素通常会渲染在靠前元素的上面。不过，浮动元素和定位元素会跳到队列前面，并且总是渲染在具有相似 `z-index`{:.attr} 的普通元素之后。
 
-So to bring the content window above the title bar, create a new rule for the content element and assign it a `z-index`{:.attr} of `1`{:.value}.
+因此，要让内容窗口显示在标题栏之上，为内容元素创建一条新规则，并为其指定 `z-index`{:.attr} 为 `1`{:.value}。
 
 ```css
 div#content
@@ -226,13 +226,13 @@ div#content
 }
 ```
 
-Much better.
+好多了。
 
-#### Padding the content area
+#### 为内容区域添加内边距
 
-We need to push the document's content area so it appears entirely inside the window border. The decorator we have on the `<body>`{:.tag} element will render over the entire padded area of the element, so if padding is added it will force all content away from the edges of the decorated area.
+我们需要将文档的内容区域向内推，使其完全显示在窗口边框内部。我们在 `<body>`{:.tag} 元素上的装饰器会渲染在整个内边距区域上，因此如果添加内边距，它将迫使所有内容远离装饰区域的边缘。
 
-Add some padding to the `<body>`{:.tag} rule and take a look at the result. We found that 10px top / bottom and 15px right / left padding worked out pretty well. Our rule looks like this:
+在 `<body>`{:.tag} 规则中添加一些内边距并查看效果。我们发现上下 10px、左右 15px 的内边距效果不错。我们的规则如下：
 
 ```css
 body.window
@@ -247,17 +247,17 @@ body.window
 }
 ```
 
-Nice! Now the content's in the right place, but what happens if there's too much to fit? Try that out now by putting more dummy content into the content element.
+不错！现在内容的位置正确了，但如果内容太多放不下怎么办？现在试试在内容元素中放入更多虚拟内容。
 
-#### Dealing with overflow
+#### 处理溢出
 
-If you open the debugger again and look at the content element, you can see the problem:
+如果再次打开调试器并查看内容元素，你可以看到问题所在：
 
 ![window_template_6.gif](window_template_6.gif)
 
-We haven't explicitly set the `height`{:.prop} property on the content element, so it defaults to `auto`{:.value}. When calculating the height of a block-level element, `auto`{:.value} means it will grow to fit the content, regardless of the size of its containing element. If we set the `height`{:.prop} property on the content element to `100%`{:.value}, it will force the height to be exactly that of its containing element's content area. Try that and see what we get.
+我们没有在内容元素上显式设置 `height`{:.prop} 属性，因此它默认为 `auto`{:.value}。在计算块级元素的高度时，`auto`{:.value} 意味着它会增长以适应内容，而不考虑其包含元素的大小。如果我们将内容元素的 `height`{:.prop} 属性设置为 `100%`{:.value}，它将强制高度正好等于其包含元素的内容区域高度。试试看效果。
 
-As you can see, the overflow is still showing up. If you open up the debugger and inspect the content element again, you'll see that the element itself is now the right size, but the overflowing text is still visible. How overflow is handled is determined by the `overflow`{:.prop} property; it defaults to `visible`{:.value}, meaning descendant elements are not clipped by the element. Set the 'overflow' property to 'hidden' on the content element; the entire rule for the content element should look like this:
+正如你所看到的，溢出仍然显示出来。如果打开调试器再次检查内容元素，你会看到元素本身现在大小正确，但溢出的文本仍然可见。溢出的处理方式由 `overflow`{:.prop} 属性决定；它默认为 `visible`{:.value}，意味着后代元素不会被该元素裁剪。将内容元素的 'overflow' 属性设置为 'hidden'；内容元素的完整规则应该如下：
 
 ```css
 div#content
@@ -269,23 +269,23 @@ div#content
 }
 ```
 
-Take a look at the result; the overflowing content is hidden, but we can't get to it! Time to add a scrollbar.
+看看结果；溢出的内容被隐藏了，但我们也无法访问它！是时候添加滚动条了。
 
-### Step 4: Adding a scrollbar
+### 第 4 步：添加滚动条
 
-To tell RmlUi a scrollbar is required on the content element, we can change the `overflow`{:.prop} property from `hidden`{:.value} to either `auto`{:.value} or `scroll`{:.value}. `scroll`{:.value} will put a scrollbar around the element all the time, even if it isn't required; `auto`{:.value} will only put a scrollbar on an axis with overflow.
+要告诉 RmlUi 内容元素需要滚动条，我们可以将 `overflow`{:.prop} 属性从 `hidden`{:.value} 改为 `auto`{:.value} 或 `scroll`{:.value}。`scroll`{:.value} 会始终在元素周围显示滚动条，即使不需要时也是如此；`auto`{:.value} 只会在有溢出的轴上显示滚动条。
 
-RmlUi also supports different overflow properties per axis, so you can (for example) set vertical overflow to 'scroll' and horizontal overflow to `hidden`{:.value} if you wish.
+RmlUi 还支持每个轴使用不同的 overflow 属性，因此你可以（例如）根据需要将垂直溢出设置为 'scroll'，将水平溢出设置为 `hidden`{:.value}。
 
-Change the `overflow`{:.prop} property on the content element to `auto`{:.value} or `scroll`{:.value} and check out the result.
+将内容元素的 `overflow`{:.prop} 属性改为 `auto`{:.value} 或 `scroll`{:.value}，并查看结果。
 
 ![window_template_7.gif](window_template_7.gif)
 
-#### Resizing the scrollbar
+#### 调整滚动条大小
 
-Well that doesn't look right! So what's happened here? When an element needs to generate a vertical scrollbar, it creates a block-level child element with a tag of 'scrollbarvertical' and anchors it to the right edge of the element. As it is block-level, its width defaults to `auto`{:.value} so it occupies the entire content area of its parent, the content element. So there's no space for the text! Not only that, but we haven't attached a decorator to the scrollbar elements so we can't actually see it yet.
+嗯，看起来不对！这里发生了什么？当元素需要生成垂直滚动条时，它会创建一个标签为 'scrollbarvertical' 的块级子元素，并将其锚定在元素的右边缘。由于它是块级的，其宽度默认为 `auto`{:.value}，因此它会占据其父元素（内容元素）的整个内容区域。这样就没有空间放文本了！不仅如此，我们还没有为滚动条元素附加装饰器，所以实际上还看不到它。
 
-Elements that RmlUi dynamically creates, like the scrollbar, can be styled through RCSS like normal elements. All we need to do is create a rule that will match the element `scrollbarvertical`{:.tag}. First thing to do? Set its width so it doesn't occupy the whole element. The scrollbar graphics we've designed for _Rocket Invaders from Mars_ are designed to be 27 pixels wide. This RCSS rule will resize the scrollbar:
+RmlUi 动态创建的元素（如滚动条）可以像普通元素一样通过 RCSS 设置样式。我们需要做的就是创建一条能匹配 `scrollbarvertical`{:.tag} 元素的规则。首先做什么？设置它的宽度，使其不占据整个元素。我们为 _Rocket Invaders from Mars_ 设计的滚动条图形宽度为 27 像素。这条 RCSS 规则将调整滚动条的大小：
 
 ```css
 scrollbarvertical
@@ -294,11 +294,11 @@ scrollbarvertical
 }
 ```
 
-That's looking a bit better; of course, we can actually see the scrollbar yet, but it is there. You can drag the window up and down if you manage to click in the right place.
+看起来好一些了；当然，我们还看不到滚动条，但它确实存在。如果你能点击到正确的位置，就可以上下拖动窗口。
 
-#### Adding the remaining sprites
+#### 添加其余精灵图
 
-Next up, we will add the rest of the sprites used in this tutorial to the sprite sheet. As previously, locate the `theme`{:.value} sprite sheet, and add the following sprites to it.
+接下来，我们将把本教程中使用的其余精灵图添加到精灵图表中。和之前一样，找到 `theme`{:.value} 精灵图表，并向其中添加以下精灵图。
 
 ```css
 @spritesheet theme
@@ -332,15 +332,15 @@ Next up, we will add the rest of the sprites used in this tutorial to the sprite
 ```
 
 
-#### Decorating the scrollbar
+#### 装饰滚动条
 
-The scrollbar itself has four child elements that can be individually sized and decorated. These are tagged:
+滚动条本身有四个子元素，可以单独设置大小和装饰。它们的标签如下：
 
-* `slidertrack`{:.tag}, the track that runs from the top to the bottom of the scrollbar underneath the bar.
-* `sliderbar`{:.tag}, the bar (or knob, thumb, etc) that lies on top of the track and can be dragged up and down.
-* `sliderarrowinc`{:.tag}, `sliderarrowdec`{:.tag}, the buttons you can click to move the bar up or down the track.
+* `slidertrack`{:.tag}，即滑块下方的轨道，从滚动条的顶部延伸到底部。
+* `sliderbar`{:.tag}，即位于轨道上方、可以上下拖拽的滑块（也称为 knob、thumb 等）。
+* `sliderarrowinc`{:.tag}、`sliderarrowdec`{:.tag}，即可以点击以沿轨道上下移动滑块的按钮。
 
-We'll start by decorating the track. We use a `tiled-vertical`{:.value} decorator to let it stretch properly in the vertical direction. We already defined the sprites, so we can simply declare the decorator.
+我们先装饰轨道。我们使用 `tiled-vertical`{:.value} 装饰器，让它在垂直方向上适当拉伸。我们已经定义了精灵图，因此只需声明装饰器即可。
 
 ```css
 scrollbarvertical slidertrack
@@ -349,9 +349,9 @@ scrollbarvertical slidertrack
 }
 ```
 
-Fire up the application again, and you've got a scrollbar track! As you can see it is lying in the content area of the window, so doesn't yet stretch to the edges like it should; we'll fix that up later.
+再次运行应用程序，你就得到了一个滚动条轨道！正如你所看到的，它位于窗口的内容区域中，还没有像预期那样延伸到边缘；我们稍后会修复这个问题。
 
-We've got more vertical decorators to define for the bar element:
+我们还需要为滑块元素定义更多的垂直装饰器：
 
 ```css
 scrollbarvertical sliderbar
@@ -361,17 +361,17 @@ scrollbarvertical sliderbar
 }
 ```
 
-Note that we set the width to 23 pixels, as the sprite for the bar is only 23 pixels wide. If you take a look at the result, you'll notice the bar is now decorated, but is displaying on top of the border of the track. To be in the right place, we need to move it 4 pixel to the right. How can we do this? With a margin on the left side! Add a four pixel left margin to the 'sliderbar' and it'll be in the right place.
+请注意，我们将宽度设置为 23 像素，因为滑块的精灵图只有 23 像素宽。如果查看结果，你会注意到滑块现在有了装饰，但它显示在轨道边框的上方。要让它位于正确的位置，我们需要将它向右移动 4 像素。怎么做呢？用左侧外边距！为 'sliderbar' 添加 4 像素的左边距，它就会移到正确的位置。
 
-One last thing on the bar; as no height has been explicitly set on the element, the scrollbar will resize it to fit the requirements of the element it is attached to. As the content gets taller or the element gets shorter, the bar will shrink to match. However, we don't want it shrinking below a certain size, as then the image will need to be shrunk and it won't look the best. The smallest size it can display at without shrinking is 46 pixels; you can set the 'min-height' property then to `46px`{:.value} to prevent it from going below that.
+关于滑块还有最后一点；由于元素上没有显式设置高度，滚动条会调整它的大小以适应其所附着元素的需求。随着内容变高或元素变矮，滑块会相应缩小。但是，我们不希望它缩小到低于某个尺寸，因为那样图像就需要被压缩，效果就不会很好。它不加压缩就能显示的最小尺寸是 46 像素；你可以将 'min-height' 属性设置为 `46px`{:.value}，以防止它低于该值。
 
-Now the window should be looking like this:
+现在窗口应该看起来像这样：
 
 ![window_template_8.gif](window_template_8.gif)
 
-#### Adding the arrows
+#### 添加箭头
 
-So where are the arrows? If you don't resize them yourself, they'll stay hidden. If we want to add them, first step is resizing them. Add a rule to resize `sliderarrowinc`{:.tag} and `sliderarrowdec`{:.tag} elements to 27 x 24 pixels:
+那么箭头在哪里呢？如果你不自己调整它们的大小，它们会一直保持隐藏。如果我们想添加它们，第一步就是调整大小。添加一条规则，将 `sliderarrowinc`{:.tag} 和 `sliderarrowdec`{:.tag} 元素调整为 27 x 24 像素：
 
 ```css
 scrollbarvertical sliderarrowdec,
@@ -382,7 +382,7 @@ scrollbarvertical sliderarrowinc
 }
 ```
 
-And add decorators to each of them:
+并为它们各自添加装饰器：
 
 ```css
 scrollbarvertical sliderarrowdec
@@ -396,11 +396,11 @@ scrollbarvertical sliderarrowinc
 }
 ```
 
-And hey presto, we've got arrows! The scrollbar automatically resizes the slider track to fit the arrows in.
+瞧，我们就有箭头了！滚动条会自动调整滑块轨道的大小以容纳箭头。
 
-#### Fitting the scrollbar
+#### 让滚动条贴合
 
-How do we now resize the scrollbar so it fits in nicely with the window? We can give the scrollbar element itself negative margins, which cause it to push outside of its parent's content area. If you take a take a screenshot of the application and paste it into your paint program, you can see exactly how many pixels it needs to be shifted to the right, and extended on the top and bottom. We worked out 6 pixels up and down, 11 pixels to the left. Add these properties as negative margins to the `scrollbarvertical`{:.tag} rule:
+现在我们如何调整滚动条的大小，使其与窗口很好地贴合呢？我们可以给滚动条元素本身设置负外边距，使其向外推出父元素的内容区域。如果你截取应用程序的屏幕截图并粘贴到绘图程序中，就可以确切地看到它需要向右移动多少像素、以及在顶部和底部延伸多少像素。我们计算出上下各 6 像素、向左 11 像素。将这些属性作为负外边距添加到 `scrollbarvertical`{:.tag} 规则中：
 
 ```css
 scrollbarvertical
@@ -412,13 +412,13 @@ scrollbarvertical
 }
 ```
 
-And from that we've got:
+由此我们得到了：
 
 ![window_template_9.gif](window_template_9.gif)
 
-#### Adding hover and click decoration
+#### 添加悬停和点击装饰
 
-Now the scrollbar is functional, but there's no extra decoration for clicks and mouse-overs. You can add these in easily by declaring a decorator with the hover and active variants of the sprites. For example, add the following rule to put in hover decoration on the bar:
+现在滚动条可以正常使用了，但还没有用于点击和鼠标悬停的额外装饰。你可以通过声明使用精灵图悬停（hover）和激活（active）变体的装饰器来轻松添加。例如，添加以下规则为滑块添加悬停装饰：
 
 ```css
 scrollbarvertical sliderbar:hover
@@ -427,18 +427,18 @@ scrollbarvertical sliderbar:hover
 }
 ```
 
-### Step 5: Templating the document
+### 第 5 步：将文档模板化
 
-Now we've got a complete window document. But what we really want is a window template, so we can easily create new documents that reuse the layout.
-Creating the template
+现在我们已经有了一个完整的窗口文档。但我们真正想要的是一个窗口模板，这样我们就可以轻松创建复用该布局的新文档。
+创建模板
 
-Make a copy of the RML file and call it `template.rml`. To change it from a document into a template, change the top `<rml>`{:.tag} tag to `<template>`{:.tag}. The `<template>`{:.tag} tag needs a couple of bits of information; the name of the template, set by the `name`{:.attr} attribute, and the ID of the element where the document's content should go, set by the 'content' attribute. The final tag should look like:
+复制一份 RML 文件，并将其命名为 `template.rml`。要把它从文档变成模板，请将顶部的 `<rml>`{:.tag} 标签改为 `<template>`{:.tag}。`<template>`{:.tag} 标签需要几项信息：模板的名称（由 `name`{:.attr} 属性设置），以及文档内容应放入的元素的 ID（由 'content' 属性设置）。最终的标签应如下所示：
 
 ```html
 <template name="window" content="content">
 ```
 
-Delete the title and the style declaration in the template header; we won't need those. Also remove the contents of the content element. You should end up with a template file looking like this:
+删除模板头部中的标题和样式声明；我们不需要这些。同时删除内容元素的内容。最终你应该得到一个如下所示的模板文件：
 
 ```html
 <template name="window" content="content">
@@ -458,15 +458,15 @@ Delete the title and the style declaration in the template header; we won't need
 </template>
 ```
 
-Adapting the document
+改编文档
 
-Now we want to change the document we've been working on to use the new template. Open the `tutorial.rml`{:.path} file.
+现在我们想修改一直在制作的文档，以使用新的模板。打开 `tutorial.rml`{:.path} 文件。
 
-The link to the RCSS file is no longer required, as the template will load it. So that should go. However, we need to add another link to the template. Add a new link of type `text/template`{:.value}, with the href pointing to `template.rml`{:.path}.
+不再需要指向 RCSS 文件的链接，因为模板会加载它。所以应该删除它。不过，我们需要添加一个指向模板的链接。添加一个类型为 `text/template`{:.value} 的新链接，href 指向 `template.rml`{:.path}。
 
-Both the title and style declaration stay; these are unique to this document.
+标题和样式声明都保留；这些是该文档独有的。
 
-The `<body>`{:.tag} tag needs to be changed so it knows which template to inject itself into. Do this with the `template`{:.attr} attribute, and set it to the name of the template. In our case, we called the template `window`{:.value}. Now delete the window elements inside the 'body' element, except for the actual content. You should end up with something like this:
+需要更改 `<body>`{:.tag} 标签，让它知道要注入到哪个模板中。通过 `template`{:.attr} 属性来实现，并将其设置为模板的名称。在我们的例子中，模板名为 `window`{:.value}。现在删除 'body' 元素中的窗口元素，只保留实际内容。最终你应该得到类似这样的结果：
 
 ```html
 <rml>
@@ -489,13 +489,13 @@ The `<body>`{:.tag} tag needs to be changed so it knows which template to inject
 </rml>
 ```
 
-And we're done. When the document is loaded, it will load the template and inject the contents of its `<body>`{:.tag} into the `content`{:.tag} element of the template. Any new windows you make can use the same template. If you ever want to reskin your window, or maybe design an entirely new one, you only have to alter the template file!
+就这样完成了。加载文档时，它会加载模板，并将其 `<body>`{:.tag} 的内容注入到模板的 `content`{:.tag} 元素中。你创建的任何新窗口都可以使用同一个模板。如果你想重新美化窗口，或者设计一个全新的窗口，只需修改模板文件即可！
 
-### Step 6: Setting the title
+### 第 6 步：设置标题
 
-We still have one last thing to implement; the title of the document isn't set on the title bar. We'll show you how to do this through the C++ API, but you can also easily do this through a scripting interface.
+我们还有最后一件事要实现；文档的标题还没有设置到标题栏上。我们将向你展示如何通过 C++ API 实现，但你也可以轻松地通过脚本接口实现。
 
-The document is loaded on line 68 of main.cpp. Before the document is rendered, we want to get the `<span>`{:.tag} element containing the dummy title and set its inner RML content to the title of the document we just loaded. To fetch the element, call the `GetElementById()`. Once you have the element, you can remove all of its children and set new RML content with `SetInnerRML()`. The document itself has the `GetTitle()` function to fetch the title.
+文档在 main.cpp 的第 68 行加载。在文档渲染之前，我们需要获取包含虚拟标题的 `<span>`{:.tag} 元素，并将其内部 RML 内容设置为我们刚加载的文档的标题。要获取该元素，请调用 `GetElementById()`。获得元素后，你可以移除其所有子元素，并使用 `SetInnerRML()` 设置新的 RML 内容。文档本身有 `GetTitle()` 函数可用于获取标题。
 
 ```cpp
 	// Load and show the tutorial document.
@@ -507,4 +507,4 @@ The document is loaded on line 68 of main.cpp. Before the document is rendered, 
 	}
 ```
 
-In a real-world application, you can automate this by putting a `load`{:.evt} event into the document template and setting the title in the event handler.
+在实际应用程序中，你可以通过在文档模板中加入 `load`{:.evt} 事件并在事件处理器中设置标题来实现自动化。

@@ -1,13 +1,13 @@
 ---
 layout: page
-title: RML Document Structure
+title: RML 文档结构
 parent: rml
 next: style_sheets
 ---
 
 ### \<rml\>
 
-All RmlUi documents begin with the `<rml>`{:.tag} element. The element should contain two children, `<head>`{:.tag} and `<body>`{:.tag}, as shown in the following basic structure of a document.
+所有 RmlUi 文档都以 `<rml>`{:.tag} 元素开头。该元素应包含两个子元素 `<head>`{:.tag} 和 `<body>`{:.tag}，如下面的文档基本结构所示。
 
 ```html
 <rml>
@@ -24,37 +24,37 @@ All RmlUi documents begin with the `<rml>`{:.tag} element. The element should co
 
 ### \<head\>
 
-The `<head>`{:.tag} element contains information about the current document, such as its title, style and template information is references. No information in the header is rendered.
+`<head>`{:.tag} 元素包含有关当前文档的信息，例如其标题、样式以及所引用的模板信息。头部中的任何信息都不会被渲染。
 
 ### \<title\>
 
-The `<title>`{:.tag} element contains the title of the document. This is often used for the specifying the contents of the title bar of a game window.
+`<title>`{:.tag} 元素包含文档的标题。这通常用于指定游戏窗口标题栏的内容。
 
 ### \<link\>
 
-The `<link>`{:.tag} element is used to specify additional resources the document requires.
+`<link>`{:.tag} 元素用于指定文档所需的附加资源。
 
-_Attributes_
+_属性_
 
 `type`{:.attr} = cdata (CI)
-: Type of link, which should be one of:
-* text/rcss - [RmlUi Style Sheet Specification](../rcss.html)
-* text/template - [RmlUi Template](templates.html)
+: 链接的类型，应为以下之一：
+* text/rcss - [RmlUi 样式表规范](../rcss.html)
+* text/template - [RmlUi 模板](templates.html)
 
 `href`{:.attr} = cdata (CS)
-: Specifies the source URI, relative to the document being parsed.
+: 指定源 URI，相对于正在解析的文档。
 
 ### \<script\>
 
-The `<script>`{:.tag} element can be used to integrate scripting capabilities. A plugin is required to handle the script, such as the [Lua plugin](../lua_manual.html).
+`<script>`{:.tag} 元素可用于集成脚本功能。需要插件来处理脚本，例如 [Lua 插件](../lua_manual.html)。
 
-_Attributes_
+_属性_
 
 `src`{:.attr} = cdata (CS)
-: Specifies the source URI, relative to the document being parsed.
+: 指定源 URI，相对于正在解析的文档。
 
-If the `src`{:.attr} attribute is not present, the element is an inline script whose content represents the script to run.
+如果不存在 `src`{:.attr} 属性，则该元素为内联脚本，其内容表示要运行的脚本。
 
 ### \<body\>
 
-The `<body>`{:.tag} element contains the document's content. All elements within the `<body>`{:.tag} tag become part of the document tree and are processed during layout, as determined by the active style sheets.
+`<body>`{:.tag} 元素包含文档的内容。`<body>`{:.tag} 标签内的所有元素都会成为文档树的一部分，并在布局期间按照活动样式表的规则进行处理。

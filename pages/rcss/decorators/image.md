@@ -1,95 +1,95 @@
 ---
 layout: page
-title: Image decorator
+title: 图像装饰器
 parent: rcss/decorators
 grandparent: rcss
 next: tiled_horizontal
 ---
 
-The `image`{:.prop} decorator can render a single sprite or image.
+`image`{:.prop} 装饰器可以渲染单个精灵或图像。
 
 ```css
 decorator: image( <image-src> <image-orientation>? <image-fit>? <image-align-x>? <image-align-y>? ) <paint-area>?;
 ```
-Values must be specified in the given order, any unspecified properties will be left at their default values. See the 'demo' sample for usage examples.
+取值必须按给定的顺序指定，任何未指定的属性将保持其默认值。用法示例请参阅 'demo' 示例。
 
-### Properties
+### 属性
 
 `image-src`{:.prop}
 
-Value: | \<string\>
-Initial: | N/A
-Percentages: | N/A
+取值： | \<string\>
+初始值： | 不适用
+百分比： | 不适用
 
-This property defines either a [sprite name](../sprite_sheets.html) or a relative path to an image file.
+此属性定义[精灵名称](../sprite_sheets.html)或图像文件的相对路径。
 
 `image-orientation`{:.prop}
 
-Value: | none \| flip-horizontal \| flip-vertical \| rotate-180
-Initial: | none
-Percentages: | N/A
+取值： | none \| flip-horizontal \| flip-vertical \| rotate-180
+初始值： | none
+百分比： | 不适用
 
-Flips or rotates the image.
+翻转或旋转图像。
 
 `image-fit`{:.prop}
 
-Value: | fill \| contain \| cover \| scale-none \| scale-down \| repeat \| repeat-x \| repeat-y
-Initial: | fill
-Percentages: | N/A
+取值： | fill \| contain \| cover \| scale-none \| scale-down \| repeat \| repeat-x \| repeat-y
+初始值： | fill
+百分比： | 不适用
 
 `fill`{:.value}
-: The image is stretched to boundaries.
+: 图像被拉伸到边界。
 
 `contain`{:.value}
-: The image is stretched to boundaries, keeping aspect ratio fixed, 'letter-boxed'.
+: 图像被拉伸到边界，保持宽高比固定，'letter-boxed'（留边）。
 
 `cover`{:.value}
-: The image is stretched to cover the boundaries, keeping aspect ratio fixed.
+: 图像被拉伸以覆盖边界，保持宽高比固定。
 
 `scale-none`{:.value}
-: The image is never scaled.
+: 图像从不缩放。
 
 `scale-down`{:.value}
-: The image acts like 'scale-none' if smaller than boundaries, or like 'contain' otherwise.
+: 如果图像小于边界，则表现为 'scale-none'；否则表现为 'contain'。
 
 `repeat`{:.value}
-: The image is tiled, repeating both horizontally and vertically. It does not work on sprite images.
+: 图像被平铺，在水平和垂直方向上都重复。不适用于精灵图像。
 
 `repeat-x`{:.value}
-: The image is horizontally tiled along the X-axis. It does not work on sprite images.
+: 图像沿 X 轴水平平铺。不适用于精灵图像。
 
 `repeat-y`{:.value}
-: The image is vertically tiled along the Y-axis. It does not work on sprite images.
+: 图像沿 Y 轴垂直平铺。不适用于精灵图像。
 
 
 `image-align-x`{:.prop}
 
-Value: | left \| center \| right \| \<length-percentage\>
-Initial: | center
-Percentages: | relative to the element's padding width
+取值： | left \| center \| right \| \<length-percentage\>
+初始值： | center
+百分比： | 相对于元素的内边距宽度
 
-Horizontally align or offset the image.
+水平对齐或偏移图像。
 
 `image-align-y`{:.prop}
 
-Value: | top \| center \| bottom \| \<length-percentage\>
-Initial: | center
-Percentages: | relative to the element's padding height
+取值： | top \| center \| bottom \| \<length-percentage\>
+初始值： | center
+百分比： | 相对于元素的内边距高度
 
-Vertically align or offset the image.
+垂直对齐或偏移图像。
 
 
 `paint-area`{:.prop}
 
-Value: | border-box \| padding-box \| content-box
-Initial: | padding-box
-Percentages: | N/A
+取值： | border-box \| padding-box \| content-box
+初始值： | padding-box
+百分比： | 不适用
 
-Declares the box area to render the decorator onto.
+声明渲染装饰器的盒区域。
 
-### Examples
+### 示例
 
-The following demonstrates some examples of using the `image`{:.prop} decorator.
+下面演示了使用 `image`{:.prop} 装饰器的一些示例。
 
 ```css
 .star {
@@ -108,27 +108,27 @@ The following demonstrates some examples of using the `image`{:.prop} decorator.
 }
 ```
 
-### Modifiers
+### 修饰符
 
-The image can be positioned, scaled, and transformed according to the above modifier properties. This section demonstrates the results of using these modifiers. Many of them manipulate the following image:
+图像可以根据上述修饰符属性进行定位、缩放和变换。本节演示使用这些修饰符的结果。其中许多修饰符操作以下图像：
 
 {:.center}
 ![image-invader.png](../../../assets/images/decorators/image-invader.png)
 
-#### Fit modes
+#### 适配模式
 
-The `image-fit`{:.prop} property.
+`image-fit`{:.prop} 属性。
 
 ![image-fit-modes.png](../../../assets/images/decorators/image-fit-modes.png)
 
-#### Alignment modes
+#### 对齐模式
 
-The `image-align-x`{:.prop} and `image-align-y`{:.prop} properties. Here, using `image-fit: scale-none`{:.value}.
+`image-align-x`{:.prop} 和 `image-align-y`{:.prop} 属性。这里使用 `image-fit: scale-none`{:.value}。
 
 ![image-alignment-modes.png](../../../assets/images/decorators/image-alignment-modes.png)
 
-#### Orientation
+#### 方向
 
-The `image-orientation`{:.prop} property.
+`image-orientation`{:.prop} 属性。
 
 ![image-orientation.png](../../../assets/images/decorators/image-orientation.png)

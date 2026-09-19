@@ -1,16 +1,16 @@
 ---
 layout: page
-title: Tab set
+title: 选项卡集
 parent: cpp_manual/element_packages
 grandparent: cpp_manual
 next: progress_bar
 ---
 
-RmlUi comes with a tab set control for breaking up content over multiple tabbed panels. The control has a list of tabs which are always visible and can be clicked on to display their associated panel. Only one panel is visible at any one time.
+RmlUi 附带一个选项卡集控件，用于将内容拆分为多个选项卡面板。该控件有一个始终可见的选项卡列表，可以点击以显示其关联的面板。任何时刻只有一个面板可见。
 
-You can find the RML documentation for the tab set element [here]({{"pages/rml/controls.html#tabset"|relative_url}}).
+你可以在此处找到选项卡集元素的 RML 文档：{{"pages/rml/controls.html#tabset"|relative_url}}。
 
-Here is an RML sample demonstrating the declaration of a tab set:
+下面是一个演示选项卡集声明的 RML 示例：
 
 ```html
 <rml>
@@ -31,9 +31,9 @@ Here is an RML sample demonstrating the declaration of a tab set:
 </rml>
 ```
 
-The `Rml::ElementTabSet` class (found in `<RmlUi/Core/Elements/ElementTabSet.h>`{:.incl}) defines the interface to tab set elements.
+`Rml::ElementTabSet` 类（位于 `<RmlUi/Core/Elements/ElementTabSet.h>`{:.incl}）定义了选项卡集元素的接口。
 
-The function `GetNumTabs()` will return the number of panels within the tab set.
+`GetNumTabs()` 函数将返回选项卡集内面板的数量。
 
 ```cpp
 // Retrieve the number of tabs in the tab set.
@@ -41,9 +41,9 @@ The function `GetNumTabs()` will return the number of panels within the tab set.
 int GetNumTabs();
 ```
 
-### Setting active tab
+### 设置活动选项卡
 
-The following functions will let the active tab be changed and retrieved.
+以下函数可以更改和获取活动选项卡。
 
 ```cpp
 // Sets the currently active (visible) tab index.
@@ -55,11 +55,11 @@ void SetActiveTab(int tab_index);
 int GetActiveTab() const;
 ```
 
-When a certain tab is activated, only the corresponding panel is visible. The other panels will have their `display`{:.prop} property set to `none`{:.value}.
+当某个选项卡被激活时，只有对应的面板可见。其他面板的 `display`{:.prop} 属性将被设置为 `none`{:.value}。
 
-### Setting tab content
+### 设置选项卡内容
 
-Through C++, the contents of the panel tabs can be set to either unparsed RML or an existing element hierarchy.
+通过 C++，面板选项卡的内容可以设置为未解析的 RML 或现有的元素层级。
 
 ```cpp
 // Sets the specifed tab index's tab title RML.
@@ -73,13 +73,13 @@ void SetTab(int tab_index, const Rml::String& rml);
 void SetTab(int tab_index, Rml::ElementPtr element);
 ```
 
-When the contents of a tab is set, it will replace whatever it had before. If you specify a tab index that doesn't exist, it will be created. The second function takes an `ElementPtr`, thus, the function takes ownership of the given element. Raw pointers cannot be used, they must first be removed from their parent if located in a hierarchy.
+当选项卡的内容被设置时，它将替换以前拥有的任何内容。如果你指定一个不存在的选项卡索引，它将被创建。第二个函数接受一个 `ElementPtr`，因此，该函数拥有给定元素的所有权。不能使用原始指针，如果它们位于层级中，必须首先从它们的父元素中移除。
 
-Note that these functions only set the content of the tab buttons, not the panels themselves.
+请注意，这些函数只设置选项卡按钮的内容，而不是面板本身。
 
-### Setting panel content
+### 设置面板内容
 
-Similarly to the panel tabs, the content of the panels themselves can be set to unparsed RML or an existing element.
+与面板选项卡类似，面板本身的内容可以设置为未解析的 RML 或现有元素。
 
 ```cpp
 // Sets the specifed tab index's tab panel RML.
@@ -93,9 +93,9 @@ void SetPanel(int tab_index, const Rml::String& rml);
 void SetPanel(int tab_index, Rml::ElementPtr element);
 ```
 
-### Removing panels
+### 移除面板
 
-The `RemoveTab()` function will remove an existing tab and its panel from the tab set.
+`RemoveTab()` 函数将从选项卡集中移除现有的选项卡及其面板。
 
 ```cpp
 // Remove one of the tab set's panels and its corresponding tab.
@@ -103,15 +103,15 @@ The `RemoveTab()` function will remove an existing tab and its panel from the ta
 void RemoveTab(int tab_index);
 ```
 
-### Applying properties
+### 应用样式属性（property）
 
-Tab sets and their elements can have properties applied on them like other elements, and will need to in order to be positioned correctly. For a horizontal layout, the `display`{:.prop} properties of tabs should be set to `inline-block`{:.value}. For panels, the `display`{:.prop} can be set to `block`{:.value} for typical layout scenarios. Note that panels will automatically have their `display`{:.prop} property set to `none`{:.value} on the local element style when they are not the active tab. Subsequently, when a panel is activated the `display`{:.prop} property is removed from the local element style, effectively activating the property set in the RCSS document. Thus, ensure that the `display`{:.prop} property is added to the RCSS document rather than as inline style for panel elements.
+选项卡集及其元素可以像其他元素一样应用样式属性（property），并且为了正确定位，它们将需要这样做。对于水平布局，选项卡的 `display`{:.prop} 属性应设置为 `inline-block`{:.value}。对于面板，在典型的布局场景中，`display`{:.prop} 可以设置为 `block`{:.value}。请注意，当面板不是活动选项卡时，其 `display`{:.prop} 属性将自动在本地元素样式上设置为 `none`{:.value}。随后，当面板被激活时，`display`{:.prop} 属性会从本地元素样式中移除，从而有效地激活 RCSS 文档中设置的属性。因此，请确保 `display`{:.prop} 属性添加到 RCSS 文档中，而不是作为面板元素的内联样式。
 
-The diagram below details the internal hierarchy of the tab set.
+下图详细说明了选项卡集的内部层级。
 
 ![tab_set_1.gif](tab_set_1.gif)
 
-The tab set element itself (tagged tabset) will have two child elements, panels, which holds all the panel elements, and tabs, which holds all the tab elements. Each of the panel and tab elements hold arbitrary RML content. A typical RCSS definition for a tab set would be follows:
+选项卡集元素本身（标签为 tabset）将有两个子元素：panels，它包含所有面板元素；tabs，它包含所有选项卡元素。每个面板和选项卡元素都包含任意的 RML 内容。选项卡集的典型 RCSS 定义如下：
 
 ```css
 /* Force the tabset element to a fixed size. */
@@ -155,4 +155,4 @@ tabset panels panel
 }
 ```
 
-The order of the panels and tabs elements is determined by the RML order; if a panel element is encountered before a tab element, the panels element will be created first, and vice versa. This way, you can create a tab set with tabs on the bottom or top. 
+panels 和 tabs 元素的顺序由 RML 顺序决定；如果 panel 元素在 tab 元素之前遇到，则先创建 panels 元素，反之亦然。这样，你就可以创建选项卡在底部或顶部的选项卡集。

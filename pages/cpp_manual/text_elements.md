@@ -1,40 +1,40 @@
 ---
 layout: page
-title: Text Elements
+title: 文本元素
 parent: cpp_manual
 next: custom_elements
 ---
 
-RmlUi uses text elements, `Rml::ElementText` derived from `Rml::Element`, to store and render loose text. Text elements are generated automatically for text in RML documents, and can be created dynamically by using the '#text' element instancer through the RmlUi factory, or through the `CreateTextNode()` function on a document.
+RmlUi 使用文本元素（`Rml::ElementText`，派生自 `Rml::Element`）来存储和渲染零散文本。文本元素为 RML 文档中的文本自动生成，可以通过使用 '#text' 元素实例化器（instancer）经由 RmlUi factory 动态创建，或通过文档上的 `CreateTextNode()` 函数创建。
 
-### Text encoding
+### 文本编码
 
-The string type used throughout RmlUi `Rml::String` is an alias for `std::string`. This is always assumed to be encoded in UTF-8. This allows storing any Unicode character efficiently, and is compatible with the standard ASCII characters. There are some helper functions for iterating over UTF-8 encoded strings in `RmlUi/Core/StringUtilities.h`{:.path}.
+RmlUi 中通篇使用的字符串类型 `Rml::String` 是 `std::string` 的别名。它总是被假定为 UTF-8 编码。这允许高效地存储任何 Unicode 字符，并与标准 ASCII 字符兼容。在 `RmlUi/Core/StringUtilities.h`{:.path} 中有一些用于遍历 UTF-8 编码字符串的辅助函数。
 
-### HTML characters
+### HTML 字符
 
-RmlUi text nodes support a subset of the full HTML-encoding for special characters to allow XML characters to be present in loose text. The characters supported are:
+RmlUi 文本节点支持完整 HTML 编码的一个子集，用于特殊字符，以允许 XML 字符出现在零散文本中。支持的字符有：
 
-* `&lt;`{:.value} The less-than symbol, '<'.
-* `&gt;`{:.value} The greater-than symbol, '>'.
-* `&amp;`{:.value} The ampersand symbol, '&'.
-* `&nbsp;`{:.value} A non-breaking space.
+* `&lt;`{:.value} 小于符号 '<'。
+* `&gt;`{:.value} 大于符号 '>'。
+* `&amp;`{:.value} 与符号 '&'。
+* `&nbsp;`{:.value} 不换行空格。
 
-You should use these symbols instead of their literal equivalents when putting them into RML. For example, the following RML fragment will most likely generate a parse error:
+当把它们放入 RML 时，你应该使用这些符号而不是它们的字面等价形式。例如，以下 RML 片段很可能会生成解析错误：
 
 ```html
 <p>You shouldn't use < or > characters in loose text.</p>
 ```
 
-The following fragment puts the characters in correctly:
+以下片段正确地放置了这些字符：
 
 ```html
 <p>You shouldn't use &lt; or &gt; characters in loose text.</p>
 ```
 
-### Setting an element's text
+### 设置元素的文本
 
-The `SetText()` function on a `Rml::ElementText` will change the text on the text element to a new string.
+`Rml::ElementText` 上的 `SetText()` 函数将把文本元素上的文本更改为新字符串。
 
 ```cpp
 // Sets the raw string this text element contains.
@@ -42,11 +42,11 @@ The `SetText()` function on a `Rml::ElementText` will change the text on the tex
 void SetText(const Rml::String& text);
 ```
 
-Note that this sets the raw text on the element; the actual rendered text may differ due to whitespace processing.
+请注意，这设置的是元素上的原始文本；实际渲染的文本可能因空白处理而有所不同。
 
-### Retrieving an element's text
+### 检索元素的文本
 
-The `GetText()` function will return the element's raw text.
+`GetText()` 函数将返回元素的原始文本。
 
 ```cpp
 // Returns the raw string this text element contains.
@@ -54,6 +54,6 @@ The `GetText()` function will return the element's raw text.
 const Rml::String& GetText() const;
 ```
 
-### String generation
+### 字符串生成
 
-Text elements are capable of generating formatted sub-sections of their content. This is generally only required by custom elements placing text internally; see the section on hidden elements for more information.
+文本元素能够生成其内容的格式化子部分。这通常只有将文本放置在内部的自定义元素才需要；更多信息请参阅隐藏元素一节。

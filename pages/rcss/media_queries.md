@@ -1,11 +1,11 @@
 ---
 layout: page
-title: Media queries
+title: 媒体查询
 parent: rcss
 next: sprite_sheets
 ---
 
-The RCSS at-rule `@media` can be used to dynamically activate and deactivate style rules based on a given set of conditions. The RCSS media queries follow the [CSS syntax](https://developer.mozilla.org/en-US/docs/Web/CSS/@media) with some extensions and [limitations](#limitations).
+RCSS 的 at-rule `@media` 可用于根据给定的一组条件动态激活和停用样式规则。RCSS 媒体查询遵循 [CSS 语法](https://developer.mozilla.org/en-US/docs/Web/CSS/@media)，并带一些扩展和[限制](#limitations)。
 
 ```css
 @media (orientation: landscape) and (min-width: 640px)
@@ -51,40 +51,40 @@ The RCSS at-rule `@media` can be used to dynamically activate and deactivate sty
 }
 ```
 
-### Media features
+### 媒体特性
 
-The following table lists all supported media features.
+下表列出了所有受支持的媒体特性。
 
-Name | Range | Value | Description
+名称 | 范围 | 取值 | 说明
 ---- | ----- | ----- | -----------
-`width`{:.prop}         | Yes | \<length\>            | Width of context.
-`height`{:.prop}        | Yes | \<length\>            | Height of context.
-`aspect-ratio`{:.prop}  | Yes | \<ratio\>             | Aspect ratio of context (width / height).
-`resolution`{:.prop}    | Yes | \<resolution\>        | The [dp-ratio](syntax.html#dp-unit) of the context. Note that [\<resolution\>](syntax.html#resolution) always takes the `x`{:.value} unit in RCSS.
-`orientation`{:.prop}   | No  | landscape \| portrait | Orientation based on the context width and height.
-`theme`{:.prop}         | No  | \<string\>            | Custom RCSS feature. Can be [activated and deactivated](../cpp_manual/contexts.html#themes) on the context.
+`width`{:.prop}         | 是 | \<length\>            | 上下文的宽度。
+`height`{:.prop}        | 是 | \<length\>            | 上下文的高度。
+`aspect-ratio`{:.prop}  | 是 | \<ratio\>             | 上下文的宽高比（宽度 / 高度）。
+`resolution`{:.prop}    | 是 | \<resolution\>        | 上下文的 [dp 比例](syntax.html#dp-unit)。请注意，在 RCSS 中 [\<resolution\>](syntax.html#resolution) 总是采用 `x`{:.value} 单位。
+`orientation`{:.prop}   | 否  | landscape \| portrait | 基于上下文宽度和高度的方向。
+`theme`{:.prop}         | 否  | \<string\>            | 自定义 RCSS 特性。可以在上下文上[激活和停用](../cpp_manual/contexts.html#themes)。
 
-Since RmlUi is designed to be displayed on screens and in a controlled environment, it doesn't make sense to implement all [CSS media features](https://developer.mozilla.org/en-US/docs/Web/CSS/@media#media_features).
+由于 RmlUi 设计用于在屏幕和受控环境中显示，因此实现所有 [CSS 媒体特性](https://developer.mozilla.org/en-US/docs/Web/CSS/@media#media_features) 没有意义。
 
-All range media features can be prefixed with `min-` and `max-` to specify minimum and maximum constraints, respectively. All other constraints are compared for equality.
+所有范围媒体特性都可以加上 `min-` 和 `max-` 前缀，分别指定最小和最大约束。所有其他约束都按相等性比较。
 
-### Logical operators
+### 逻辑运算符
 
-The following logical operators can be used to combine media features.
+以下逻辑运算符可用于组合媒体特性。
 
-Operator | Description
+运算符 | 说明
 -------- | -----------
-`and`     | Matches if all conditions are true.
-`not`     | Matches the inverse of the condition.
+`and`     | 所有条件都为真时匹配。
+`not`     | 匹配条件的相反结果。
 
-Other operators found in CSS are currently not supported.
+CSS 中找到的其他运算符目前不受支持。
 
-### Limitations
+### 限制
 
-Currently, RCSS has some limitations compared to CSS.
+目前，与 CSS 相比，RCSS 存在一些限制。
 
-- `@media` rules cannot be nested.
-- Conditions cannot be nested within a media query, e.g. by using parenthesis.
-- Only a single occurrence of a given feature can be specified in a single media query.
-    - Except that both `min-` and `max-` of the same range feature can be specified.
-- The CSS Level 4 syntax using `<=` operators and similar is not supported.
+- `@media` 规则不能嵌套。
+- 条件不能在媒体查询内嵌套，例如使用括号。
+- 单个媒体查询中只能指定给定特性的单个出现。
+    - 例外：同一范围特性的 `min-` 和 `max-` 都可以指定。
+- 不支持使用 `<=` 运算符等的 CSS Level 4 语法。

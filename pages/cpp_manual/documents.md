@@ -1,15 +1,15 @@
 ---
 layout: page
-title: Documents
+title: 文档
 parent: cpp_manual
 next: contexts
 ---
 
-Documents are container [elements](elements.html). They are designed to represent a single `window' within your application's interface. Documents are elements themselves, and the elements they contain directly are parented to them.
+文档是容器[元素](elements.html)。它们被设计用来表示应用程序界面中的一个 `window'`。文档本身就是元素，它们直接包含的元素以它们为父元素。
 
-### Identification
+### 标识
 
-Documents have a title, defined in RML by contents of the `<title>`{:.tag} tag within the document header. By default the title does not do anything, but can be used to populate the contents of a title bar (as in the _Rocket Invaders from Mars_ demo). The function `GetTitle()` will return the document's title, `SetTitle()` will set it.
+文档有一个标题，在 RML 中由文档头中 `<title>`{:.tag} 标签的内容定义。默认情况下，标题不做任何事情，但可以用来填充标题栏的内容（如在 _Rocket Invaders from Mars_ 演示中）。`GetTitle()` 函数将返回文档的标题，`SetTitle()` 将设置它。
 
 ```cpp
 // Sets the document's title.
@@ -21,7 +21,7 @@ void SetTitle(Rml::String& title);
 const Rml::String& GetTitle() const;
 ```
 
-If a document was loaded from an RML file, the function `GetSourceURL()` will return the path of the source RML.
+如果文档是从 RML 文件加载的，`GetSourceURL()` 函数将返回源 RML 的路径。
 
 ```cpp
 // Returns the source address of this document.
@@ -29,11 +29,11 @@ If a document was loaded from an RML file, the function `GetSourceURL()` will re
 const Rml::String& GetSourceURL() const;
 ```
 
-### Documents and contexts
+### 文档与上下文
 
-Every document is part of a single context. The documents within a context are layered similarly to windows on a desktop. Document layering can be controlled through user input (ie, when a document is clicked on, by default it is raised to the top), programatically or through the `z-index`{:.prop} property.
+每个文档都是单个上下文的一部分。上下文中的文档像桌面上的窗口一样分层。文档分层可以通过用户输入（即，当文档被点击时，默认会将其提升到顶部）、以编程方式或通过 `z-index`{:.prop} 属性来控制。
 
-The function `GetContext()` will return the document's context.
+`GetContext()` 函数将返回文档的上下文。
 
 ```cpp
 // Returns the document's context.
@@ -41,11 +41,11 @@ The function `GetContext()` will return the document's context.
 Rml::Context* GetContext();
 ```
 
-#### Layering
+#### 分层
 
-The `z-index`{:.prop} property of a document controls the rendering order similarly to elements. A document with a higher `z-index`{:.prop} will always be rendered on top of a document with a lower `z-index`{:.prop}. Documents start with a default `z-index`{:.prop} of `0`{:.value}.
+文档的 `z-index`{:.prop} 属性与元素一样控制渲染顺序。具有较高 `z-index`{:.prop} 的文档将始终渲染在具有较低 `z-index`{:.prop} 的文档之上。文档默认从 `z-index`{:.prop} 为 `0`{:.value} 开始。
 
-The functions `PullToFront()` and `PushToBack()` will move the document to the front and back of the document stack among documents with a similar `z-index`{:.prop}. For example, calling `PullToFront()` on a document with a `z-index`{:.prop} of `1`{:.value} will force all documents with a `z-index`{:.prop} lower than `1`{:.value}, and all other documents with a `z-index`{:.prop} of `1`{:.value}, to be rendered before it. However, documents with a higher `z-index`{:.prop} will still be rendered after it.
+`PullToFront()` 和 `PushToBack()` 函数将在具有相似 `z-index`{:.prop} 的文档之间将文档移动到文档栈的前面或后面。例如，对 `z-index`{:.prop} 为 `1`{:.value} 的文档调用 `PullToFront()` 将强制所有 `z-index`{:.prop} 低于 `1`{:.value} 的文档，以及所有其他 `z-index`{:.prop} 为 `1`{:.value} 的文档在它之前渲染。但是，具有更高 `z-index`{:.prop} 的文档仍将在它之后渲染。
 
 ```cpp
 // Brings the document to the front of the document stack.
@@ -55,15 +55,15 @@ void PullToFront();
 void PushToBack();
 ```
 
-Pulling and pushing documents only affects the document stack at the moment it is called. If further documents are loaded, or other documents are pushed and pulled, the document stack will change.
+拉前和推后文档只影响调用时刻的文档栈。如果加载更多文档，或其他文档被推前和拉后，文档栈将发生变化。
 
-#### Layering and the mouse
+#### 分层与鼠标
 
-By default, if the primary mouse button is pressed while hovering over a document, that document will be brought to the front of the document stack (similarly to a `PullToFront()` call). If a document has any `z-index`{:.prop} value other than the default of `auto`{:.value}, this behaviour will not occur.
+默认情况下，如果在悬停于文档上时按下主鼠标按钮，该文档将被带到文档栈的前面（类似于 `PullToFront()` 调用）。如果文档具有除默认值 `auto`{:.value} 之外的任何 `z-index`{:.prop} 值，则不会发生此行为。
 
-### Visibility
+### 可见性
 
-When a document is loaded into a context, it begins hidden (it has a `visibility`{:.prop} value of `hidden`{:.value}). To show a document, use the `Show()` function:
+当文档加载到上下文中时，它开始时是隐藏的（其 `visibility`{:.prop} 值为 `hidden`{:.value}）。要显示文档，请使用 `Show()` 函数：
 
 ```cpp
 // Show the document.
@@ -73,7 +73,7 @@ When a document is loaded into a context, it begins hidden (it has a `visibility
 void Show(ModalFlag modal_flag = ModalFlag::None, FocusFlag focus_flag = FocusFlag::Auto, ScrollFlag scroll_flag = ScrollFlag::Auto);
 ```
 
-By default, the `Show()` function will make the document visible and switch keyboard focus to the document and if possible the first control element with an `autofocus`{:.attr} attribute set. The focus behavior as well as the modal state can be controlled with two separate flags. The flags are specified as follows:
+默认情况下，`Show()` 函数将使文档可见，并将键盘焦点切换到文档，如果可能的话切换到第一个设置了 `autofocus`{:.attr} 标记属性的控件元素。焦点行为以及模态状态可以用两个独立的标志控制。标志指定如下：
 
 ```cpp
 /** ModalFlag controls the modal state of the document. */
@@ -96,14 +96,14 @@ enum class ScrollFlag {
 };
 ```
 
-To hide a document, call `Hide()`.
+要隐藏文档，请调用 `Hide()`。
 
 ```cpp
 // Hide the document.
 void Hide();
 ```
 
-To check if the document is modal, use `IsModal()`.
+要检查文档是否为模态，请使用 `IsModal()`。
 
 ```cpp
 // Does the document have modal display set.
@@ -111,11 +111,11 @@ To check if the document is modal, use `IsModal()`.
 bool IsModal() const;
 ```
 
-### Tab elements
+### Tab 元素
 
-Generally, the `tab` key can be used to navigate between *tabbable* elements. This mainly applies to input elements, but can be enabled on any other element as desired by using the [`tab-index`{:.prop} property](../rcss/user_interface.html#tab-index).
+通常，`tab` 键可用于在*可 tab 切换*的元素之间导航。这主要适用于输入元素，但可以根据需要通过 [`tab-index`{:.prop} 属性](../rcss/user_interface.html#tab-index) 在任何其他元素上启用。
 
-While the tabbing behavior is performed automatically in the document, based on received key events, sometimes it can be useful to control aspects of this behavior manually. A useful tool in this regard is the `FindNextTabElement()` method, which can be used to find the next tabbable element from any other element in the document tree.
+虽然 tab 切换行为在文档中基于收到的按键事件自动执行，但有时手动控制此行为的某些方面可能很有用。在这方面一个有用的工具是 `FindNextTabElement()` 方法，它可用于从文档树中的任何其他元素找到下一个可 tab 切换的元素。
 
 ```cpp
 // Finds the next tabbable element in the document tree, starting at the given element, possibly wrapping around the document.
@@ -125,9 +125,9 @@ While the tabbing behavior is performed automatically in the document, based on 
 Element* FindNextTabElement(Element* current_element, bool forward);
 ```
 
-### Manually updating the document
+### 手动更新文档
 
-The document is [always updated](contexts.html#update-and-rendering) during the call to `Context::Update()`. However, sometimes it may in addition be necessary to update the document manually so that elements can be queried for their layed out size or position, in particular after elements have been modified or added to the document.
+文档在调用 `Context::Update()` 期间[始终被更新](contexts.html#update-and-rendering)。然而，有时可能还需要手动更新文档，以便可以查询元素的布局后大小或位置，特别是在元素被修改或添加到文档之后。
 
 ```cpp
 // Updates the document, including its layout. Users must call this manually before requesting information such as
@@ -136,22 +136,22 @@ The document is [always updated](contexts.html#update-and-rendering) during the 
 void ElementDocument::UpdateDocument();
 ```
 
-See more on the [validity of retrieved element values](elements.html#validity-of-retrieved-values).
+更多内容请参阅[检索元素值的有效性](elements.html#validity-of-retrieved-values)。
 
-### Closing
+### 关闭
 
-Calling `Close()` on a document will remove the document from its context and destroy it and all of its elements.
+对文档调用 `Close()` 将把文档从其上下文中移除，并销毁它及其所有元素。
 
 ```cpp
 // Close the document.
 void Close();
 ```
 
-Documents aren't actually destroyed until the next call to `Context::Update()` or `Rml::Shutdown()`, so event listeners attached to the document or any of its children must be kept alive until then.
+文档实际上直到下一次调用 `Context::Update()` 或 `Rml::Shutdown()` 时才会被销毁，因此附加到文档或其任何子元素的事件监听器必须保持存活到那时。
 
-### Creating new elements
+### 创建新元素
 
-Similarly to HTML documents, RmlUi documents are capable of creating new elements and text nodes. You can use the `CreateElement()` function to create a new element of a certain type:
+与 HTML 文档类似，RmlUi 文档能够创建新元素和文本节点。你可以使用 `CreateElement()` 函数创建某种类型的新元素：
 
 ```cpp
 // Creates the named element.
@@ -159,9 +159,9 @@ Similarly to HTML documents, RmlUi documents are capable of creating new element
 Rml::ElementPtr CreateElement(const Rml::String& name);
 ```
 
-The name parameter is the desired tag name of the new element. Note that as you cannot specify an independent instancer name or RML attributes to pass to the instancer, this method is not as flexible as creating an element through the factory, but is useful for easily creating simple elements.
+name 参数是新元素所需的标签名。请注意，由于你无法指定独立的 instancer 名称或要传递给 instancer 的 RML 标记属性（attribute），此方法不如通过 factory 创建元素灵活，但对于轻松创建简单元素很有用。
 
-Call `CreateTextNode()` to create a new text element with a given text string:
+调用 `CreateTextNode()` 以使用给定的文本字符串创建新的文本元素：
 
 ```cpp
 // Create a text element with the given text content.
@@ -169,17 +169,17 @@ Call `CreateTextNode()` to create a new text element with a given text string:
 Rml::ElementPtr CreateTextNode(const Rml::String& text);
 ```
 
-The text parameter will be interpreted as a UTF-8 encoded string. The element returned will be derived from `Rml::ElementText`.
+text 参数将被解释为 UTF-8 编码的字符串。返回的元素将派生自 `Rml::ElementText`。
 
-Note that neither of these functions actually attaches the new element to the document in any way. See the description of [elements](elements.html#using-a-document) for details on how to do this.
+请注意，这两个函数都不会以任何方式将新元素实际附加到文档。有关如何执行此操作的细节，请参阅[元素](elements.html#using-a-document)的说明。
 
-### Custom documents
+### 自定义文档
 
-All documents are instanced like normal elements from the 'body' tag. The process for creating a custom document type is identical to that for [creating a custom element](custom_elements.html), except you should derive from `Rml::ElementDocument` instead of `Rml::Element`, and only register the element instancer against the `<body>`{:.tag} tag.
+所有文档都像普通元素一样从 'body' 标签实例化。创建自定义文档类型的过程与[创建自定义元素](custom_elements.html)相同，只不过你应该派生自 `Rml::ElementDocument` 而不是 `Rml::Element`，并且只针对 `<body>`{:.tag} 标签注册元素 instancer。
 
-If you register an instancer for the `<body>`{:.tag} tag that returns an element not derived from `Rml::ElementDocument`, documents will fail to load.
+如果你为 `<body>`{:.tag} 标签注册的 instancer 返回的元素不是派生自 `Rml::ElementDocument`，文档将加载失败。
 
-There are two related virtual functions in `Rml::ElementDocument`:
+`Rml::ElementDocument` 中有两个相关的虚函数：
 
 ```cpp
 // Loads an inline script into the document. Note that the base implementation does nothing, scripting language addons
@@ -195,4 +195,4 @@ virtual void LoadInlineScript(const String& content, const String& source_path, 
 virtual void LoadExternalScript(const String& source_path);
 ```
 
-`LoadInlineScript()` and `LoadExternalScript()` are generally only used to integrate a scripting language into RmlUi. They are called on a document for every `<script>`{:.tag} tag with the script content or `src`{:.attr} attribute, respectively. The default implementation does nothing; custom documents can do whatever they need to here to load, compile and bind the scripts for their elements.
+`LoadInlineScript()` 和 `LoadExternalScript()` 通常仅用于将脚本语言集成到 RmlUi 中。对于每个 `<script>`{:.tag} 标签，它们分别在文档上被调用，并带有脚本内容或 `src`{:.attr} 标记属性。默认实现不做任何事情；自定义文档可以在这里做任何需要的事情，以加载、编译和绑定其元素的脚本。

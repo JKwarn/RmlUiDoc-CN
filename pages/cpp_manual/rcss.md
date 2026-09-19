@@ -1,19 +1,19 @@
 ---
 layout: page
-title: Style sheets and properties
+title: 样式表与样式属性
 parent: cpp_manual
 next: animations_transforms
 ---
 
-A RmlUi document may have a number of style sheets attached to it. Each of those style sheets has a list of RCSS properties and rules for selecting which elements those properties are applied to. Any element may also have properties set on them directly.
+一个 RmlUi 文档可以附加多个样式表。每个样式表都有一系列 RCSS 属性，以及用于选择这些属性应用于哪些元素的规则。任何元素也可以直接在其上设置属性。
 
-This document only details the C++ interface into the style sheet and property system; for detailed information on what properties are supported and what their function is, see the [RCSS documentation](../rcss.html).
+本文档只详细说明样式表和属性系统的 C++ 接口；有关支持哪些属性及其功能的详细信息，请参阅 [RCSS 文档](../rcss.html)。
 
-### Style sheets
+### 样式表
 
-Style sheets are automatically loaded and attached to a document when you use the `<link type="text/rcss" />`{:.tag} tag in the header of an RML document; this is the most common way style sheets are loaded.
+当你在 RML 文档的头部使用 `<link type="text/rcss" />`{:.tag} 标签时，样式表会自动加载并附加到文档；这是样式表最常见的加载方式。
 
-If you want to dynamically create or load a style sheet, the RmlUi factory (the class `Rml::Factory`) has the ability to do this:
+如果你想动态创建或加载样式表，RmlUi factory（类 `Rml::Factory`）具有这样做的能力：
 
 ```cpp
 // Creates a style sheet from a user-generated string.
@@ -22,15 +22,15 @@ static Rml::SharedPtr<Rml::StyleSheet> InstanceStyleSheetString(const Rml::Strin
 static Rml::SharedPtr<Rml::StyleSheet> InstanceStyleSheetFile(const Rml::String& file_name);
 ```
 
-`InstanceStyleSheetString()` allows you to parse a string you've built up in your application into a style sheet. This is used in the debugger to keep all of its RML and RCSS content inline. `InstanceStyleSheetFile()` will load a style sheet from an RCSS file. Both of these functions will return a style sheet pointer on success, which you can then set on a document.
+`InstanceStyleSheetString()` 允许你将应用程序中构建的字符串解析为样式表。这在调试器中用于保持其所有 RML 和 RCSS 内容内联。`InstanceStyleSheetFile()` 将从 RCSS 文件加载样式表。这两个函数在成功时都会返回一个样式表指针，然后你可以将其设置在文档上。
 
-Style sheets are reference counted through the `Rml::SharedPtr` which is an alias for `std::shared_ptr`. There is currently no way to add rules or properties to a style sheet once it has been loaded.
+样式表通过 `Rml::SharedPtr`（它是 `std::shared_ptr` 的别名）进行引用计数。目前没有方法在样式表加载后向其添加规则或属性。
 
-### Properties
+### 样式属性
 
-#### Querying properties
+#### 查询属性
 
-Properties can be requested from an element with the `GetProperty()` function.
+可以使用 `GetProperty()` 函数从元素请求属性。
 
 ```cpp
 // Returns one of this element's properties.
@@ -42,9 +42,9 @@ template < typename T >
 T Rml::GetProperty(const Rml::String& name);
 ```
 
-The first two non-templated versions of `GetProperty()` functions will return the value of the given property on the element, either by the property name or its id. If the element does not have the property defined itself, they will either return the default value (if the property is not inherited) or its parent's value (if it is inherited). If the property requested is invalid (ie, not defined in the specification), nullptr will be returned.
+前两个非模板版本的 `GetProperty()` 函数将返回元素上给定属性的值，或者按属性名称或其 id。如果元素本身没有定义该属性，它们将返回默认值（如果属性不是继承的）或其父元素的值（如果是继承的）。如果请求的属性无效（即在规范中没有定义），将返回 nullptr。
 
-The `Rml::Property` structure is defined in `<RmlUi/Core/Property.h>`{:.incl}. Below is a subset of the class, listing some of its useful members:
+`Rml::Property` 结构定义在 `<RmlUi/Core/Property.h>`{:.incl} 中。以下是该类的一个子集，列出了它的一些有用成员：
 
 ```cpp
 class Rml::Property
@@ -78,48 +78,48 @@ public:
 };
 ```
 
-Each property stores the unit of its value and the value itself as a variant type (`Rml::Variant`), which is a structure capable of storing a multitude of types. To retrieve the value from the variant, use the templated `Get<>()` function on the property or the variant itself. The type you should request the value as depends on the property's unit:
+每个属性将其值的单位以及值本身存储为一个变体类型（`Rml::Variant`），这是一种能够存储多种类型的结构。要从变体中检索值，请在属性或变体本身上使用模板化的 `Get<>()` 函数。你应请求值的类型取决于属性的单位：
 
-* `UNKNOWN` and `STRING` values should be requested as `Rml::String` types.
-* `KEYWORD` values should be requested as int types. Keyword values are stored as integers for speed; to check what the value means, you can compare it to the constant values defined in `<RmlUi/Core/StyleSheetKeywords.h>`{:.incl}. For custom keyword properties, see below.
-* `NUMBER`, `PX`, `EM` and `PERCENT` values should be requested as float types. The exact meaning of the value depends on the unit.
+* `UNKNOWN` 和 `STRING` 值应作为 `Rml::String` 类型请求。
+* `KEYWORD` 值应作为 int 类型请求。关键字值存储为整数以加快速度；要检查值意味着什么，你可以将其与 `<RmlUi/Core/StyleSheetKeywords.h>`{:.incl} 中定义的常量值进行比较。对于自定义关键字属性，请参阅下文。
+* `NUMBER`、`PX`、`EM` 和 `PERCENT` 值应作为 float 类型请求。值的确切含义取决于单位。
 
-If you call `Get<>()` with the wrong type, the variant will do the best it can to convert between the types. For example, if you request a string type on a floating-point value, you will get the value converted to string.
+如果你用错误的类型调用 `Get<>()`，变体将尽最大努力在类型之间转换。例如，如果你在浮点值上请求字符串类型，你将得到转换为字符串的值。
 
-For example, the following will request the font family of an element:
+例如，以下代码将请求元素的字族：
 
 ```cpp
 element->GetProperty(Rml::PropertyId::FontFamily)->Get< Rml::String >();
 ```
 
-The following will check if an element's font weight is bold:
+以下代码将检查元素的字重是否为粗体：
 
 ```cpp
 bool bold = element->GetProperty("font-weight")->Get< int >() == (int)Rml::Style::FontWeight::Bold;
 ```
 
-You can use the templated `GetProperty()` function to conveniently return you the typed value of the requested property. For example:
+你可以使用模板化的 `GetProperty()` 函数方便地返回所请求属性的类型化值。例如：
 
 ```cpp
 bool bold = element->GetProperty< int >("font-weight") == (int)Rml::Style::FontWeight::Bold;
 ```
 
-#### Setting properties
+#### 设置属性
 
-Properties can be set directly on an element with the `SetProperty()` function.
+可以使用 `SetProperty()` 函数直接在元素上设置属性。
 
 ```cpp
 // Sets a local property override on the element.
 bool SetProperty(const Rml::String& name, const Rml::String& value);
 ```
 
-This is equivalent to setting an inline property on an element using the `style`{:.attr} attribute. For example:
+这相当于使用 `style`{:.attr} 属性在元素上设置内联属性。例如：
 
 ```html
 <div id="test" style="width: 200px;" />
 ```
 
-is equivalent to:
+等价于：
 
 ```cpp
 Rml::Element* test = document->GetElementById("test");
@@ -127,12 +127,12 @@ if (test)
 	test->SetProperty("width", "200px");
 ```
 
-Properties changed in this manner will automatically propagate to child elements if inherited and force a layout if necessary.
+以这种方式更改的属性如果是继承的，将自动传播到子元素，并在必要时强制重新布局。
 
 
-#### User-defined properties
+#### 用户定义的属性
 
-User-defined properties can be added to the global style sheet specification, so you can attach any values you'd like to your elements. This is done through the `Rml::StyleSheetSpecification` class (included through `RmlUi/Core.h`{:.incl} or `RmlUi/Core/StyleSheetSpecification.h`{:.incl}).
+用户定义的属性可以添加到全局样式表规范中，这样你就可以在你想要的任何值附加到元素上。这是通过 `Rml::StyleSheetSpecification` 类（通过 `RmlUi/Core.h`{:.incl} 或 `RmlUi/Core/StyleSheetSpecification.h`{:.incl} 包含）完成的。
 
 ```cpp
 // Registers a property with a new definition.
@@ -147,30 +147,30 @@ static Rml::PropertyDefinition& RegisterProperty(const Rml::String& property_nam
                                                           bool forces_layout = false);
 ```
 
-The `RegisterProperty()` function takes the name of the new property, the default value of the property (the value of the property on an element if it has not been set on that element), and a boolean value indicating whether the property is `inherited`. If this is set to `true`, the property is inherited from its parent element instead of using the default value, if it is not set on the element directly. If `forces_layout` is set to `true`, any change in the property will force the element to be re-laid out. For user-defined properties this should generally be left as `false`, as only the built-in properties will affect layout.
+`RegisterProperty()` 函数接受新属性的名称、属性的默认值（如果元素上未设置该属性，则元素上的值）以及指示属性是否 `inherited` 的布尔值。如果设置为 `true`，当没有在元素上直接设置时，该属性从其父元素继承，而不是使用默认值。如果 `forces_layout` 设置为 `true`，属性的任何更改都将强制元素重新布局。对于用户定义的属性，这通常应保持为 `false`，因为只有内置属性会影响布局。
 
-So, for example, if we wanted to define a new property for storing the sound an element makes when it is clicked, we'd call this soon after the RmlUi was initialised:
+所以，例如，如果我们想要定义一个用于存储元素被点击时发出的声音的新属性，我们会在 RmlUi 初始化后不久调用：
 
 ```cpp
 Rml::StyleSheetSpecification::RegisterProperty("click-sound", "none", false);
 ```
 
-This wouldn't be much use to us though, as we haven't said what values the new property can take. For this, we need to add a property parser to the new property. A property parser attempts to parse the value of a property from a raw string into a format where it can be used by the application.
+但这对我们没有多大用处，因为我们还没有说明新属性可以取哪些值。为此，我们需要向新属性添加一个属性解析器（property parser）。属性解析器尝试将属性的值从原始字符串解析为应用程序可以使用的格式。
 
-Each property can have multiple parsers attached to it. There are several default property parsers in RmlUi, in addition custom parsers [can be added](#user-defined-value-parsers). Some of these include:
+每个属性可以附加多个解析器。RmlUi 中有几个默认的属性解析器，此外自定义解析器[可以添加](#user-defined-value-parsers)。其中一些包括：
 
-- `number` for numerical values without units ('15').
-- `length` for numerical values with units representing a length ('0px', '0.5em').
-- `length_percent` for numerical values with units representing a length, or percentage ('80%').
-- `number_length_percent` for numerical values with no units, or with units representing a length or percentage.
-- `angle` for angle values ('30deg', '1.5rad').
-- `string` for values that can be set to any string (such as `font-family`{:.prop}).
-- `keyword` for keyword values (such as the `font-weight`{:.prop} property, which can be either 'normal' or 'bold').
-- `color` for values that are stored as a color.
+- `number` 用于没有单位的数值（'15'）。
+- `length` 用于带长度单位（'0px'、'0.5em'）的数值。
+- `length_percent` 用于带长度或百分比单位（'80%'）的数值。
+- `number_length_percent` 用于无单位、或带长度或百分比单位的数值。
+- `angle` 用于角度值（'30deg'、'1.5rad'）。
+- `string` 用于可以设置为任何字符串的值（如 `font-family`{:.prop}）。
+- `keyword` 用于关键字值（如 `font-weight`{:.prop} 属性，可以是 'normal' 或 'bold'）。
+- `color` 用于存储为颜色的值。
 
-To attach a parser to a property, call the `AddParser()` function on the returned value from the `RegisterProperty()` function. To attach a second or third parser, call `AddParser()` again on the value returned from the previous call to `AddParser()`. If multiple parsers are added, values will be run through the parsers in the order that they are specified until one successfully parses the value. Beware of this if you are registering the 'string' parser - make sure you register it last, as it will happily parse any value you give it!
+要将解析器附加到属性，请在 `RegisterProperty()` 函数返回的值上调用 `AddParser()` 函数。要附加第二个或第三个解析器，请在前一次调用 `AddParser()` 返回的值上再次调用 `AddParser()`。如果添加了多个解析器，值将按指定的顺序依次经过解析器，直到有一个成功解析该值。如果你注册 'string' 解析器，请注意这一点——确保你最后注册它，因为它会乐意解析你给它的任何值！
 
-So, to add a keyword and a string parser to the previous example, we'd do:
+所以，要为前面的例子添加一个关键字和一个字符串解析器，我们会这样做：
 
 ```cpp
 Rml::PropertyId click_sound_id = Rml::StyleSheetSpecification::RegisterProperty("click-sound", "none", false)
@@ -179,9 +179,9 @@ Rml::PropertyId click_sound_id = Rml::StyleSheetSpecification::RegisterProperty(
 	.GetId();
 ```
 
-The `GetId()` function will return the property id generated for the user-defined property. This can be used to efficiently retrieve and set values for this property.
+`GetId()` 函数将返回为用户定义属性生成的属性 id。这可以用于高效地检索和设置此属性的值。
 
-Now if the property is set to 'none', 'beep', 'boop' or 'bang', the property's value will be set to the appropriate keyword, otherwise it will be set as a string. So, the following RCSS:
+现在，如果属性被设置为 'none'、'beep'、'boop' 或 'bang'，属性的值将被设置为相应的关键字，否则它将被设置为字符串。所以，以下 RCSS：
 
 ```
 button
@@ -195,19 +195,19 @@ button.siren
 }
 ```
 
-will set the `click-sound`{:.prop} property to the keyword 'beep' for all 'button' elements, except if they are of class 'siren', in which case it will be set to the string value "siren.wav".
+将为所有 'button' 元素设置 `click-sound`{:.prop} 属性为关键字 'beep'，除非它们是 'siren' 类的，在这种情况下它将被设置为字符串值 "siren.wav"。
 
-Each of the parsers stores their values as a particular unit and type in the property's variant. Some of these are:
+每个解析器都将其值存储为属性变体中的特定单位和类型。其中一些是：
 
-* _number_ stores values as `NUMBER`. Use `Get< float >()` to request the value.
-* _length_ stores values as `PX`,`EM` and related. Use `Get< float >()` to request the value.
-* _keyword_ stores values as `KEYWORD`. The value is the integer index of the specified keyword in the CSV list of allowed keywords; so, in the previous example, a value of 'none' would be 0, 'beep' would be 1, and so on. Use `Get< int >()` to request the value.
-* _string_ stores values as `STRING`. Use `Get< Rml::String >()` to request the value.
-* _colour_ stores values as `COLOUR`. Use `Get< Rml::Colourb >` to request the value.
+* _number_ 将值存储为 `NUMBER`。使用 `Get< float >()` 请求该值。
+* _length_ 将值存储为 `PX`、`EM` 及相关的。使用 `Get< float >()` 请求该值。
+* _keyword_ 将值存储为 `KEYWORD`。该值是允许关键字 CSV 列表中指定关键字的整数索引；所以，在前面的例子中，值 'none' 将为 0，'beep' 将为 1，依此类推。使用 `Get< int >()` 请求该值。
+* _string_ 将值存储为 `STRING`。使用 `Get< Rml::String >()` 请求该值。
+* _colour_ 将值存储为 `COLOUR`。使用 `Get< Rml::Colourb >` 请求该值。
 
-#### User-defined shorthands
+#### 用户定义的简写属性
 
-You can define custom shorthands as well as properties. Use the `RegisterShorthand()` function to do this.
+你可以定义自定义简写属性（shorthand）以及常规属性。使用 `RegisterShorthand()` 函数来做到这一点。
 
 ```cpp
 // Registers a shorthand property definition.
@@ -220,37 +220,37 @@ static bool RegisterShorthand(const Rml::String& shorthand_name,
                               Rml::ShorthandType type);
 ```
 
-* `shorthand_name`: the name of the shorthand (the name you will use to refer to it in your RCSS).
-* `property_names`: a comma-separated list of the actual properties the shorthand maps to.
-* `type`: an enumeration defining how the shorthand behaves if it has fewer value given to it than it has properties to assign them to; most of the time you can use the `ShorthandType::FallThrough`, but other behavior is available, see below.
+* `shorthand_name`：简写属性的名称（你将在 RCSS 中用来引用它的名称）。
+* `property_names`：简写属性映射到的实际属性的逗号分隔列表。
+* `type`：一个枚举，定义当给定简写属性的值少于它要赋值的属性时简写属性的行为；大多数时候你可以使用 `ShorthandType::FallThrough`，但还有其他行为可用，请参阅下文。
 
-For example, the `margin`{:.prop} shorthand is defined like:
+例如，`margin`{:.prop} 简写属性是这样定义的：
 
 ```cpp
 Rml::StyleSheetSpecification::RegisterShorthand("margin", "margin-top, margin-right, margin-bottom, margin-left");
 ```
 
-The three most common shorthand types `FallThrough`, `Replicate` and `Box` will be described here. `FallThrough` will parse each value it has against its list of properties. If any values fail to parse, they will fall-through to the next property, and so on, until they parse successfully. If there are fewer parsed values that properties, the remaining properties will be not be set. The `font`{:.prop} shorthand is the best example of this; it is a `FallThrough` shorthand property for `font-style`{:.prop}, `font-weight`{:.prop}, `font-size`{:.prop}, `font-family`{:.prop}. The RCSS:
+这里将描述三种最常见的简写类型 `FallThrough`、`Replicate` 和 `Box`。`FallThrough` 将针对其属性列表解析它拥有的每个值。如果任何值解析失败，它们将落到下一个属性，依此类推，直到成功解析。如果解析出来的值少于属性，其余属性将不会被设置。`font`{:.prop} 简写属性是这方面最好的例子；它是 `font-style`{:.prop}、`font-weight`{:.prop}、`font-size`{:.prop}、`font-family`{:.prop} 的 `FallThrough` 简写属性。RCSS：
 
 ```css
 font: italic Lacuna;
 ```
 
-will parse `font-style`{:.prop} to 'italic'; 'Lacuna' will fail to parse as both a `font-weight`{:.prop} property and `font-size`{:.prop}, and fall-through to `font-family`{:.prop}.
+将把 `font-style`{:.prop} 解析为 'italic'；'Lacuna' 作为 `font-weight`{:.prop} 属性和 `font-size`{:.prop} 都将解析失败，并落到 `font-family`{:.prop}。
 
-`Replicate` shorthands will fail if any values fail to parse, and if there are fewer values than properties, the last value will be replicated for the other properties. For example, the `overflow`{:.prop} is a replicating shorthand for the properties `overflow-x`{:.prop} and `overflow-y`{:.prop}. The RCSS:
+`Replicate` 简写属性在任何值解析失败时会失败，如果值少于属性，最后一个值将被复制给其他属性。例如，`overflow`{:.prop} 是 `overflow-x`{:.prop} 和 `overflow-y`{:.prop} 属性的复制简写属性。RCSS：
 
 ```css
 overflow: auto;
 ```
 
-will assign the 'auto' keyword to both `overflow-x`{:.prop} and `overflow-y`{:.prop}. If overflow was a `FallThrough` property, `overflow-y`{:.prop} would be left at its default.
+将把 'auto' 关键字赋给 `overflow-x`{:.prop} 和 `overflow-y`{:.prop}。如果 overflow 是 `FallThrough` 属性，`overflow-y`{:.prop} 将保留其默认值。
 
-`Box` shorthands are for shorthands such as `margin`{:.prop}, `padding`{:.prop}, etc, that define four values for the top, right, bottom and left sides (in that order) of a box. If a `Box` shorthand is invoked with fewer than four values, the standard CSS rules apply; that is, one value will be replicated across all four sides. Two values will be set to the vertical and horizontal sides. Three values will be set to the top, horizontal sides, and bottom.
+`Box` 简写属性用于诸如 `margin`{:.prop}、`padding`{:.prop} 等简写属性，它们为一个盒的上、右、下和左四边（按顺序）定义四个值。如果 `Box` 简写属性以少于四个值调用，则应用标准 CSS 规则；也就是说，一个值将复制到所有四边。两个值将设置到垂直和水平边。三个值将设置到上边、水平边和下边。
 
-#### User-defined value parsers
+#### 用户定义的值解析器
 
-If you want to define more complicated parsers for your property values, you can do so by registering a new property parser before you register any user-defined properties. The base class for all property parsers is `Rml::PropertyParser`; start by inheriting from this and implementing the single pure virtual function:
+如果你想为属性值定义更复杂的解析器，你可以在注册任何用户定义属性之前注册一个新的属性解析器。所有属性解析器的基类是 `Rml::PropertyParser`；从继承这个类并实现唯一的纯虚函数开始：
 
 ```cpp
 // Called to parse a RCSS declaration.
@@ -263,21 +263,21 @@ virtual bool ParseValue(Rml::Property& property,
                         const Rml::ParameterMap& parameters) const = 0;
 ```
 
-`ParseValue()` is the meat of the parser. This will be called whenever the parser is required to parse a raw string value into a useful value.
+`ParseValue()` 是解析器的核心。每当需要解析器将原始字符串值解析为有用的值时，都会调用它。
 
-* `property`: the property the parsed value and unit should be written to.
-* `value`: the raw string (eg. '15px').
-* `parameters`: the map of the comma-separated parameters given to the parser when the property was declared.
+* `property`：应将解析后的值和单位写入的属性。
+* `value`：原始字符串（例如 '15px'）。
+* `parameters`：声明属性时给予解析器的逗号分隔参数映射。
 
-For example, if a custom parser was attached to a property in the following manner:
+例如，如果自定义解析器以以下方式附加到属性：
 
 ```cpp
 Rml::StyleSheetSpecification::RegisterProperty("custom-property", "parameter-1", false)
 	.AddParser("custom-parser", "parameter-1, parameter-2")
 ```
 
-the `parameters` map would contain the values 'parameter-1' and 'parameter-2'. The value of each of these is the index of the value in the comma-separated values list; so, 'parameter-1' resolves to 0, 'parameter-2' resolves to 1.
+`parameters` 映射将包含值 'parameter-1' 和 'parameter-2'。每个值的值是它在逗号分隔值列表中的索引；所以，'parameter-1' 解析为 0，'parameter-2' 解析为 1。
 
-If the value cannot be parsed, the unit of the property should be set to `Rml::Property::UNKNOWN`. If it can be parsed, the unit should be set to something other than `UNKNOWN` and the value set on the property's variant appropriately.
+如果值无法解析，属性的单位应设置为 `Rml::Property::UNKNOWN`。如果它可以解析，单位应设置为 `UNKNOWN` 以外的值，并将值适当地设置在属性的变体上。
 
-Once you've got a working custom parser, call `RegisterParser()` on `StyleSheetSpecification` to register your parser against a parser name. Parser names are resolved immediately when properties are registered, so you'll need to register your parsers before you register your properties. The pointer to your parser is stored inside the library, thus, make sure to keep the object alive until after the call to `Rml::Shutdown()`, and then clean it up after.
+一旦你有一个可用的自定义解析器，在 `StyleSheetSpecification` 上调用 `RegisterParser()`，将你的解析器注册到一个解析器名称。解析器名称在属性注册时立即解析，所以你需要先注册解析器，然后再注册属性。指向你的解析器的指针存储在库内部，因此请确保将该对象保持存活到调用 `Rml::Shutdown()` 之后，然后清理它。

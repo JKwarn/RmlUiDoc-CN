@@ -1,14 +1,14 @@
 ---
 layout: page
-title: Deprecated RML Elements
+title: 已弃用的 RML 元素
 parent: rml
 status: deprecated
 ---
 
-The following elements were deprecated in RmlUi 4.0 and removed in RmlUi 5.0:
+以下元素已在 RmlUi 4.0 中弃用，并在 RmlUi 5.0 中移除：
 
 - `<datagrid>`{:.tag}
 - `<col>`{:.tag}
 - `<dataselect>`{:.tag}
 
-Users are encouraged to replace these elements with [data bindings](../data_bindings.html) possibly combined with [RCSS tables](../rcss/tables.html).
+建议用户使用[数据绑定](../data_bindings.html)替换这些元素，也可以与 [RCSS 表格](../rcss/tables.html)结合使用。

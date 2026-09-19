@@ -1,15 +1,15 @@
 ---
 layout: page
-title: Plugins
+title: 插件
 parent: cpp_manual
 next: troubleshooting
 ---
 
-RmlUi has a simple, straightforward system for writing plugins. Plugins receive notification when contexts, documents, elements, and data models are created and destroyed.
+RmlUi 有一个简单、直接的用于编写插件的系统。当上下文、文档、元素和数据模型被创建和销毁时，插件会收到通知。
 
-### Creating a plugin
+### 创建插件
 
-All plugins derive from the `Rml::Plugin` class. The virtual functions that can be overridden are:
+所有插件都派生自 `Rml::Plugin` 类。可以覆盖的虚函数有：
 
 ```cpp
 // Called when RmlUi is initialised.
@@ -40,43 +40,43 @@ virtual void OnDataModelCreate(Rml::Context* context, const Rml::String& name);
 virtual void OnDataModelDestroy(Rml::Context* context, const Rml::String& name);
 ```
 
-#### RmlUi engine events
+#### RmlUi 引擎事件
 
-The `OnInitialise()` function will be called on all registered plugins when RmlUi is successfully initialised. If RmlUi is already initialised when a plugin is registered, `OnInitialise()` will be immediately called on the plugin.
+当 RmlUi 成功初始化时，将在所有已注册的插件上调用 `OnInitialise()` 函数。如果插件注册时 RmlUi 已经初始化，`OnInitialise()` 将立即在插件上被调用。
 
-`OnShutdown()` is called on all registered plugins when RmlUi is shut down, immediately after all the contexts and elements are destroyed. Plugins must release any resources they have allocated, including themselves, during this call.
+当 RmlUi 关闭时，在所有已注册的插件上调用 `OnShutdown()`，紧接着所有上下文和元素被销毁之后。插件必须在此调用期间释放它们分配的任何资源，包括它们自己。
 
-#### Document events
+#### 文档事件
 
-`OnDocumentOpen()` is called when a RML stream is opened, `OnDocumentLoad()` and `OnDocumentUnload()` are global callbacks called before and after the documents load and unload respectively.
+当打开 RML 流时调用 `OnDocumentOpen()`，`OnDocumentLoad()` 和 `OnDocumentUnload()` 是在文档加载和卸载之前和之后调用的全局回调。
 
-#### Context events
+#### 上下文事件
 
-`OnContextCreate()` and `OnContextDestroy()` are called on every registered plugin when a context is successfully created or destroyed.
+当上下文被成功创建或销毁时，在每个已注册的插件上调用 `OnContextCreate()` 和 `OnContextDestroy()`。
 
-#### Element events
+#### 元素事件
 
-`OnElementCreate()` and `OnElementDestroy()` are called on every registered plugin when an element is successfully created or destroyed.
+当元素被成功创建或销毁时，在每个已注册的插件上调用 `OnElementCreate()` 和 `OnElementDestroy()`。
 
-#### Data model events
+#### 数据模型事件
 
-`OnDataModelCreate()` is called whenever a new [data model](../data_bindings.html) is successfully created on a context through `Context::CreateDataModel()`. Attempting to create a data model with a name that already exists does not fire the callback.
+每当通过 `Context::CreateDataModel()` 在上下文上成功创建新的[数据模型](../data_bindings.html)时，都会调用 `OnDataModelCreate()`。尝试使用已存在的名称创建数据模型不会触发该回调。
 
-`OnDataModelDestroy()` is called when a data model is about to be destroyed, either explicitly through `Context::RemoveDataModel()`, or implicitly when the owning context is destroyed. The data model can still be resolved through `Context::GetDataModel()` during this callback, but it becomes unusable as soon as the callback returns.
+当数据模型即将被销毁时调用 `OnDataModelDestroy()`，无论是通过 `Context::RemoveDataModel()` 显式销毁，还是在所属上下文被销毁时隐式销毁。在此回调期间，数据模型仍然可以通过 `Context::GetDataModel()` 解析，但一旦回调返回，它就变得不可用。
 
-### Filtering event classes
+### 过滤事件类
 
-By default, a plugin receives all of the events listed above. A plugin can override `GetEventClasses()` to receive only a subset of them, by returning a combination of the `Rml::Plugin::EventClasses`{:.cls} flags:
+默认情况下，插件会收到上面列出的所有事件。插件可以覆盖 `GetEventClasses()` 以仅接收其中一部分事件，方法是返回 `Rml::Plugin::EventClasses`{:.cls} 标志的组合：
 
-Flag | Events
+标志 | 事件
 ------------------------- | ------
 `EVT_BASIC`{:.value}      | `OnInitialise`, `OnShutdown`, `OnContextCreate`, `OnContextDestroy`
 `EVT_DOCUMENT`{:.value}   | `OnDocumentOpen`, `OnDocumentLoad`, `OnDocumentUnload`
 `EVT_ELEMENT`{:.value}    | `OnElementCreate`, `OnElementDestroy`
 `EVT_DATA_MODEL`{:.value} | `OnDataModelCreate`, `OnDataModelDestroy`
-`EVT_ALL`{:.value}        | All of the above (the default).
+`EVT_ALL`{:.value}        | 以上所有（默认）。
 
-For example, a plugin interested only in document events:
+例如，一个只对文档事件感兴趣的插件：
 
 ```cpp
 int GetEventClasses() override {
@@ -84,9 +84,9 @@ int GetEventClasses() override {
 }
 ```
 
-### Registering a plugin
+### 注册插件
 
-To register a plugin, call the `Rml::RegisterPlugin()` function.
+要注册插件，请调用 `Rml::RegisterPlugin()` 函数。
 
 ```cpp
 Rml::Plugin* plugin = new CustomPlugin();

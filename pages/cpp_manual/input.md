@@ -1,17 +1,17 @@
 ---
 layout: page
-title: User input
+title: 用户输入
 parent: cpp_manual
 next: interfaces
 ---
 
-RmlUi does not read user input directly, instead, it requires the application to feed its contexts with input events. Each context will process the input it is provided with and dispatch events as appropriate.
+RmlUi 不直接读取用户输入，相反，它要求应用程序向其上下文提供输入事件。每个上下文将处理提供给它的输入，并适当地派发事件。
 
-### Key modifiers
+### 按键修饰符
 
-Most of the input functions take the parameter `key_modifier_state`. This is a bitmask of active key modifiers; keys such as Control, Alt, etc, as well as the lock keys. This is used to generate the key modifier parameters on any events that are spawned, so is entirely optional. If you don't want or need the key modifier parameters on your input events, feel free to pass `0`{:.value} for the `key_modifier_state` into all the input functions you call.
+大多数输入函数都接受 `key_modifier_state` 参数。这是活动按键修饰符的位掩码；诸如 Control、Alt 等按键，以及锁定键。它用于在产生的任何事件上生成按键修饰符参数，因此完全是可选的。如果你不想要或不需要输入事件上的按键修饰符参数，请随意为所有你调用的输入函数传入 `0`{:.value} 作为 `key_modifier_state`。
 
-The bitmask should be configured using the enumeration `Rml::Input::KeyModifier`, detailed below:
+位掩码应使用枚举 `Rml::Input::KeyModifier` 配置，详细说明如下：
 
 ```cpp
 enum KeyModifier
@@ -26,15 +26,15 @@ enum KeyModifier
 };
 ```
 
-See the documentation on [RML events](../rml/events.html#events) for a specification of the key modifier events parameters.
+有关按键修饰符事件参数的规范，请参阅 [RML 事件](../rml/events.html#events) 的文档。
 
-### Mouse input
+### 鼠标输入
 
-Different aspects of mouse input are given to a context through a variety of functions, detailed below.
+鼠标输入的不同方面通过多种函数提供给上下文，详细说明如下。
 
-#### Mouse movement
+#### 鼠标移动
 
-Call the `ProcessMouseMove()` function on a context to inform the context that the position of the mouse cursor within the context has changed.
+在上下文上调用 `ProcessMouseMove()` 函数，以告知上下文鼠标光标在上下文内的位置已更改。
 
 ```cpp
 // Sends a mouse movement event into this context.
@@ -45,7 +45,7 @@ Call the `ProcessMouseMove()` function on a context to inform the context that t
 bool ProcessMouseMove(int x, int y, int key_modifier_state);
 ```
 
-Note that the x and y coordinates are in pixel offsets from the top-left of the context. If the mouse cursor has moved since the previous call to `ProcessMouseMove()` then the `mousemove`{:.evt} will be submitted to the element being hovered over. Regardless of mouse movement, the hover chain will always be updated to account for any elements that may have changed under the mouse cursor. Then any of the following events may be generated, targeted at the appropriate elements:
+请注意，x 和 y 坐标是相对于上下文左上角的像素偏移。如果自上次调用 `ProcessMouseMove()` 以来鼠标光标已移动，则 `mousemove`{:.evt} 将被提交给被悬停的元素。无论鼠标是否移动，悬停链总是会被更新，以考虑鼠标光标下可能已变化的任何元素。然后，可能会生成以下任何事件，针对适当的元素：
 
 * `mousemove`{:.evt}
 * `mouseover`{:.evt}
@@ -55,11 +55,11 @@ Note that the x and y coordinates are in pixel offsets from the top-left of the 
 * `dragover`{:.evt}
 * `dragout`{:.evt}
 
-After the call to `ProcessMouseMove()` the mouse cursor is considered active. When the cursor is active every call to the context's `Update()` function will update the hover states of the elements, regardless of mouse movement. This ensures that any elements that have been moved, removed, or added, have their hover states changed appropriately. See `ProcessMouseLeave()` to [deactivate the mouse cursor](#mouse-cursor-leave) and prevent `Update()` from updating the hover state of elements.
+在调用 `ProcessMouseMove()` 之后，鼠标光标被视为活动状态。当光标处于活动状态时，每次调用上下文的 `Update()` 函数都会更新元素的悬停状态，无论鼠标是否移动。这确保任何已被移动、移除或添加的元素其悬停状态都会适当地变化。请参阅 `ProcessMouseLeave()` 以[停用鼠标光标](#mouse-cursor-leave)并防止 `Update()` 更新元素的悬停状态。
 
-#### Mouse buttons
+#### 鼠标按钮
 
-Call `ProcessMouseButtonDown()` and `ProcessMouseButtonUp()` on a context to to inform the context when a mouse button is pressed or released.
+在上下文上调用 `ProcessMouseButtonDown()` 和 `ProcessMouseButtonUp()`，以在鼠标按钮按下或释放时告知上下文。
 
 ```cpp
 // Sends a mouse-button down event into this context.
@@ -75,7 +75,7 @@ bool ProcessMouseButtonDown(int button_index, int key_modifier_state);
 bool ProcessMouseButtonUp(int button_index, int key_modifier_state);
 ```
 
-`ProcessMouseButtonDown()` may generate any of the following events:
+`ProcessMouseButtonDown()` 可能会生成以下任何事件：
 
 * `focus`{:.evt}
 * `blur`{:.evt}
@@ -83,18 +83,18 @@ bool ProcessMouseButtonUp(int button_index, int key_modifier_state);
 * `dblclick`{:.evt}
 * `mousescroll`{:.evt}
 
-Middle mouse button may initiate [autoscroll mode](contexts.html#autoscroll). In this case, it will first submit a `mousescroll`{:.evt} event targeted at the hover element. If this event is not stopped from propagation, autoscroll will be initiated on the closest scrollable ancestor. However, if the event is stopped, the autoscroll mode will not be initiated.
+鼠标中键可能发起[自动滚动模式](contexts.html#autoscroll)。在这种情况下，它将首先向悬停元素提交一个 `mousescroll`{:.evt} 事件。如果此事件未被阻止传播，则在最近的可滚动祖先上发起自动滚动。然而，如果事件被阻止，则不会发起自动滚动模式。
 
-`ProcessMouseButtonUp()` may generate:
+`ProcessMouseButtonUp()` 可能会生成：
 
 * `mouseup`{:.evt}
 * `click`{:.evt}
 * `dragdrop`{:.evt}
 * `dragend`{:.evt}
 
-#### Mouse wheel
+#### 鼠标滚轮
 
-If you want to send mouse-wheel events to your documents, call the `ProcessMouseWheel()` function on your contexts as appropriate.
+如果你想向文档发送鼠标滚轮事件，请适当地在上下文上调用 `ProcessMouseWheel()` 函数。
 
 ```cpp
 // Sends a mousescroll event into this context, and scrolls the document unless the event was stopped from propagating.
@@ -104,14 +104,14 @@ If you want to send mouse-wheel events to your documents, call the `ProcessMouse
 bool ProcessMouseWheel(Vector2f wheel_delta, int key_modifier_state);
 ```
 
-`ProcessMouseWheel()` will generate a `mousescroll`{:.evt} event targeted at the hover element. If this event is not stopped from propagation, the nearest scrollable element will be scrolled according to the delta value. However, if the event is stopped, the actual scroll will be cancelled. Normally, scrolling with the mouse wheel initiates smooth scrolling, however, this can be [configured on the context](contexts.html#smooth-scrolling).
+`ProcessMouseWheel()` 将生成一个针对悬停元素的 `mousescroll`{:.evt} 事件。如果此事件未被阻止传播，则最近的可滚动元素将根据增量值滚动。然而，如果事件被阻止，则实际滚动将被取消。通常，使用鼠标滚轮滚动会发起平滑滚动，不过这可以在[上下文中配置](contexts.html#smooth-scrolling)。
 
-The nearest scrollable element can be controlled using the `overscroll-behavior`{:.prop} property.
+最近的可滚动元素可以使用 `overscroll-behavior`{:.prop} 属性控制。
 
 
-### Mouse cursor leave
+### 鼠标光标离开
 
-In some situations the mouse cursor may leave the active window, or should otherwise be disabled such as when changing the input device to a controller. Then `ProcessMouseLeave()` can be called to remove the hovered state from all elements. In addition, this also stops the call to the context's `Update()` function from automatically hovering elements, which is particularly useful when using a controller input.
+在某些情况下，鼠标光标可能离开活动窗口，或者在其他情况下应被禁用，例如将输入设备切换到控制器时。此时可以调用 `ProcessMouseLeave()` 以从所有元素中移除悬停状态。此外，这还会停止上下文的 `Update()` 函数调用自动悬停元素，这在使用控制器输入时特别有用。
 
 ```cpp
 // Tells the context the mouse has left the window. This removes any hover state from all elements and prevents 'Update()' from setting the hover state for elements under the mouse.
@@ -119,12 +119,12 @@ In some situations the mouse cursor may leave the active window, or should other
 bool ProcessMouseLeave();
 ```
 
-The [mouse is considered active](#mouse-movement) again after the next call to `ProcessMouseMove()`.
+[鼠标被视为活动状态](#mouse-movement)将在下一次调用 `ProcessMouseMove()` 后恢复。
 
 
-#### Mouse cursor interaction
+#### 鼠标光标交互
 
-The following can provide a hint on whether or not the mouse cursor is currently interacting with any documents in the context, as a result of previously submitted `ProcessMouse...()` commands.
+以下内容可以提示鼠标光标当前是否正在与上下文中的任何文档交互，这是先前提交的 `ProcessMouse...()` 命令的结果。
 
 ```cpp
 // Returns a hint on whether the mouse is currently interacting with any elements in this context.
@@ -132,15 +132,15 @@ The following can provide a hint on whether or not the mouse cursor is currently
 bool IsMouseInteracting() const;
 ```
 
-Note that interaction is determined irrespective of background and opacity. See the [`pointer-events`{:.prop}](../rcss/user_interface.html#pointer-events) property to disable interaction for specific elements.
+请注意，交互的判定不考虑背景和透明度。请参阅 [`pointer-events`{:.prop}](../rcss/user_interface.html#pointer-events) 属性以禁用特定元素的交互。
 
-### Key input
+### 按键输入
 
-The key input functions use the `KeyIdentifier` enumeration found in `<RmlUi/Core/Input.h>`{:.incl}; refer to that file for the possible values. They are modeled after the Windows virtual key codes (the VK_* enumeration), so should be familiar to Windows developers. Any confusing enumeration names are explained in the comments.
+按键输入函数使用 `<RmlUi/Core/Input.h>`{:.incl} 中的 `KeyIdentifier` 枚举；可能的取值请参阅该文件。它们以 Windows 虚拟键码（VK_* 枚举）为模型，因此 Windows 开发人员应该熟悉。任何令人困惑的枚举名称都在注释中解释。
 
-RmlUi makes a distinction between key input and text input; key input (specified by the `ProcessKeyDown()` and `ProcessKeyUp()` functions) refers to actual physical key presses, while text input refers to characters being generated from user input. Depending on user locale, it may take more than one physical key stroke to generate a single character of text input. At present, RmlUi offers no translation between key input and text input; that is left to the application.
+RmlUi 区分按键输入和文本输入；按键输入（由 `ProcessKeyDown()` 和 `ProcessKeyUp()` 函数指定）指的是实际的物理按键，而文本输入指的是从用户输入生成的字符。根据用户区域设置，可能需要多次物理按键才能生成单个文本输入字符。目前，RmlUi 不提供按键输入和文本输入之间的转换；这留给应用程序处理。
 
-Call the following functions on a context to inform the context of key presses or releases:
+在上下文上调用以下函数，以告知上下文按键按下或释放：
 
 ```cpp
 // Sends a key down event into this context.
@@ -156,11 +156,11 @@ bool ProcessKeyDown(Rml::Input::KeyIdentifier key_identifier, int key_modifier_s
 bool ProcessKeyUp(Rml::Input::KeyIdentifier key_identifier, int key_modifier_state);
 ```
 
-`ProcessKeyDown()` will generate a `keydown`{:.evt} event targeted at the current focus element (if an element is in focus). `ProcessKeyUp()` will likewise generate the `keyup`{:.evt} event.
+`ProcessKeyDown()` 将生成一个针对当前焦点元素（如果元素处于焦点中）的 `keydown`{:.evt} 事件。`ProcessKeyUp()` 将同样生成 `keyup`{:.evt} 事件。
 
-### Text input
+### 文本输入
 
-RmlUi takes text input as `Rml::Character` (32-bit Unicode code points), `char` (ASCII), or UTF-8 strings. To notify RmlUi of a text input occurrence, use the following functions:
+RmlUi 将文本输入作为 `Rml::Character`（32 位 Unicode 码点）、`char`（ASCII）或 UTF-8 字符串处理。要通知 RmlUi 发生了文本输入，请使用以下函数：
 
 ```cpp
 // Sends a single unicode character as text input into this context.
@@ -175,11 +175,11 @@ bool ProcessTextInput(char character);
 bool ProcessTextInput(const String& string);
 ```
 
-These functions will generate a `textinput`{:.evt} event targeted at the context's current focus element (if there is one).
+这些函数将生成一个针对上下文当前焦点元素（如果有）的 `textinput`{:.evt} 事件。
 
-### Touch input
+### 触摸输入
 
-Touch input is submitted to a context similarly to mouse input. Each call processes a provided list of touch points.
+触摸输入与鼠标输入类似地提交给上下文。每次调用处理一个提供的触摸点列表。
 
 ```cpp
 /// Process touch movements for this context.
@@ -196,7 +196,7 @@ bool ProcessTouchEnd(const TouchList& touches, int key_modifier_state);
 bool ProcessTouchCancel(const TouchList& touches);
 ```
 
-A list of `Rml::Touch` specifies each touch point to be processed, defined as follows.
+一个 `Rml::Touch` 列表指定每个要处理的触摸点，定义如下。
 
 ```cpp
 using TouchId = uintptr_t;
@@ -207,14 +207,14 @@ struct Touch {
 using TouchList = Vector<Touch>;
 ```
 
-Here, `identifier` is a user-specified identifier for the given touch. Multiple touch points should use different identifiers to be able to track them separately. The touch `position` should be given in the RmlUi pixel coordinate system, whose origin is at the top-left of the window.
+这里，`identifier` 是用户为给定触摸指定的标识符。多个触摸点应使用不同的标识符，以便能够单独跟踪它们。触摸 `position` 应以 RmlUi 像素坐标系给出，其原点位于窗口左上角。
 
-While a finger is down, scroll containers are scrolled immediately. On release, the motion may continue with inertial scrolling. Inertia is currently only applied to a single scroll target at a time.
+当手指按下时，滚动容器会立即滚动。释放时，运动可能以惯性滚动继续。惯性目前一次只应用于单个滚动目标。
 
-Currently, RML events for touch are not yet implemented, and so are not dispatched to elements.
+目前，触摸的 RML 事件尚未实现，因此不会派发给元素。
 
-Some of the built-in backends support touch input. For some backends, touch events can be simulated from mouse events, see the [CMake build options](building_with_cmake.html#backend-options) for details.
+一些内置后端支持触摸输入。对于某些后端，可以从鼠标事件模拟触摸事件，详情请参阅 [CMake 构建选项](building_with_cmake.html#backend-options)。
 
-### Sample input processing
+### 示例输入处理
 
-The included backends (found under your RmlUi installation at `/Backends/`{:.path}) contain sample implementations of input processing for multiple supported platforms, including key conversion to RmlUi (see `/Backends/RmlUi_Platform_<...>.cpp`{:.path}).
+随附的后端（位于你的 RmlUi 安装目录下的 `/Backends/`{:.path}）包含多个受支持平台的输入处理示例实现，包括转换为 RmlUi 的按键转换（请参阅 `/Backends/RmlUi_Platform_<...>.cpp`{:.path}）。

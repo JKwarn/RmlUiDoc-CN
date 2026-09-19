@@ -1,41 +1,41 @@
 ---
 layout: page
-title: Getting started
+title: 入门
 parent: lua_manual
 next: embedding_script
 ---
 
-The Lua plugin for RmlUi can be used in an application that extends or embeds Lua. Your application will still need to initialize the RmlUi core library and provide the necessary System and Render interfaces, see the [C++ manual](../cpp_manual.html) for details on how to initialize RmlUi.
+RmlUi 的 Lua 插件可用于扩展或嵌入 Lua 的应用程序中。您的应用程序仍然需要初始化 RmlUi 核心库并提供必要的 System 与 Render 接口，有关如何初始化 RmlUi 的详细信息，请参阅 [C++ 手册](../cpp_manual.html)。
 
-For a full list of types and methods please see the RmlUi Lua [API Reference](api_reference.html).
+有关完整的类型和方法列表，请参阅 RmlUi Lua [API 参考](api_reference.html)。
 
-### Requirements
+### 要求
 
 - [Lua 5.1+](https://www.lua.org/)
 
-Tested with Lua 5.3 which is the recommended version, but we aim for compatibility with Lua version 5.1 and newer, including support for LuaJIT. There is also an unofficial Lua plugin [RmlSolLua](https://github.com/LoneBoco/RmlSolLua) based on sol3 with Lua 5.1 compatibility.
+已使用推荐的 Lua 5.3 版本进行测试，但我们的目标是兼容 Lua 5.1 及更新版本，包括对 LuaJIT 的支持。此外还有一个非官方的 Lua 插件 [RmlSolLua](https://github.com/LoneBoco/RmlSolLua)，它基于 sol3，兼容 Lua 5.1。
 
-### Lua plugin integration
+### Lua 插件集成
 
-Perform the following steps to integrate the Lua plugin with RmlUi.
+执行以下步骤即可将 Lua 插件与 RmlUi 集成。
 
-1. Install or build the Lua library, you may use the official [Lua.org](https://www.lua.org) implementation or [LuaJIT](http://luajit.org/luajit.html).
-    - With the official implementation, we recommend to build the library as C++ rather than C so that the stack can be unwound properly in case of an error. When built as C, the Lua interpreter calls longjmp when an error occurs, which causes the destructors for local variables in any currently executing C++ extension functions to be skipped. Package managers typically provide Lua compiled as C only, so for this functionality you will have to build it as C++ yourself.
+1. 安装或构建 Lua 库，您可以使用官方的 [Lua.org](https://www.lua.org) 实现或 [LuaJIT](http://luajit.org/luajit.html)。
+    - 对于官方实现，我们建议以 C++ 而非 C 的方式构建库，以便在出错时能够正确展开堆栈。以 C 方式构建时，Lua 解释器在出错时会调用 longjmp，这会导致任何当前正在执行的 C++ 扩展函数中的局部变量析构函数被跳过。软件包管理器通常只提供以 C 方式编译的 Lua，因此要获得此功能，您需要自行以 C++ 方式构建。
 
-2. Build RmlUi with the Lua plugin enabled. See [Building with CMake](../cpp_manual/building_with_cmake.html) in the C++ manual for details.
-    - Enable the option `RMLUI_LUA_BINDINGS` during the CMake configuration.
-    - Set the option `RML_LUA_BINDINGS_LIBRARY` to the appropriate interpreter type: `lua_as_cxx`, `lua` \[as C], or `luajit`.
-    - You may also need to guide CMake to find the Lua libraries by providing `LUA_DIR` set to the Lua directory.
-    - We encourage you to also enable the samples by enabling the `RMLUI_SAMPLES` option, and try to build the `rmlui_sample_luainvaders` target to test that everything is working.
+2. 启用 Lua 插件构建 RmlUi。详细信息请参阅 C++ 手册中的[使用 CMake 构建](../cpp_manual/building_with_cmake.html)。
+    - 在 CMake 配置期间启用 `RMLUI_LUA_BINDINGS` 选项。
+    - 将 `RML_LUA_BINDINGS_LIBRARY` 选项设置为合适的解释器类型：`lua_as_cxx`、`lua` \[以 C 方式]，或 `luajit`。
+    - 您可能还需要通过将 `LUA_DIR` 设置为 Lua 目录，来引导 CMake 找到 Lua 库。
+    - 我们还建议您同时启用 `RMLUI_SAMPLES` 选项来启用示例，并尝试构建 `rmlui_sample_luainvaders` 目标，以测试一切是否正常工作。
 
-3. Link with the `rmlui_lua` library or the `RmlUi::Lua` CMake imported target, the same way you link to the core RmlUi library.
+3. 以链接核心 RmlUi 库的相同方式，链接 `rmlui_lua` 库或 `RmlUi::Lua` CMake 导入目标。
 
-4. Within your application, setup and initialize RmlUi as you normally would, see [integrating RmlUi](../cpp_manual/integrating.html) in the C++ manual.
+4. 在您的应用程序内部，照常设置并初始化 RmlUi，请参阅 C++ 手册中的[集成 RmlUi](../cpp_manual/integrating.html)。
 
-5. Include the Lua plugin headers in your C++ source files: `#include <RmlUi/Lua.h>`.
+5. 在您的 C++ 源文件中包含 Lua 插件头文件：`#include <RmlUi/Lua.h>`。
 
-6. Finally, initialize the Lua library with the single call to `Rml::Lua::Initialise();`.
-    - This call should happen just after the call to `Rml::Initialise();`.
-    - It is also possible to provide your own lua state by calling `Rml::Lua::Initialise(lua_State* L);`.
+6. 最后，通过一次调用 `Rml::Lua::Initialise();` 初始化 Lua 库。
+    - 此调用应在调用 `Rml::Initialise();` 之后立即进行。
+    - 也可以通过调用 `Rml::Lua::Initialise(lua_State* L);` 来提供您自己的 Lua 状态（lua state）。
 
-Once you are done integrating the Lua plugin, you can start [embedding Lua scripts](embedding_script.html) inside your RML documents.
+完成 Lua 插件集成后，您就可以开始在 RML 文档中[嵌入 Lua 脚本](embedding_script.html)了。

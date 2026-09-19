@@ -1,28 +1,28 @@
 ---
 layout: page
-title: Lua Manual
+title: Lua 手册
 ---
 
-The Lua interface to RmlUi has been designed to resemble Javascript as closely as possible. Due the nature of the language, this is more possible in Lua than C++.
+RmlUi 的 Lua 接口在设计上尽可能贴近 Javascript。由于语言本身的特性，这一点在 Lua 中比在 C++ 中更有可能做到。
 
-The functionality of RmlUi is described fully in the [C++ Manual](cpp_manual.html); this manual defines the Lua interface to the {{page.lib_name}} objects described there. Not all aspects of RmlUi are accessible from Lua; for example, custom decorators can only be created in C++. However the vast majority is accessible, enabling you to easily and efficiently develop the functionality of your documents.
+RmlUi 的功能在 [C++ 手册](cpp_manual.html)中有完整描述；本手册定义的是 Lua 接口，对应其中描述的 {{page.lib_name}} 对象。并非 RmlUi 的所有方面都可以从 Lua 访问；例如，自定义装饰器只能在 C++ 中创建。不过绝大多数功能都是可访问的，使您能够轻松高效地开发文档的功能。
 
-A good place to get started is the `luainvaders` sample included with the library, which demonstrates many of the functionalities of the Lua plugin.
+一个很好的入门途径是随库附带的 `luainvaders` 示例，它演示了 Lua 插件的许多功能。
 
-### Integrating Lua
+### 集成 Lua
 
-1. [Getting started](lua_manual/getting_started.html)
-2. [Embedding script](lua_manual/embedding_script.html)
-3. [Loading fonts](lua_manual/fonts.html)
-4. [Attaching to Events](lua_manual/attaching_to_events.html)
+1. [入门](lua_manual/getting_started.html)
+2. [嵌入脚本](lua_manual/embedding_script.html)
+3. [加载字体](lua_manual/fonts.html)
+4. [绑定事件](lua_manual/attaching_to_events.html)
 
-### Interfaces
+### 接口
 
-1. [Elements](lua_manual/elements.html)
-2. [Documents](lua_manual/documents.html)
-3. [Contexts](lua_manual/contexts.html)
-4. [Events](lua_manual/events.html)
+1. [元素](lua_manual/elements.html)
+2. [文档](lua_manual/documents.html)
+3. [上下文](lua_manual/contexts.html)
+4. [事件](lua_manual/events.html)
 
-### Appendix
+### 附录
 
-1. [API reference](lua_manual/api_reference.html)
+1. [API 参考](lua_manual/api_reference.html)

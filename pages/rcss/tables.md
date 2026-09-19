@@ -1,50 +1,50 @@
 ---
 layout: page
-title: Tables
+title: 表格
 parent: rcss
 next: user_interface
 ---
 
-Table support in RCSS is similar to that of the [CSS tables specification](https://www.w3.org/TR/2011/REC-CSS2-20110607/tables.html). There are some enhancements and differences, the main ones being as follows.
+RCSS 中的表格支持与 [CSS 表格规范](https://www.w3.org/TR/2011/REC-CSS2-20110607/tables.html)类似。有一些增强和差异，主要如下。
 
-##### Enhancements
+##### 增强
 
-- The width of columns and height of rows support flexible sizing by using `<percentage ≥ 100%>`{:.value} for width or height respectively (like using the CSS `fr` unit for grid layout).
-- Minimum and maximum size constraints are respected for column widths and row heights.
-- Spacing between rows and between columns can be controlled individually using margin, border and padding.
+- 列的宽度和行的高度支持灵活伸缩，分别使用 `<percentage ≥ 100%>`{:.value} 作为宽度或高度（就像在网格布局中使用 CSS `fr` 单位一样）。
+- 列宽和行高会遵循最小和最大尺寸约束。
+- 行之间和列之间的间距可以使用外边距、边框和内边距单独控制。
 
-##### Differences
+##### 差异
 
-- The width of columns are computed as if setting the CSS property `table-layout: fixed`{:.prop}, with the above enhancements.
-- Borders and backgrounds are applied separately for each individual element present in the table.
-    - Table row elements must be present for borders to be generated as specified for the row.
-    - Table cells will not inherit any properties from the column elements they belong to, except for adjusting the width.
-- RmlUi does not generate anonymous elements or attempt to clean up invalid tables.
-- Percentage-relative values are calculated based on the initial block-size of the table element, and are not re-adjusted if the table size is changed during formatting.
-- Tables do not support shrink-to-fit width, such as when used inside an inline-block or floating element with auto width, or inside flexbox layout with automatic width sizing. Please set a definite (non-auto) table width in such cases, otherwise the table will be sized to zero width.
+- 列宽的计算方式与设置 CSS 属性 `table-layout: fixed`{:.prop} 相同，并带有上述增强。
+- 边框和背景分别应用于表格中存在的每个单独元素。
+    - 行元素必须存在，才能为行生成所指定的边框。
+    - 表格单元格不会从它们所属的列元素继承任何属性，宽度调整除外。
+- RmlUi 不会生成匿名元素，也不会尝试清理无效的表格。
+- 百分比相对值基于表格元素的初始块大小计算，如果表格大小在格式化期间发生变化，不会重新调整。
+- 表格不支持收缩适配宽度，例如在具有 auto 宽度的行内块或浮动元素中使用时，或在自动宽度缩放的 flexbox 布局中使用时。在这种情况下，请设置明确的（非 auto）表格宽度，否则表格将被调整为零宽度。
 
-### The RCSS table model
+### RCSS 表格模型
 
-The RCSS table model follows the structure of CSS tables. This means that the table is made up of table rows, optionally wrapped in row groups, which contain individual cells. Table columns and column groups can optionally be specified for visual effects (mainly backgrounds, borders, and decorators) and for defining widths of columns. Columns never contain cells directly. Table columns and column groups must precede any rows or row groups. Table cells can be placed as direct children of the table, then consecutive cells will form a new row.
+RCSS 表格模型遵循 CSS 表格的结构。这意味着表格由表格行组成，行可选地包裹在行组中，行组包含单独的单元格。表格列和列组可以可选地指定用于视觉效果（主要是背景、边框和装饰器）以及定义列的宽度。列永远不会直接包含单元格。表格列和列组必须位于任何行或行组之前。表格单元格可以作为表格的直接子元素放置，然后连续的单元格会形成一个新行。
 
-The `display`{:.prop} property is used to define the formatting of tables, with the following relevant values.
+`display`{:.prop} 属性用于定义表格的格式化，相关取值如下。
 
-`display`{:.prop} value       | Description | Attributes | Valid children
------------------------------ | ----------- | ---------- | --------------
-`table`{:.value}              | Specifies a block-level table.         | | `table-row`{:.value}, `table-row-group`{:.value},<br>`table-column`{:.value}, `table-column-group`{:.value},<br>`table-cell`{:.value}
-`inline-table`{:.value}       | Specifies an inline-level table.       | | *same as above*
-`table-row`{:.value}          | Specifies a table row.                 | | `table-cell`{:.value}
-`table-row-group`{:.value}    | Specifies a grouping of table rows.    | | `table-row`{:.value}
-`table-column`{:.value}       | Specifies a table column.              | `span`{:.value} |
-`table-column-group`{:.value} | Specifies a grouping of table columns. | `span`{:.value} (when no children present) | `table-column`{:.value}
-`table-cell`{:.value}         | Specifies a table cell.                | `colspan`{:.value}, `rowspan`{:.value} |
+`display`{:.prop} 取值        | 说明                     | 属性 | 有效的子元素
+----------------------------- | ------------------------- | ---- | --------------
+`table`{:.value}              | 指定一个块级表格。        | | `table-row`{:.value}、`table-row-group`{:.value}、<br>`table-column`{:.value}、`table-column-group`{:.value}、<br>`table-cell`{:.value}
+`inline-table`{:.value}       | 指定一个行内级表格。      | | *同上*
+`table-row`{:.value}          | 指定一个表格行。          | | `table-cell`{:.value}
+`table-row-group`{:.value}    | 指定一个表格行组。        | | `table-row`{:.value}
+`table-column`{:.value}       | 指定一个表格列。          | `span`{:.value} |
+`table-column-group`{:.value} | 指定一个表格列组。        | `span`{:.value}（当没有子元素时） | `table-column`{:.value}
+`table-cell`{:.value}         | 指定一个表格单元格。      | `colspan`{:.value}、`rowspan`{:.value} |
 
-In particular, the following CSS `display`{:.prop} modes are *not* supported: `table-header-group`{:.value}, `table-footer-group`{:.value}, `table-caption`{:.value}. In RCSS, `inline-table`{:.value}s are required to have their widths set to a definite (non-auto) value.
+特别地，以下 CSS `display`{:.prop} 模式*不*受支持：`table-header-group`{:.value}、`table-footer-group`{:.value}、`table-caption`{:.value}。在 RCSS 中，`inline-table`{:.value} 的宽度必须设置为明确的（非 auto）值。
 
 
-#### Example
+#### 示例
 
-The following example demonstrates a table with grouped rows and columns, using all the table display modes.
+以下示例演示了一个带行组和列组的表格，使用了所有表格显示模式。
 
 ```html
 <table>
@@ -76,12 +76,12 @@ The following example demonstrates a table with grouped rows and columns, using 
 </table>
 ```
 
-This example assumes that the recommended stylesheet below is applied.
+此示例假定应用了下面推荐的样式表。
 
 
-#### Recommended stylesheet
+#### 推荐样式表
 
-Unlike in HTML, the `table`{:.tag} element or any of the other table tags do not have any special meaning in RmlUi. Instead, they will be derived entirely from their RCSS properties. Furthermore, RmlUi does not contain a default stylesheet, thus, the RCSS properties for tables must first be declared. The following RCSS properties are recommended for declaring tables with the tags known from HTML.
+与 HTML 不同，`table`{:.tag} 元素或任何其他表格标签在 RmlUi 中没有任何特殊含义。相反，它们完全由其 RCSS 属性派生而来。此外，RmlUi 不包含默认样式表，因此必须首先声明表格的 RCSS 属性。以下 RCSS 属性是使用 HTML 中的已知标签声明表格时的推荐写法。
 
 
 ```css
@@ -109,88 +109,88 @@ thead, tbody, tfoot {
 }
 ```
 
-### Visual layout of tables
+### 表格的视觉布局
 
-Table elements are rendered in the following order, from bottom to top:
+表格元素按以下顺序渲染，从底层到顶层：
 
-1. Table
-2. Column groups
-3. Columns
-4. Row groups
-5. Rows
-6. Cells
+1. 表格
+2. 列组
+3. 列
+4. 行组
+5. 行
+6. 单元格
 
-Column groups and column elements are sized to cover the table columns they are spanning. Row groups are sized to cover the rows they are spanning. This way, backgrounds, borders, and decorators can be used on these elements, and will be visible if cells and rows have transparent backgrounds.
-
-
-#### Table width algorithm
-
-The table width is the sum of all table columns and the horizontal table spacing, including `column-gap`{:.prop}, column margins, and table padding.
-
-The width of table columns are defined entirely by the width specified on column elements and/or the cells of the first row. In the following, *columns* mean any of the aforementioned elements.
-
-- Columns with `width: auto`{:.prop} are distributed equally to fill the table width.
-- Columns with `width: <length> | <percentage < 100%>`{:.prop} will use the specified value.
-- Columns with `width: <percentage ≥ 100%>`{:.prop} adjusts the flexible width of the column relative to other flexible columns (like the CSS `fr` unit for grid layout).
-- Columns can specify `min-width`{:.prop} and `max-width`{:.prop} to constrain their size.
-
-Unlike in CSS, column groups and columns can use horizontal `padding`{:.prop}, `border`{:.prop} and `margin`{:.prop}. This will be added to the horizontal spacing of the table. Column groups and columns can also use vertical `border`{:.prop} and `margin`{:.prop} to add borders and offset them from the table edges, but will not affect the position of the cells.
+列组和列元素的大小被设置为覆盖它们所跨越的表格列。行组的大小被设置为覆盖它们所跨越的行。这样，背景、边框和装饰器就可以用于这些元素，并且如果单元格和行具有透明背景，它们将可见。
 
 
-#### Table height algorithm
+#### 表格宽度算法
 
-The table height is determined by the sum of the height of all its rows, in addition to vertical spacing, including `row-gap`{:.prop}, row margins, and table padding.
+表格宽度是所有表格列与水平表格间距之和，包括 `column-gap`{:.prop}、列外边距和表格内边距。
 
-Each row has their height determined as follows:
+表格列的宽度完全由列元素和/或第一行单元格上指定的宽度定义。在下文中，*列*指上述任一元素。
 
-- Rows with `height: auto`{:.prop} determine their height by the tallest formatted cell in the row.
-- Rows with `height: <length> | <percentage < 100%>`{:.prop} will use the specified value.
-- Rows with `height: <percentage ≥ 100%>`{:.prop} adjusts the flexible height of the row relative to other flexible rows (like the CSS `fr` unit for grid layout).
-- Rows can specify `min-height`{:.prop} and `max-height`{:.prop} to constrain their size.
+- `width: auto`{:.prop} 的列平均分布以填满表格宽度。
+- `width: <length> | <percentage < 100%>`{:.prop} 的列使用指定值。
+- `width: <percentage ≥ 100%>`{:.prop} 的列相对于其他灵活列调整其灵活宽度（就像网格布局中的 CSS `fr` 单位一样）。
+- 列可以指定 `min-width`{:.prop} 和 `max-width`{:.prop} 来约束其大小。
 
-If the rows do not fill the height specified on the table, all rows will be scaled up proportionally while respecting any `max-height`{:.prop} constraints. If there is still space available, empty space will be left at the bottom of the table.
+与 CSS 不同，列组和列可以使用水平 `padding`{:.prop}、`border`{:.prop} 和 `margin`{:.prop}。这会被添加到表格的水平间距中。列组和列也可以使用垂直 `border`{:.prop} 和 `margin`{:.prop} 来添加边框并将其从表格边缘偏移，但不会影响单元格的位置。
 
-All percentage values are resolved using the initial block height of the table. Thus, if the table height is specified as `auto`{:.value}, they will resolve to zero. Instead, the table height should be set to a specific length. Percentage heights can also be used if the parent element's height is specified.
 
-Unlike in CSS, row groups and rows can use vertical `padding`{:.prop}, `border`{:.prop} and `margin`{:.prop}. This will be added to the vertical spacing of the table. Row groups and rows can also use horizontal `border`{:.prop} and `margin`{:.prop} to add borders and offset them from the table edges, but will not affect the position of the cells.
+#### 表格高度算法
+
+表格高度由所有行的高度之和加上垂直间距确定，包括 `row-gap`{:.prop}、行外边距和表格内边距。
+
+每行的高度按如下方式确定：
+
+- `height: auto`{:.prop} 的行通过该行中最高的已格式化单元格确定其高度。
+- `height: <length> | <percentage < 100%>`{:.prop} 的行使用指定值。
+- `height: <percentage ≥ 100%>`{:.prop} 的行相对于其他灵活行调整其灵活高度（就像网格布局中的 CSS `fr` 单位一样）。
+- 行可以指定 `min-height`{:.prop} 和 `max-height`{:.prop} 来约束其大小。
+
+如果各行没有填满表格上指定的高度，则所有行将按比例放大，同时遵循任何 `max-height`{:.prop} 约束。如果仍有可用空间，则表格底部会留下空白。
+
+所有百分比值都使用表格的初始块高度来解析。因此，如果表格高度指定为 `auto`{:.value}，它们将解析为零。此时，应将表格高度设置为特定的长度。如果父元素的高度已指定，也可以使用百分比高度。
+
+与 CSS 不同，行组和行可以使用垂直 `padding`{:.prop}、`border`{:.prop} 和 `margin`{:.prop}。这会被添加到表格的垂直间距中。行组和行也可以使用水平 `border`{:.prop} 和 `margin`{:.prop} 来添加边框并将其从表格边缘偏移，但不会影响单元格的位置。
 
 `vertical-align`{:.prop}
 
-When used on a table cell, this property has the following meaning.
+当用于表格单元格时，此属性具有以下含义。
 
-`top`{:.value} (*default*)
-: Aligns the table cell with the top of the first row it spans.
+`top`{:.value}（*默认值*）
+: 将表格单元格与其跨越的第一行的顶部对齐。
 
 `bottom`{:.value}
-: Aligns the table cell with the bottom of the last row it spans.
+: 将表格单元格与其跨越的最后一行的底部对齐。
 
 `middle`{:.value}
-: Aligns the table cell with the middle of the rows it spans.
+: 将表格单元格与其跨越的行的中间对齐。
 
-*other*{:.value}
-:  Other values have no meaning in this context and defaults to `top`{:.value}.
+*其他*{:.value}
+: 其他值在此上下文中没有含义，并默认为 `top`{:.value}。
 
-The alignment is done by adding top or bottom padding to the cell element. Unlike in CSS, `baseline`{:.value} is currently not supported.
-
-
-### Borders
-
-The model for setting borders on tables in RCSS is similar to the separated borders model in CSS (`border-collapse: separate`{:.value}). That is, each cell element control their own borders separately. However, unlike CSS, borders can still be added to rows, row groups, columns, and column groups. They will be separated from the cell borders, as if extending the borders of their inner elements.
+对齐是通过向单元格元素添加顶部或底部内边距来完成的。与 CSS 不同，目前不支持 `baseline`{:.value}。
 
 
-#### Cell spacing
+### 边框
+
+在 RCSS 中为表格设置边框的模型类似于 CSS 中的分离边框模型（`border-collapse: separate`{:.value}）。也就是说，每个单元格元素分别控制自己的边框。然而，与 CSS 不同，边框仍然可以添加到行、行组、列和列组上。它们会与单元格边框分离，就像扩展其内部元素的边框一样。
+
+
+#### 单元格间距
 {:#gap}
 
-`row-gap`{:.prop}, `column-gap`{:.prop}
+`row-gap`{:.prop}、`column-gap`{:.prop}
 
-Value: | \<length\> \| \<percentage\>
-Initial: | 0px
-Applies to: | `table`{:.value} elements
-Inherited: | no
-Percentages: | relative to the height and width, respectively, of the initial flex container or table block size
+取值： | \<length\> \| \<percentage\>
+初始值： | 0px
+适用于： | `table`{:.value} 元素
+继承： | 否
+百分比： | 分别相对于初始 flex 容器或表格块大小的高度和宽度
 
-In RCSS, these properties also apply to tables, in addition to [flexboxes](flexboxes.html#gap). For tables, they specify the gap *between* table cells. Like the CSS property `border-spacing`{:.prop}, except that spacing is not applied before and after the first and last cell, respectively. Instead, use `padding`{:.prop} on the table element to add spacing between the table border and its cells.
+在 RCSS 中，这些属性除了适用于 [flexboxes](flexboxes.html#gap) 之外，也适用于表格。对于表格，它们指定表格单元格*之间*的间距。与 CSS 属性 `border-spacing`{:.prop} 类似，区别在于间距不会分别应用于第一个单元格之前和最后一个单元格之后。此时，请在表格元素上使用 `padding`{:.prop} 来在表格边框与其单元格之间添加间距。
 
 `gap`{:.prop}
 
-A shorthand property for setting both `row-gap`{:.prop} and `column-gap`{:.prop} properties, in that order. If only a single value is specified, it sets both gap properties to the given value.
+一个用于按顺序设置 `row-gap`{:.prop} 和 `column-gap`{:.prop} 属性的简写属性。如果只指定一个值，则两个间距属性都被设置为该值。

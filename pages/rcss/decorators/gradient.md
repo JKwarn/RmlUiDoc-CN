@@ -1,49 +1,49 @@
 ---
 layout: page
-title: Straight gradient decorator
+title: 直线渐变装饰器
 grandparent: rcss
 parent: rcss/decorators
 next: linear_gradient
 ---
 
-Straight gradients are supported with the `horizontal-gradient`{:.prop} and `vertical-gradient`{:.prop} decorators. They render a linear color gradient across the area of the element they are being applied to, in either a horizontal or a vertical direction.
+直线渐变由 `horizontal-gradient`{:.prop} 和 `vertical-gradient`{:.prop} 装饰器支持。它们在所应用元素的区域内沿水平或垂直方向渲染线性颜色渐变。
 
 ```css
 decorator: horizontal-gradient( <start-color> <stop-color> ) <paint-area>?;
 decorator: vertical-gradient( <start-color> <stop-color> ) <paint-area>?;
 ```
 
-Straight gradients can be described as a subset of [linear gradients](linear_gradient.html). The main motivation for straight gradients is that they can be rendered even without shader support from the renderer. Straight gradients only use vertex colors, which makes them simpler and lighter to render. For this reason, they should be preferred when possible.
+直线渐变可以描述为[线性渐变](linear_gradient.html)的子集。直线渐变的主要动机是，即使渲染器不支持着色器，它们也可以被渲染。直线渐变只使用顶点颜色，这使得它们渲染起来更简单、更轻量。因此，在可能的情况下应优先使用它们。
 
-### Properties
+### 属性
 
 `start-color`{:.prop}
 
-Value: | \<color\>
-Initial: | white
-Percentages: | N/A
+取值： | \<color\>
+初始值： | white
+百分比： | 不适用
 
-Declares the start color, that is, at the left or top edge.
+声明起始颜色，即在左边缘或上边缘的颜色。
 
 `stop-color`{:.prop}
 
-Value: | \<color\>
-Initial: | white
-Percentages: | N/A
+取值： | \<color\>
+初始值： | white
+百分比： | 不适用
 
-Declares the stop color, that is, at the right or bottom edge.
+声明结束颜色，即在右边缘或下边缘的颜色。
 
 `paint-area`{:.prop}
 
-Value: | border-box \| padding-box \| content-box
-Initial: | padding-box
-Percentages: | N/A
+取值： | border-box \| padding-box \| content-box
+初始值： | padding-box
+百分比： | 不适用
 
-Declares the box area to render the decorator onto.
+声明渲染装饰器的盒区域。
 
-### Examples
+### 示例
 
-The following RCSS declares two buttons, one with a vertical gradient and another with a horizontal gradient.
+以下 RCSS 声明了两个按钮，一个带垂直渐变，另一个带水平渐变。
 
 ```css
 button.vertical {
@@ -59,6 +59,6 @@ button.horizontal {
 }
 ```
 
-The rendered result:
+渲染结果：
 
 ![Vertical and horizontal gradients](../../../assets/images/decorators/vertical-horizontal-gradient.png)

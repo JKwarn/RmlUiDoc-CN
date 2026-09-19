@@ -1,45 +1,45 @@
 ---
 layout: page
-title: Shadow font effect
+title: 阴影字体效果
 parent: rcss/font_effects
 grandparent: rcss
 next: blur
 ---
 
-The shadow font effect renders a coloured copy of text with an offset, giving the effect of a shadow.
+阴影字体效果渲染带有偏移的彩色文本副本，从而产生阴影效果。
 
 ![shadow_1.jpg](shadow_1.jpg)
 
-The effect is declared as:
+效果声明如下：
 
 ```css
 font-effect: shadow( <offset-x> <offset-y> <color> );
 ```
 
-Its properties are specified by the following.
+其属性由以下内容指定。
 
 `offset-x`{:.prop}
 
-Value: | \<length\>
-Initial: | 0px
-Percentages: | N/A
+取值： | \<length\>
+初始值： | 0px
+百分比： | 不适用
 
 `offset-y`{:.prop}
 
-Value: | \<length\>
-Initial: | 0px
-Percentages: | N/A
+取值： | \<length\>
+初始值： | 0px
+百分比： | 不适用
 
-These properties define the offset, in pixels, between the source text and the shadow.
+这些属性定义源文本与阴影之间的偏移（以像素为单位）。
 
 
 `color`{:.prop}
 
-Value: | \<color\>
-Initial: | white
-Percentages: | N/A
+取值： | \<color\>
+初始值： | white
+百分比： | 不适用
 
-The color is applied multiplicatively over the entire effect.
+该颜色以乘法方式应用于整个效果。
 
 
 ```css

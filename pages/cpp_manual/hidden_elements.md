@@ -1,32 +1,32 @@
 ---
 layout: page
-title: Hidden elements
+title: 隐藏元素
 parent: cpp_manual
 next: element_packages
 ---
 
-RmlUi distinguishes between normal elements that are part of the DOM and visible to all subsystems, and hidden (or non-DOM) elements that (by default) can only be found if explicitly asked for. Hidden elements are typically used by custom elements; for example, the [drop-down select element](element_packages/form.html#drop-down-select-box) creates hidden elements for its arrow button, the value field and the selection box.
+RmlUi 区分作为 DOM 一部分、对所有子系统可见的普通元素，以及（默认情况下）只有被显式请求才能找到的隐藏（或非 DOM）元素。隐藏元素通常由自定义元素使用；例如，[下拉选择元素](element_packages/form.html#drop-down-select-box)为其箭头按钮、值字段和选择框创建隐藏元素。
 
-### Differences in hidden elements
+### 隐藏元素的差异
 
-The subsystems of RmlUi that ignore hidden elements are:
+RmlUi 中忽略隐藏元素的子系统有：
 
-* Automatic layout.
-* RML serialisation; ie, `GetInnerRML()` will not generate RML for hidden elements.
+* 自动布局。
+* RML 序列化；即 `GetInnerRML()` 不会为隐藏元素生成 RML。
 
-important subsystems that still recognise hidden elements are:
+仍然识别隐藏元素的重要子系统有：
 
-* Input events.
-* Update and rendering.
-* RCSS properties.
+* 输入事件。
+* 更新与渲染。
+* RCSS 属性。
 
-Custom elements that make use of hidden elements can therefore control their size and positioning exactly, while still getting all the flexibility of the RCSS property system. Helper methods are made available for layout.
+因此，使用隐藏元素的自定义元素可以精确控制其大小和定位，同时仍然获得 RCSS 属性系统的全部灵活性。还提供了用于布局的辅助方法。
 
-### Adding a hidden element
+### 添加隐藏元素
 
-Hidden elements are created just like other elements, either through the [RmlUi factory](elements.html#dynamically-creating-elements) or `CreateElement()` on a [document](documents.html#creating-new-elements).
+隐藏元素与其他元素一样创建，要么通过 [RmlUi factory](elements.html#dynamically-creating-elements)，要么通过[文档](documents.html#creating-new-elements)上的 `CreateElement()`。
 
-To parent an element to another as a hidden element, call `AppendChild()` as normal but set the second parameter to `false`.
+要将元素作为隐藏元素挂接到另一个元素，照常调用 `AppendChild()`，但将第二个参数设置为 `false`。
 
 ```cpp
 // Append a child to this element.
@@ -35,11 +35,11 @@ To parent an element to another as a hidden element, call `AppendChild()` as nor
 void AppendChild(Element* element, bool dom_element = true);
 ```
 
-If you parent the element using `InsertBefore()` instead of `AppendChild()`, the new element will be hidden if the element it was inserted adjacent to is hidden.
+如果你使用 `InsertBefore()` 而不是 `AppendChild()` 来挂接元素，那么如果与插入位置相邻的元素是隐藏的，新元素也将是隐藏的。
 
-### Accessing hidden elements
+### 访问隐藏元素
 
-Elements segregate their children by their hidden status. Visible children are always placed before, and therefore have a lower index, than hidden children. By default, the element's function `GetNumChildren()` will return the number of visible elements. To find the total number of elements including hidden elements, pass the boolean `true` into the function.
+元素按隐藏状态对其子元素进行分隔。可见子元素总是排在前面，因此索引低于隐藏子元素。默认情况下，元素的 `GetNumChildren()` 函数将返回可见元素的数量。要查找包括隐藏元素在内的元素总数，请将布尔值 `true` 传入该函数。
 
 ```cpp
 // Get the current number of children in this element
@@ -48,20 +48,20 @@ Elements segregate their children by their hidden status. Visible children are a
 int GetNumChildren(bool include_non_dom_elements = false) const;
 ```
 
-The following code will iterate over all hidden children of an element:
+以下代码将遍历元素的所有隐藏子元素：
 
 ```cpp
 for (int index = element->GetNumChildren(); index < element->GetNumChildren(true); ++index)
 	hidden_element = element->GetChild(index);
 ```
 
-### Formatting hidden elements
+### 格式化隐藏元素
 
-Custom elements typically size and position their hidden elements internally when they receive a "resize" event.
+自定义元素通常在收到 "resize" 事件时在内部调整其隐藏元素的大小和位置。
 
-#### Sizing
+#### 调整大小
 
-Hidden elements can be sized by calling the `SetBox()` function. `SetBox()` takes a `Rml::Box` structure, which contains sizes for a two-dimensional content area and per-edge padding, borders and margin (see the RCSS documentation for more information on the [box model]({{"pages/rcss/box_model.html"|relative_url}})).
+可以通过调用 `SetBox()` 函数调整隐藏元素的大小。`SetBox()` 接受一个 `Rml::Box` 结构，其中包含二维内容区域的大小以及每条边的内边距、边框和外边距（有关[盒模型]({{"pages/rcss/box_model.html"|relative_url}})的更多信息，请参阅 RCSS 文档）。
 
 ```cpp
 // Sets the box describing the size of the element, and removes all others.
@@ -69,7 +69,7 @@ Hidden elements can be sized by calling the `SetBox()` function. `SetBox()` take
 void SetBox(const Rml::Box& box);
 ```
 
-You can either construct the box yourself, or use the static `BuildBox()` function on `Rml::ElementUtilities`:
+你可以自己构造盒，或者使用 `Rml::ElementUtilities` 上的静态 `BuildBox()` 函数：
 
 ```cpp
 // Generates the box for an element.
@@ -80,14 +80,14 @@ You can either construct the box yourself, or use the static `BuildBox()` functi
 static void BuildBox(Box& box, Rml::Vector2f containing_block, Element* element, bool inline_element = false);
 ```
 
-`BuildBox()` will generate the values of a `Rml::Box` from the `width`{:.prop}, `max-width`{:.prop}, `min-width`{:.prop}, and `height`{:.prop}, `max-height`{:.prop} and `min-height`{:.prop} properties set on an element. The parameters are:
+`BuildBox()` 将根据元素上设置的 `width`{:.prop}、`max-width`{:.prop}、`min-width`{:.prop} 以及 `height`{:.prop}、`max-height`{:.prop} 和 `min-height`{:.prop} 属性生成 `Rml::Box` 的值。参数是：
 
-* `box`: The box to be generated.
-* `containing_block`: The element's containing block. This is typically the size of the content area of the containing element, but does not have to be.
-* `element`: The element to generate the box for.
-* `inline_element`: True if the element is inline, false if not. Generally you want to leave this as false.
+* `box`：要生成的盒。
+* `containing_block`：元素的包含块。这通常是包含元素内容区域的大小，但不一定。
+* `element`：要为其生成盒的元素。
+* `inline_element`：如果元素是内联的则为 true，否则为 false。一般来说，你希望将其保留为 false。
 
-The following code will generate and set the box on a hidden element from within its parent:
+以下代码将在其父元素内部生成并设置隐藏元素的盒：
 
 ```cpp
 Rml::Box box;
@@ -95,7 +95,7 @@ Rml::ElementUtilities::BuildBox(box, GetBox().GetContentArea(), hidden_element);
 hidden_element->SetBox(box);
 ```
 
-But if you want to force the hidden element to be a certain size, instead you might do:
+但如果你想强制隐藏元素为某个特定大小，你可能会这样做：
 
 ```cpp
 Rml::Box box;
@@ -104,9 +104,9 @@ box.SetEdge(Rml::Box::BORDER, Rml::Box::TOP, 1);
 hidden_element->SetBox(box);
 ```
 
-#### Positioning
+#### 定位
 
-To set the position of a hidden element, use the `SetOffset()` function. This sets the two-dimensional offset of the element top-left border edge from another element's top-left border edge. Typically, a custom element will position an internal hidden element relative to itself, but this is not required.
+要设置隐藏元素的位置，请使用 `SetOffset()` 函数。这设置了元素左上边框边相对于另一个元素左上边框边的二维偏移。通常，自定义元素会将内部隐藏元素相对于自身定位，但这不是必需的。
 
 ```cpp
 // Sets the position of this element, as a two-dimensional offset from another element.
@@ -118,7 +118,7 @@ void SetOffset(Rml::Vector2f offset,
                bool offset_fixed = false);
 ```
 
-However, `Rml::ElementUtilities` has a number of functions to aid in positioning a hidden element. `PositionElement()` resizes an element (using `BuildBox()`) and positions it within its parent. As positioning border-corner to border-corner can be quite confusing, this function treats the offset as between the content areas of the elements.
+然而，`Rml::ElementUtilities` 有许多函数可以帮助定位隐藏元素。`PositionElement()` 调整元素大小（使用 `BuildBox()`）并将其定位在其父元素内。由于边框角到边框角的定位可能相当令人困惑，此函数将偏移视为元素内容区域之间的偏移。
 
 ```cpp
 // Sizes an element, and positions it within its parent offset from the borders of its content area.
@@ -130,7 +130,7 @@ static bool PositionElement(Rml::Element* element,
                             Rml::ElementUtilities::PositionAnchor anchor);
 ```
 
-There is also an override for `PositionElement()` for positioning an element offset from a specific corner or edge of its parent, not just the top-left corner. The third parameter, `anchor`, can be one or more of the `PositionAnchor` enumeration OR'ed together:
+`PositionElement()` 还有一个重载，用于将元素定位为相对于其父元素的特定角或边偏移，而不只是左上角。第三个参数 `anchor` 可以是 `PositionAnchor` 枚举中的一个或多个进行 OR 组合：
 
 ```cpp
 enum PositionAnchor
@@ -147,9 +147,9 @@ enum PositionAnchor
 };
 ```
 
-#### Invoking the layout engine
+#### 调用布局引擎
 
-RmlUi's internal layout engine can be run on a hidden element to format the element's visible descendants. To do so, call the static `FormatElement()` function on `Rml::ElementUtilities`.
+RmlUi 的内部布局引擎可以在隐藏元素上运行，以格式化该元素的可见后代。为此，请调用 `Rml::ElementUtilities` 上的静态 `FormatElement()` 函数。
 
 ```cpp
 // Formats the contents of an element.
@@ -159,13 +159,13 @@ static bool FormatElement(Rml::Element* element,
                           const Rml::Vector2f& containing_block);
 ```
 
-### Formatting hidden text elements
+### 格式化隐藏文本元素
 
-It possible to append text elements as hidden elements. In this case, you will need to use the `Rml::ElementText` API to get the element to generate and position strings of characters.
+可以将文本元素作为隐藏元素追加。在这种情况下，你将需要使用 `Rml::ElementText` API 让元素生成并定位字符字符串。
 
-#### Generating lines of text
+#### 生成文本行
 
-Once a text element has had raw text set on it (through the `SetText()` function), you can call `GenerateString()` to generate a character sequence for rendering on a single line. Depending on the length of the raw text and the available width, you may need to call `GenerateString()` multiple times to generate all the lines required to render the element's content.
+一旦文本元素被设置了原始文本（通过 `SetText()` 函数），你可以调用 `GenerateString()` 生成用于在单行上渲染的字符序列。根据原始文本的长度和可用宽度，你可能需要多次调用 `GenerateString()` 来生成渲染元素内容所需的所有行。
 
 ```cpp
 // Generates a line of text rendered from this element.
@@ -186,19 +186,19 @@ bool GenerateLine(Rml::String& line,
                   bool trim_whitespace_prefix);
 ```
 
-The parameters to this function are:
+此函数的参数是：
 
-* `line`: The string the contents of the generated line will be written to.
-* `line_length`: An integer to store the number of characters used by the source string to generate this line. Because of whitespace processing, this value may be greater than the length of the generated line.
-* `line_width`: A floating-point value to store the width of the generated string, in pixels.
-* `line_begin`: The index of the first character in the source string to begin generating the line from.
-* `maximum_line_width`: The maximum length (in pixels) the line can be.
-* `right_spacing_width`: If the generated line is the last line required by the text node, then this space (in pixels) must be available to the right of the line. This is not generally required by custom text layouts.
-* `trim_whitespace_prefix`: If this is set to true, collapsed whitespace will be trimmed from the front of the line. This is usually set to false for the first line, true for the second and subsequent line.
+* `line`：生成的行的内容将被写入的字符串。
+* `line_length`：用于存储源字符串生成此行所消耗字符数的整数。由于空白处理，此值可能大于生成行的长度。
+* `line_width`：用于存储生成字符串宽度（以像素为单位）的浮点值。
+* `line_begin`：源字符串中开始生成行的第一个字符的索引。
+* `maximum_line_width`：行可以具有的最大长度（以像素为单位）。
+* `right_spacing_width`：如果生成的行是文本节点所需的最后一行，则此空间（以像素为单位）必须在该行右侧可用。自定义文本布局通常不需要。
+* `trim_whitespace_prefix`：如果设置为 true，折叠后的空白将从行首修剪。第一行通常设置为 false，第二行及后续行为 true。
 
-The function will return true if the generated line is the last line required to render the content of the element, false if further lines are required.
+如果生成的行是渲染元素内容所需的最后一行，该函数将返回 true，如果需要更多行则返回 false。
 
-The following code sample will generate all of the lines required for a text node, each line being allowed a maximum width of 200 pixels:
+以下代码示例将生成文本节点所需的全部行，每行允许最大宽度为 200 像素：
 
 ```cpp
 Rml::ElementText* text_element = document->CreateTextNode("sample text");
@@ -217,20 +217,20 @@ while (!last_line)
 }
 ```
 
-The `GenerateString()` will format whitespace and endlines as appropriate for the value of the `white-space`{:.prop} RCSS property on the element. To change how it processes whitespace, change the `white-space`{:.prop} property.
+`GenerateString()` 将根据元素上 `white-space`{:.prop} RCSS 属性的值适当地格式化空白和换行。要更改其处理空白的方式，请更改 `white-space`{:.prop} 属性。
 
-Just generating lines of text from the element won't position them or get them rendering however.
+然而，仅从元素生成文本行还不会定位它们或渲染它们。
 
-### Rendering text
+### 渲染文本
 
-Text elements store a list of generated lines, each with a two-dimensional offset from the top-left of the text element. To begin positioning lines, call `ClearLines()` to clear all previously-generated lines.
+文本元素存储生成的行的列表，每行有一个相对于文本元素左上角的二维偏移。要开始定位行，请调用 `ClearLines()` 清除所有先前生成的行。
 
 ```cpp
 // Clears all lines of generated text and prepares the element for generating new lines.
 void ClearLines();
 ```
 
-Then call `AddLines()` for each generated line.
+然后为每个生成的行调用 `AddLines()`。
 
 ```cpp
 // Adds a new line into the text element.
@@ -239,7 +239,7 @@ Then call `AddLines()` for each generated line.
 void AddLine(Rml::Vector2f line_position, const Rml::String& line) = 0;
 ```
 
-The following code sample extends the previous sample by placing each line of text as it is generated:
+以下代码示例在前一个示例的基础上，在生成每行文本时放置它：
 
 ```cpp
 Rml::ElementText* text_element = document->CreateTextNode("sample text");
@@ -262,6 +262,6 @@ while (!last_line)
 }
 ```
 
-### Examples
+### 示例
 
-You can see plenty of examples of using hidden elements in the [element packages](element_packages.html), particularly in the select form control (`ElementFormControlSelect.cpp`{:.path} and `WidgetDropDown.cpp`{:.path}), or for text layout, the text area control (`ElementFormControlText.cpp`{:.path} and `WidgetTextInput.cpp`{:.path}).
+你可以在[元素包](element_packages.html)中看到大量使用隐藏元素的示例，特别是在 select 表单控件（`ElementFormControlSelect.cpp`{:.path} 和 `WidgetDropDown.cpp`{:.path}）中，或者对于文本布局，在文本区域控件（`ElementFormControlText.cpp`{:.path} 和 `WidgetTextInput.cpp`{:.path}）中。

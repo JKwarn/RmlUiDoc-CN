@@ -1,12 +1,12 @@
 ---
 layout: page
-title: Initialization and main loop
+title: 初始化与主循环
 parent: cpp_manual
 next: fonts
 ---
 
 
-The following code snippet is a rough template on how you would initialize and run RmlUi within your application or game. Its main purpose is to show the order of API calls to get a basic user interface up and running. More complex topics such as multithreading and separating the update and rendering logic is out of scope for this example.
+以下代码片段是在你的应用程序或游戏中初始化和运行 RmlUi 的大致模板。其主要目的是展示让一个基本用户界面运行起来的 API 调用顺序。更复杂的主题，如多线程和分离更新与渲染逻辑，不在本示例的范围内。
 
 
 ```cpp
@@ -121,8 +121,8 @@ int main(int argc, char** argv)
 
 ```
 
-If you are using the built-in backends directly, a good reference is the [`load_document` sample](https://github.com/mikke89/RmlUi/blob/master/Samples/basic/load_document/src/main.cpp).
+如果你直接使用内置后端，[`load_document` 示例](https://github.com/mikke89/RmlUi/blob/master/Samples/basic/load_document/src/main.cpp)是一个很好的参考。
 
-In a real application, you typically want to separate the render and update loops. Regardless, you may consider updating the RmlUi context at the rendering updates as this provides the lowest input latency, which is important to make the user interface feel good.
+在真实应用程序中，你通常希望分离渲染和更新循环。无论如何，你可以考虑在进行渲染更新时更新 RmlUi 上下文，因为这提供了最低的输入延迟，这对于让用户界面感觉良好很重要。
 
-The shown update loop will run as fast as possible. However, it might be desirable to reduce CPU usage and power consumption when the application is idle. This is possible using [on-demand rendering, or power saving mode](contexts.html#on-demand-rendering).
+所示的更新循环将尽可能快地运行。然而，当应用程序空闲时，减少 CPU 使用率和功耗可能是可取的。这可以通过[按需渲染或省电模式](contexts.html#on-demand-rendering)实现。

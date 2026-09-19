@@ -1,27 +1,27 @@
 ---
 layout: page
-title: RML Images
+title: RML 图像
 parent: rml
 next: forms
 ---
 
 ### \<img\>
 
-The `<img>`{:.tag} element is used to include images or [sprites](../rcss/sprite_sheets.html) in the document.
+`<img>`{:.tag} 元素用于在文档中包含图像或[精灵图（sprites）](../rcss/sprite_sheets.html)。
 
-_Attributes_
+_属性_
 
 `src`{:.attr} = uri (CT)
-: The source location of an image.
+: 图像的源位置。
 
 `sprite`{:.attr} = sprite (CS)
-: The name of a sprite located in a sprite sheet in the current document. If this attribute is set, the `src`{:.attr} and `rect`{:.attr} attributes will be ignored.
+: 当前文档中精灵图表（sprite sheet）内某个精灵的名称。如果设置了该属性，则 `src`{:.attr} 和 `rect`{:.attr} 属性将被忽略。
 
 `width`{:.attr} = number (CN)
-: The width to force the element to, in pixels. If this is unspecified, it will default to the width of the sprite, rectangle, or image in that order.
+: 强制元素具有的宽度，单位为像素。如果未指定，将按顺序默认为精灵、矩形或图像的宽度。
 
 `height`{:.attr} = number (CN)
-: The height to force the element to, in pixels. If this is unspecified, it will default to the height of the sprite, rectangle, or image in that order.
+: 强制元素具有的高度，单位为像素。如果未指定，将按顺序默认为精灵、矩形或图像的高度。
 
 `rect`{:.attr} = four numbers (CN)
-: Crops the image to a sub-rectangle within the image file. Specified as a space-separated list of four (unit-less) values `x y width height`, where pixel units are implied. Will have no effect on sprites.
+: 将图像裁剪为图像文件内的一个子矩形。以四个（无单位）值 `x y width height` 的空格分隔列表指定，其中隐含像素单位。对精灵无效。

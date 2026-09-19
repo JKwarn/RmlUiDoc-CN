@@ -1,45 +1,45 @@
 ---
 layout: page
-title: Troubleshooting
+title: 故障排除
 parent: cpp_manual
 next: elements
 ---
 
-Sometimes challenges arise when integrating a new library. The most common integration issues in RmlUi are related to initialization, lifetimes, and the rendering API, but there may be other culprits. Here are some things to try if something goes wrong or it doesn't render properly.
+有时在集成新库时会出现挑战。RmlUi 中最常见的集成问题与初始化、生命周期和渲染 API 有关，但也可能有其他原因。以下是当出现问题或渲染不正确时可以尝试的一些方法。
 
-***The first thing you should do:***
+***你应该做的第一件事：***
 
-- Check the log output for any warnings or errors.
-- Make sure you are actually getting the log output.
-    - Try calling `Rml::Log::Message(Rml::Log::LT_WARNING, "Test warning.")` just after installing the system interface or initializing the library to make sure.
+- 检查日志输出中是否有任何警告或错误。
+- 确保你确实得到了日志输出。
+    - 尝试在安装系统接口或初始化库之后立即调用 `Rml::Log::Message(Rml::Log::LT_WARNING, "Test warning.")` 以确认。
 
-#### Application crash
+#### 应用程序崩溃
 
-- Make sure everything is initialized in the correct order, see [initialization and main loop](main_loop.html) for details.
-- Make sure your [custom interfaces](interfaces.html) are kept alive until after the call to `Rml::Shutdown()`.
-- When you call `ElementDocument::Close()`, make sure event listeners attached to any element of the document are kept alive until the next call to `Context::Update()` or `Rml::Shutdown()`.
+- 确保所有内容按正确顺序初始化，详情请参阅[初始化与主循环](main_loop.html)。
+- 确保你的[自定义接口](interfaces.html)保持存活到调用 `Rml::Shutdown()` 之后。
+- 当你调用 `ElementDocument::Close()` 时，确保附加到文档任何元素的事件监听器保持存活到下一次调用 `Context::Update()` 或 `Rml::Shutdown()` 为止。
 
-#### Rendering issues
+#### 渲染问题
 
-- Carefully read the [rendering conventions](interfaces/render.html#rendering-conventions) and assumptions used in RmlUi. It describes some hints for usage with graphics APIs such as OpenGL and DirectX.
-- Make sure the fonts are loaded, the log output prints some info whenever a font is loaded.
-- Don't just rely on font rendering in the document being tested. Try creating a sized `div` element with a colored background in case there are any problems with the fonts, see the example document below.
-- Make sure inputs are submitted before the call to `Context::Update`.
-- Make sure you call `Context::Update` and then `Context::Render` (in that order).
-- If you have trouble loading your own fonts, you can instead test with the font included with the debugger. To use it, `RmlDebugger` must be linked and initialized, then set the property `font-family: rmlui-debugger-font;` on a given element.
+- 仔细阅读 RmlUi 中使用的[渲染约定](interfaces/render.html#rendering-conventions)和假设。它描述了与 OpenGL 和 DirectX 等图形 API 一起使用的一些提示。
+- 确保字体已加载，每当加载字体时日志输出会打印一些信息。
+- 不要只依赖被测试文档中的字体渲染。尝试创建一个带彩色背景的已设置大小的 `div` 元素，以防字体有任何问题，请参阅下面的示例文档。
+- 确保在调用 `Context::Update` 之前提交输入。
+- 确保你先调用 `Context::Update`，然后调用 `Context::Render`（按此顺序）。
+- 如果你加载自己的字体有困难，你可以改为使用调试器附带的字体进行测试。要使用它，`RmlDebugger` 必须被链接和初始化，然后在给定元素上设置属性 `font-family: rmlui-debugger-font;`。
 
-#### Animation issues
+#### 动画问题
 
-Experiencing slow, fast, or non-smooth animations?
+遇到缓慢、快速或不流畅的动画？
 
-- Make sure `SystemInterface::GetElapsedTime()` is properly implemented. It should return a high-resolution time value in seconds, always increasing as the application runs.
+- 确保 `SystemInterface::GetElapsedTime()` 已正确实现。它应返回以秒为单位的高分辨率时间值，并随着应用程序运行而始终增加。
 
-Nothing solves your problem? Take a look at the included samples and backends to see how they work. You can also write a post describing your situation in the [main repository]({{page.lib_site}}), or talk to other users on [RmlUi's Zulip channel](https://rmlui.zulipchat.com/).
+没有什么能解决你的问题？看看随附的示例和后端，了解它们是如何工作的。你也可以在[主仓库]({{page.lib_site}})中发帖描述你的情况，或在 [RmlUi 的 Zulip 频道](https://rmlui.zulipchat.com/)与其他用户交流。
 
 
-#### Simple document
+#### 简单文档
 
-The following very simple document can serve as a test to see that you get some render calls through the render interface.
+以下非常简单的文档可以作为测试，看看你是否能通过渲染接口获得一些渲染调用。
 
 ```html
 <rml>

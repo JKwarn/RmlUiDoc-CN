@@ -1,64 +1,64 @@
 ---
 layout: page
-title: Glow font effect
+title: 发光字体效果
 parent: rcss/font_effects
 grandparent: rcss
 next: outline
 ---
 
-The glow font effect renders a blurred outline around the text.
+发光字体效果在文本周围渲染模糊的描边。
 
-![Glow effect sample](glow.png)
+![发光效果示例](glow.png)
 
-Both the outline pass and the subsequent blur pass can be controlled independently. Additionally, an offset can be applied which makes the effect suitable for generating drop shadows as well.
+描边过程与随后的模糊过程都可以独立控制。此外，还可以应用偏移，这使得该效果也适合生成投影。
 
-The effect is declared as:
+效果声明如下：
 
 ```css
 font-effect: glow( <width-outline> <width-blur> <offset-x> <offset-y> <color> );
 ```
 
 
-Its properties are specified by the following.
+其属性由以下内容指定。
 
 `width-outline`{:.prop}
 
-Value: | \<length\>
-Initial: | 1px
-Percentages: | N/A
+取值： | \<length\>
+初始值： | 1px
+百分比： | 不适用
 
-Determines the outline width of the effect.
+决定效果的描边宽度。
 
 `width-blur`{:.prop}
 
-Value: | \<length\>
-Initial: | -1px
-Percentages: | N/A
+取值： | \<length\>
+初始值： | -1px
+百分比： | 不适用
 
-Determines the blur width of the effect. For negative specified values, the used value will be copied from `width-outline`{:.prop}.
+决定效果的模糊宽度。若指定值为负，则使用值将从 `width-outline`{:.prop} 复制。
 
 `offset-x`{:.prop}
 
-Value: | \<length\>
-Initial: | 0px
-Percentages: | N/A
+取值： | \<length\>
+初始值： | 0px
+百分比： | 不适用
 
 `offset-y`{:.prop}
 
-Value: | \<length\>
-Initial: | 0px
-Percentages: | N/A
+取值： | \<length\>
+初始值： | 0px
+百分比： | 不适用
 
-These properties define the offset, in pixels, between the source text and the glow.
+这些属性定义源文本与发光效果之间的偏移（以像素为单位）。
 
 
 `color`{:.prop}
 
-Value: | \<color\>
-Initial: | white
-Percentages: | N/A
+取值： | \<color\>
+初始值： | white
+百分比： | 不适用
 
-The color is applied multiplicatively over the entire effect.
+该颜色以乘法方式应用于整个效果。
 
 
 ```css

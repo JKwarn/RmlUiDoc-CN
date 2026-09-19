@@ -1,12 +1,12 @@
 ---
 layout: page
-title: Tiled Box decorator
+title: 盒状平铺装饰器
 grandparent: rcss
 parent: rcss/decorators
 next: ninepatch
 ---
 
-The `tiled-box`{:.prop} decorator can render nine sprites or images across an element. One image is placed at a fixed size in each of the element's corners, one image is stretched along each edge, and a final image is stretched in both directions to cover the center region of the image.
+`tiled-box`{:.prop} 装饰器可以跨元素渲染九个精灵或图像。一个图像以固定大小放置在元素的每个角，一个图像沿每条边拉伸，最后一个图像在两个方向上拉伸以覆盖元素的中心区域。
 
 ```css
 decorator: tiled-box(
@@ -25,45 +25,45 @@ decorator: tiled-box(
 ```
 
 
-### Properties
+### 属性
 
 
 `*x*-image-src`{:.prop}
 
-Value: | \<string\>
-Initial: | N/A
-Percentages: | N/A
+取值： | \<string\>
+初始值： | 不适用
+百分比： | 不适用
 
-This property defines either a [sprite name](../sprite_sheets.html) or a relative path to an image file.
+此属性定义[精灵名称](../sprite_sheets.html)或图像文件的相对路径。
 
 `*x*-image-orientation`{:.prop}
 
-Value: | none \| flip-horizontal \| flip-vertical \| rotate-180
-Initial: | none
-Percentages: | N/A
+取值： | none \| flip-horizontal \| flip-vertical \| rotate-180
+初始值： | none
+百分比： | 不适用
 
-Flips or rotates the image.
+翻转或旋转图像。
 
 `paint-area`{:.prop}
 
-Value: | border-box \| padding-box \| content-box
-Initial: | padding-box
-Percentages: | N/A
+取值： | border-box \| padding-box \| content-box
+初始值： | padding-box
+百分比： | 不适用
 
-Declares the box area to render the decorator onto.
+声明渲染装饰器的盒区域。
 
 
-### Example
+### 示例
 
-The following image is used to define a window background.
+以下图像用于定义窗口背景。
 
 ![Tiled box window](../../../assets/images/decorators/tiled-box-window.png)
 
-The `tiled-box`{:.prop} decorator is first defined by dividing the image into nine regions (see below). Then, the elements that use this decorator can be gracefully sized in any direction, keeping the corners and edges at a proper size.
+`tiled-box`{:.prop} 装饰器首先将图像划分为九个区域（见下文）。然后，使用此装饰器的元素可以在任何方向上优雅地调整大小，同时保持角落和边缘的大小合适。
 
 ![Tiled box window](../../../assets/images/decorators/tiled-box.png)
 
-The following RCSS is used for the above result.
+以下 RCSS 用于生成上述结果。
 
 ```css
 @spritesheet demo-sheet
@@ -91,8 +91,8 @@ The following RCSS is used for the above result.
 ```
 
 
-#### Orientation
+#### 方向
 
-The result of using the `*x*-image-orientation`{:.prop} properties is demonstrated in the following, which can be applied to each tile individually.
+使用 `*x*-image-orientation`{:.prop} 属性的结果如下所示，可以单独应用于每个平铺块。
 
 ![image-orientation.png](../../../assets/images/decorators/image-orientation.png)

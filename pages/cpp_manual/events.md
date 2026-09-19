@@ -1,35 +1,35 @@
 ---
 layout: page
-title: Events
+title: 事件
 parent: cpp_manual
 next: rcss
 ---
 
-Events are sent to elements to indicate actions that have occurred to that element. RmlUi generates many events internally. The application can also send arbitrary events to elements.
+事件被发送到元素，以指示该元素发生了某些动作。RmlUi 在内部生成许多事件。应用程序也可以向元素发送任意事件。
 
-When an event is dispatched to an element, it goes through three distinct phases in the following order.
-* Capture phase. Propagating from the root element to the target element's parent.
-* Target phase. Target element.
-* Bubble phase. Propagating from the target element's parent to the root element. Only executed for certain event types.
+当事件被派发到元素时，它按以下顺序经历三个不同的阶段。
+* 捕获阶段（Capture phase）。从根元素传播到目标元素的父元素。
+* 目标阶段（Target phase）。目标元素。
+* 冒泡阶段（Bubble phase）。从目标元素的父元素传播到根元素。仅对某些事件类型执行。
 
-An event listener is able to subscribe to specific events on an element and will be notified whenever those events occur. Each event listener is either attached to the bubble phase (default) or the capture phase. If the event listener is reached during the target phase, it is executed regardless of the listener's attached phase. Listeners are executed in the order they were attached to the element. Event listeners can stop further propagation of the event at any stage, however, the event type must be interruptible to stop the propagation.
+事件监听器能够订阅元素上的特定事件，并且每当这些事件发生时都会收到通知。每个事件监听器要么附加到冒泡阶段（默认），要么附加到捕获阶段。如果事件监听器在目标阶段被到达，无论其附加的阶段如何，它都会被执行。监听器按照它们附加到元素的顺序执行。事件监听器可以在任何阶段停止事件的进一步传播，但是，事件类型必须可中断才能停止传播。
 
-After all event listeners are executed, the event's default actions can be processed. Default actions are primarily for actions performed internally in the library, and can be prevented by stopping propagation. Any object that derives from `Element` can override the default behavior and add new behavior. The default actions are only processed in specific phases which is defined for each event type.
+在所有事件监听器执行完毕后，可以处理事件的默认动作。默认动作主要用于库内部执行的动作，可以通过停止传播来阻止。任何派生自 `Element` 的对象都可以覆盖默认行为并添加新行为。默认动作仅在特定阶段处理，每个事件类型都定义了这些阶段。
 
-Events are specified by
-* An identifier, `Rml::EventId` such as `EventId::Keydown`.
-* A descriptive string name, such as `keydown`{:.evt} or `blur`{:.evt}.
-* Whether or not it is interruptible.
-* Whether or not it executes the bubble phase.
-* During which phases it executes `Element::ProcessDefaultAction()`.
-* A dictionary of parameters that further describe the event. For example, the `keydown`{:.evt} event has parameters for identifying the actual key that was pressed and the state of the key modifiers.
+事件由以下内容指定：
+* 一个标识符，`Rml::EventId`，例如 `EventId::Keydown`。
+* 一个描述性的字符串名称，例如 `keydown`{:.evt} 或 `blur`{:.evt}。
+* 是否可中断。
+* 是否执行冒泡阶段。
+* 在哪些阶段执行 `Element::ProcessDefaultAction()`。
+* 一个进一步描述事件的参数字典。例如，`keydown`{:.evt} 事件具有用于识别实际按下的键和按键修饰符状态的参数。
 
-See the [event specifications](#event-specifications) below for details of each type, and the [RML event documentation](../rml/events.html) for a description of and a list of parameters for each event.
+有关每种类型的细节，请参阅下面的[事件规范](#event-specifications)，有关每个事件的描述和参数列表，请参阅 [RML 事件文档](../rml/events.html)。
 
 
-### Event interface
+### 事件接口
 
-An event is represented by the `Rml::Event` structure, defined in `RmlUi/Core/Event.h`{:.incl}. A subset of the public interface to the event object is given in the following.
+事件由 `Rml::Event` 结构表示，定义于 `RmlUi/Core/Event.h`{:.incl}。下面给出事件对象公共接口的一个子集。
 
 ```cpp
 enum class EventPhase { None, Capture = 1, Target = 2, Bubble = 4 };
@@ -62,30 +62,30 @@ public:
 };
 ```
 
-The phase of the event, returned by `GetPhase()`, will be one of `EventPhase::Capture`, `EventPhase::Target` and `EventPhase::Bubble`.
+事件所处的阶段由 `GetPhase()` 返回，将是 `EventPhase::Capture`、`EventPhase::Target` 和 `EventPhase::Bubble` 之一。
 
-The target element, returned by `GetTargetElement()`, is the element the event was originally sent to. The current element, returned by `GetCurrentElement()`, is the element the event is currently being sent to. This may be the target element or one of the target element's ancestors.
+目标元素由 `GetTargetElement()` 返回，是事件最初发送到的元素。当前元素由 `GetCurrentElement()` 返回，是事件当前正在发送到的元素。这可能是目标元素或目标元素的祖先之一。
 
-The id of the event, such as `EventId::Keydown` and `EventId::Focus`, is returned from `GetId()`. You can also use the equality operator to compare the event with an `EventId`. The event can also be compared to strings, such as `keydown`{:.evt} and `focus`{:.evt} in a similar manner.
+事件的 id，例如 `EventId::Keydown` 和 `EventId::Focus`，由 `GetId()` 返回。你也可以使用相等运算符将事件与 `EventId` 比较。事件也可以类似地与字符串比较，例如 `keydown`{:.evt} 和 `focus`{:.evt}。
 
-You can fetch the parameters of the event with the templated `GetParameter()` function. The exact parameters of each event are detailed in the [event documentation](../rml/events.html).
+你可以使用模板化的 `GetParameter()` 函数获取事件的参数。每个事件的确切参数在[事件文档](../rml/events.html)中有详细说明。
 
-For event types that can be interrupted, a listener can call the `StopPropagation()` and `StopImmediatePropagation()` functions to stop the event from propagating. The immediate variant will also stop the rest of the listeners on the current element to be executed. If propagation is interrupted, then default actions are not processed.
+对于可以中断的事件类型，监听器可以调用 `StopPropagation()` 和 `StopImmediatePropagation()` 函数来停止事件的传播。立即变体还将停止当前元素上其余监听器的执行。如果传播被中断，则不会处理默认动作。
 
-### Event listeners
+### 事件监听器
 
-Any object that wants to listen for events derives from `Rml::EventListener`, and implements the one required pure virtual function:
+任何想要监听事件的对象都派生自 `Rml::EventListener`，并实现一个必需的纯虚函数：
 
 ```cpp
 // Process the incoming event.
 virtual void ProcessEvent(Rml::Event& event) = 0;
 ```
 
-The `ProcessEvent()` function will be called every time a relevant event is sent to an element the listener is subscribed to.
+每当相关事件被发送到监听器所订阅的元素时，都会调用 `ProcessEvent()` 函数。
 
-#### Attaching to an element
+#### 附加到元素
 
-To subscribe an event listener to an element, call the `AddEventListener()` function on the element to attach to.
+要将事件监听器订阅到元素，请调用要附加到的元素上的 `AddEventListener()` 函数。
 
 ```cpp
 // Adds an event listener to this element.
@@ -97,18 +97,18 @@ void AddEventListener(const Rml::String& event,
                       bool in_capture_phase = false);
 ```
 
-The function takes the following parameters:
+该函数接受以下参数：
 
-* `event`: The string name of the event the listener wants to attach to, for example "keydown", "focus", etc.
-* `listener`: The event listener object to attach.
-* `in_capture_phase`: If true, the event listener will receive the event in the capture phase, otherwise, in the bubbling phase. See the RML event documentation for more information.
+* `event`：监听器想要附加的事件的字符串名称，例如 "keydown"、"focus" 等。
+* `listener`：要附加的事件监听器对象。
+* `in_capture_phase`：如果为 true，事件监听器将在捕获阶段接收事件，否则在冒泡阶段接收。更多信息请参阅 RML 事件文档。
 
-Note that the event listener must be kept alive until the listener is removed or the element is destroyed.
-Be aware that documents closed with `ElementDocument::Close()` are not actually destroyed until the next call to `Context::Update()` or `Rml::Shutdown()`.
+请注意，事件监听器必须保持存活，直到监听器被移除或元素被销毁。
+请注意，使用 `ElementDocument::Close()` 关闭的文档实际上直到下一次调用 `Context::Update()` 或 `Rml::Shutdown()` 时才会被销毁。
 
-#### Detaching from an element
+#### 从元素分离
 
-To unsubscribe an event listener from an element, call the `RemoveEventListener()` function on the element:
+要从元素取消订阅事件监听器，请调用元素上的 `RemoveEventListener()` 函数：
 
 ```cpp
 // Removes an event listener from this element.
@@ -120,9 +120,9 @@ void RemoveEventListener(const Rml::String& event,
                          bool in_capture_phase = false);
 ```
 
-### Sending events
+### 发送事件
 
-The application can send an arbitrary event to an element through the `DispatchEvent()` function on `Rml::Element`.
+应用程序可以通过 `Rml::Element` 上的 `DispatchEvent()` 函数向元素发送任意事件。
 
 ```cpp
 // Sends an event to this element.
@@ -133,7 +133,7 @@ void DispatchEvent(const Rml::String& event,
                    const Rml::Dictionary& parameters);
 ```
 
-The event will be created and sent through the standard event loop. The following example sends a "close" event to an element:
+事件将被创建并通过标准事件循环发送。以下示例向元素发送一个 "close" 事件：
 
 ```cpp
 Rml::Dictionary parameters;
@@ -142,15 +142,15 @@ parameters["source"] = "user";
 element->DispatchEvent("close", parameters);
 ```
 
-### Custom events
+### 自定义事件
 
-Events are instanced through an event instancer similarly to contexts. The instancer can be overridden with a custom instancer if a custom event is required; this is generally only needed to integrate a scripting language into RmlUi.
+事件与上下文类似，通过事件 instancer 实例化。如果需要自定义事件，可以用自定义 instancer 覆盖 instancer；这通常仅在将脚本语言集成到 RmlUi 时才需要。
 
-A custom event inherits from `Rml::Event`. There are no virtual functions to be overridden.
+自定义事件继承自 `Rml::Event`。没有需要覆盖的虚函数。
 
-#### Creating a custom event instancer
+#### 创建自定义事件 instancer
 
-A custom event instancer needs to be created and registered with the RmlUi factory in order to have custom events instanced. A custom event instancer derives from `Rml::EventInstancer` and implements the required pure virtual functions:
+为了实例化自定义事件，需要创建自定义事件 instancer 并在 RmlUi factory 中注册。自定义事件 instancer 派生自 `Rml::EventInstancer` 并实现必需的纯虚函数：
 
 ```cpp
 // Instance an event object.
@@ -170,21 +170,21 @@ virtual Rml::EventPtr InstanceEvent(Rml::Element* target,
 virtual void ReleaseEvent(Event* event) = 0;
 ```
 
-`InstanceEvent()` will be called whenever the factory is called upon to instance an event. The parameters to the function are:
+每当 factory 被调用需要实例化事件时，都会调用 `InstanceEvent()`。该函数的参数是：
 
-* `target`: The element the event is begin targeted at.
-* `id`: The EventId of the event (EventId::Keydown, EventId::Focus, etc).
-* `name`: The name of the event ("keydown", "focus", etc).
-* `parameters`: The parameters to the event as a dictionary.
-* `interruptible`: True if the event can be interrupted (ie, prevented from propagating throughout the entire event cycle), false if not.
+* `target`：事件所针对的元素。
+* `id`：事件的 EventId（EventId::Keydown、EventId::Focus 等）。
+* `name`：事件的名称（"keydown"、"focus" 等）。
+* `parameters`：作为字典的事件参数。
+* `interruptible`：如果事件可以被中断（即防止在整个事件循环中传播）则为 true，否则为 false。
 
-If `InstanceEvent()` is successful, return the new event wrapped in an `EventPtr` which is a unique pointer with a custom deleter. Otherwise, return nullptr to indicate an instancing error.
+如果 `InstanceEvent()` 成功，则返回包装在 `EventPtr`（一种带有自定义删除器的 unique 指针）中的新事件。否则，返回 nullptr 表示实例化错误。
 
-`ReleaseEvent()` will be called when an event instanced through the instancer is no longer required by the system. It should be deleted appropriately.
+当系统不再需要通过 instancer 实例化的事件时，会调用 `ReleaseEvent()`。它应被适当地删除。
 
-#### Registering an instancer
+#### 注册 instancer
 
-To register a custom instancer with RmlUi, call the `RegisterEventInstancer()` function on the RmlUi factory (`Rml::Factory`) after RmlUi has been initialised.
+要在 RmlUi 初始化后向 RmlUi 注册自定义 instancer，请调用 RmlUi factory（`Rml::Factory`）上的 `RegisterEventInstancer()` 函数。
 
 ```cpp
 // Registers an instancer for all events.
@@ -193,11 +193,11 @@ To register a custom instancer with RmlUi, call the `RegisterEventInstancer()` f
 static Rml::EventInstancer* RegisterEventInstancer(Rml::EventInstancer* instancer);
 ```
 
-Like for other instancers, it is the user's responsibility to manage the lifetime of the instancer. Thus, it must be kept alive until after the call to `Rml::Shutdown()`, and then cleaned up by the user.
+与其他 instancer 一样，管理 instancer 的生命周期是用户的责任。因此，它必须保持存活直到调用 `Rml::Shutdown()` 之后，然后由用户清理。
 
-### Inline events
+### 内联事件
 
-Event responses can be specified as element attributes inside RML, similarly to HTML. For example, in the following RML fragment a response is given to the `click`{:.evt} event.
+事件响应可以像 HTML 一样在 RML 中指定为元素标记属性（attribute）。例如，在以下 RML 片段中，对 `click`{:.evt} 事件给出了一个响应。
 
 ```html
 <rml>
@@ -208,13 +208,13 @@ Event responses can be specified as element attributes inside RML, similarly to 
 ...
 ```
 
-Notice the `on`{:.attr} prefix before the event name of `click`{:.evt}. All event bindings from RML are prefixed this way. Further, the suffix `capture`{:.attr} can be used to bind the event to the capture phase, instead of the default bubble phase.
+注意 `click`{:.evt} 事件名称之前的 `on`{:.attr} 前缀。来自 RML 的所有事件绑定都以这种方式加前缀。此外，可以使用后缀 `capture`{:.attr} 将事件绑定到捕获阶段，而不是默认为冒泡阶段。
 
-RmlUi sends inline events to event listener proxy objects that are created by the application. An application must therefore register a custom event listener instancer to have an opportunity to interpret the events.
+RmlUi 将内联事件发送给由应用程序创建的事件监听器代理对象。因此，应用程序必须注册自定义事件监听器 instancer，才有机会解释这些事件。
 
-#### Creating a custom event listener instancer
+#### 创建自定义事件监听器 instancer
 
-A custom event listener instancer derives from `Rml::EventListenerInstancer`. The following pure virtual functions must be implemented:
+自定义事件监听器 instancer 派生自 `Rml::EventListenerInstancer`。必须实现以下纯虚函数：
 
 ```cpp
 // Instance an event listener object.
@@ -227,9 +227,9 @@ A custom event listener instancer derives from `Rml::EventListenerInstancer`. Th
 virtual Rml::EventListener* InstanceEventListener(const Rml::String& value, Rml::Element* element) = 0;
 ```
 
-`InstanceEventListener()` will be called during RML parsing whenever the factory needs to find an event listener for an inline event. The parameter value will be the raw event response string as specified in the RML, eg. `game.start()`.
+每当 factory 需要为内联事件找到事件监听器时，都会在 RML 解析期间调用 `InstanceEventListener()`。参数 value 将是 RML 中指定的原始事件响应字符串，例如 `game.start()`。
 
-Once the event listener instancer is created, it can be passed to the factory, this must be done before loading a document.
+创建事件监听器 instancer 后，可以将其传递给 factory，这必须在加载文档之前完成。
 
 ```cpp
 // Register the instancer to be used for all event listeners, or nullptr to clear an existing instancer.
@@ -238,22 +238,22 @@ Once the event listener instancer is created, it can be passed to the factory, t
 void Rml::Factory::RegisterEventListenerInstancer(Rml::EventListenerInstancer* instancer);
 ```
 
-Then all encountered inline event declarations will be passed to the instancer. Only a single instancer can be active at any one time.
+然后所有遇到的内联事件声明都将传递给 instancer。任何时刻只能有一个 instancer 处于活动状态。
 
-### Custom event types
+### 自定义事件类型
 
-Custom events can be dispatched without any particular setup. They will then automatically be assigned a unique `EventId` and given the default specification: `interruptible: true, bubbles: true, default_action_phase: None`.
+自定义事件可以在没有任何特殊设置的情况下派发。它们随后将自动被分配一个唯一的 `EventId` 并赋予默认规范：`interruptible: true, bubbles: true, default_action_phase: None`。
 
-To provide a custom specification for a new event, first call the method:
+要为新事件提供自定义规范，首先调用该方法：
 ```cpp
 EventId Rml::RegisterEventType(const String& type, bool interruptible, bool bubbles, DefaultActionPhase default_action_phase);
 ```
-After this call, any usage of this type will use the provided specification by default. The returned `EventId` can be used to dispatch events instead of the type string.
+在此调用之后，此类型的任何使用都将默认使用所提供的规范。返回的 `EventId` 可以用来取代类型字符串来派发事件。
 
 
-### Event specifications
+### 事件规范
 
-The following lists the specifications of all built-in events. Also see the parameters available for each event type in the [RML event documentation](../rml/events.html).
+以下列出所有内置事件的规范。另请参阅 [RML 事件文档](../rml/events.html) 中每个事件类型可用的参数。
 
 |  `EventId` id  |  `String` type  | `bool` interruptible  | `bool` bubbles |   `DefaultActionPhase` default_action  |
 |------------------------|-----------------|-------|-------|---------------------------------------|

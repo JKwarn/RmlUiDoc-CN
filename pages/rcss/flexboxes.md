@@ -1,18 +1,18 @@
 ---
 layout: page
-title: Flexible boxes
+title: Flexbox 布局
 parent: rcss
 next: animations_transitions_transforms
 ---
 
-Flexible box (flexbox) layout is made for placing items along a single direction. It allows flexible sizing of items, both shrinking to avoid overflow and growing to fill the container. Both horizontal and vertical alignment can be controlled. Together, these properties make this layout scheme powerful for many types of user interfaces.
+弹性盒子（flexbox）布局专为沿单一方向放置项目而设计。它允许对项目进行灵活伸缩，既可以收缩以避免溢出，也可以增长以填充容器。水平和垂直对齐都可以控制。综合起来，这些属性使这种布局方案对许多类型的用户界面都非常强大。
 
-RmlUi generally follows the [CSS Flexible Box specification](https://www.w3.org/TR/css-flexbox-1/), although there are some smaller differences. There are many resources on how to write flexbox layout in CSS on the web, see e.g. a [flexbox introduction at MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout) and an illustrated overview of the [flexbox properties at CSS-Tricks](https://css-tricks.com/snippets/css/a-guide-to-flexbox/).
+RmlUi 大体上遵循 [CSS 弹性盒子规范](https://www.w3.org/TR/css-flexbox-1/)，但存在一些较小的差异。网上有很多关于如何在 CSS 中编写 flexbox 布局的资源，例如 MDN 上的 [flexbox 简介](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout) 以及 CSS-Tricks 上关于 [flexbox 属性](https://css-tricks.com/snippets/css/a-guide-to-flexbox/) 的图解概述。
 
-Flexbox layout is initialized by setting an element's [`display`{:.prop} property](visual_formatting_model.html#display) to `display: flex`{:.value} or `display: inline-flex`{:.value}. This generates a flex container for the element, and all its children are formatted as flex items within this container. In RCSS, `inline-flex`{:.value} boxes are required to have their widths set to a definite (non-auto) value.
+通过将元素的 [`display`{:.prop} 属性](visual_formatting_model.html#display)设置为 `display: flex`{:.value} 或 `display: inline-flex`{:.value} 来初始化 flexbox 布局。这会为该元素生成一个 flex 容器，其所有子元素都在此容器内被格式化为 flex 项目。在 RCSS 中，`inline-flex`{:.value} 盒子的宽度必须设置为明确的（非 auto）值。
 
 
-### Basic example
+### 基本示例
 
 ```css
 .flex {
@@ -53,214 +53,214 @@ h2 {
 	</div>
 </div>
 ```
-##### Output
+##### 输出
 
-The rendered output is shown below. Notice that all columns are the same height. This is easy to accomplish in flexible layout, but difficult in any other layout mode when the height depends on the content. Furthermore, the width of the last column will always be exactly twice the width of each of the first two columns.
+渲染输出如下所示。请注意，所有列都具有相同的高度。这在弹性布局中很容易实现，但在任何其他布局模式下，当高度取决于内容时都很难做到。此外，最后一列的宽度始终恰好是前两列中每一列宽度的两倍。
 
 <img alt="flexbox example" src="../../assets/images/flexbox-example.png" style="margin: 0 auto; display: block;">
 
 
-### Differences from CSS
+### 与 CSS 的差异
 
-##### Behavior
+##### 行为
 
-- Anonymous flex items will not be constructed from non-wrapped text.
-- [Automatic minimum size](https://drafts.csswg.org/css-flexbox/#min-size-auto) of flex items is only applied when they have no definite size, and only in column mode.
-- Baseline alignment is only approximate.
-- Stretched items are not [reformatted](https://www.w3.org/TR/css-flexbox-1/#algo-stretch).
+- 不会从未换行的文本构造匿名 flex 项目。
+- [自动最小尺寸](https://drafts.csswg.org/css-flexbox/#min-size-auto)仅在 flex 项目没有明确尺寸时才应用，并且仅在 column 模式下。
+- 基线对齐只是近似的。
+- 被拉伸的项目不会被[重新格式化](https://www.w3.org/TR/css-flexbox-1/#algo-stretch)。
 
-##### Properties and values
+##### 属性和取值
 
-- Property `order`{:.prop} is not supported.
-- Property value `flex-basis: content`{:.value} is not supported.
-- Property value `visibility: collapse`{:.value} is not supported.
-
-
-### Performance
-
-To achieve the best performance, avoid content based sizing to prevent formatting the same flex items multiple times:
-
-- Use the `flex: <number ≥ 1> `{:.value} shorthand.
-- Set a definite height (length or percentage) on the flex items – or width in column layout.
-
-This is increasingly important to consider when the flex items are complicated to format, and essential when using flexbox for larger layout structures. The above rules can also be used only on the most demanding flex items in a given flex container, while using content-based sizing for any other items as suitable.
+- 不支持 `order`{:.prop} 属性。
+- 不支持 `flex-basis: content`{:.value} 属性值。
+- 不支持 `visibility: collapse`{:.value} 属性值。
 
 
-### Orientation
+### 性能
+
+为了获得最佳性能，请避免基于内容的尺寸计算，以防止多次格式化相同的 flex 项目：
+
+- 使用 `flex: <number ≥ 1> `{:.value} 简写。
+- 在 flex 项目上设置明确的高度（长度或百分比）——或在 column 布局中设置宽度。
+
+当 flex 项目的格式化较复杂时，这一点越来越重要；在为较大的布局结构使用 flexbox 时则至关重要。上述规则也可以只用于给定 flex 容器中最苛刻的 flex 项目，而其他项目根据情况使用基于内容的尺寸计算。
+
+
+### 方向
 
 `flex-direction`{:.prop}
 {:#flex-direction}
 
-Value: | row \| row-reverse \| column \| column-reverse
-Initial: | row
-Applies to: | flex containers
-Inherited: | no
-Percentages: | N/A
+取值： | row \| row-reverse \| column \| column-reverse
+初始值： | row
+适用于： | flex 容器
+继承： | 否
+百分比： | 不适用
 
-Determines the direction the flex items are laid out in – the *main axis*. Using `row`{:.value} or `row-reverse`{:.value}, the main axis is horizontal, while for `column`{:.value} or `column-reverse`{:.value} the main axis is vertical. The `-reverse`{:.value} suffixes makes items be arranged in reverse order along the main axis.
+决定 flex 项目的布局方向——即*主轴（main axis）*。使用 `row`{:.value} 或 `row-reverse`{:.value} 时，主轴是水平的，而对于 `column`{:.value} 或 `column-reverse`{:.value}，主轴是垂直的。`-reverse`{:.value} 后缀使项目沿主轴按相反顺序排列。
 
 
 `flex-wrap`{:.prop}
 {:#flex-wrap}
 
-Value: | nowrap \| wrap \| wrap-reverse
-Initial: | nowrap
-Applies to: | flex containers
-Inherited: | no
-Percentages: | N/A
+取值： | nowrap \| wrap \| wrap-reverse
+初始值： | nowrap
+适用于： | flex 容器
+继承： | 否
+百分比： | 不适用
 
-When there is no more space to place items along the main axis, the `wrap`{:.value} and `wrap-reverse`{:.value} values makes it so the items are wrapped to a new flex line along the *cross axis*. The cross axis is defined as perpendicular to the main axis. The `wrap-reverse`{:.value} value makes lines be arranged in reverse order.
+当沿主轴没有更多空间放置项目时，`wrap`{:.value} 和 `wrap-reverse`{:.value} 值使项目沿*交叉轴（cross axis）*换行到新的 flex 行。交叉轴定义为垂直于主轴。`wrap-reverse`{:.value} 值使各行按相反顺序排列。
 
 
 `flex-flow`{:.prop}
 {:#flex-flow}
 
-A shorthand for setting the `flex-direction`{:.prop} and `flex-wrap`{:.prop} properties in that order.
+一个用于按顺序设置 `flex-direction`{:.prop} 和 `flex-wrap`{:.prop} 属性的简写。
 
 
-### Flexibility
+### 伸缩性
 
-#### The 'flex' shorthand
+#### 'flex' 简写
 {:#flex}
 
 `flex`{:.prop}
 
-Value: | auto \| none \| \<flex-grow\> \<flex-shrink\>? \<flex-basis\>? \| \<flex-basis\>
-Initial: | 0 1 auto
-Applies to: | flex items
-Inherited: | no
-Percentages: | N/A
+取值： | auto \| none \| \<flex-grow\> \<flex-shrink\>? \<flex-basis\>? \| \<flex-basis\>
+初始值： | 0 1 auto
+适用于： | flex 项目
+继承： | 否
+百分比： | 不适用
 
-A shorthand property for setting the flexible sizing behavior of flex items. Generally, the following short forms should cover most use cases:
+一个用于设置 flex 项目灵活伸缩行为的简写属性。通常，以下简写形式应涵盖大多数用例：
 
 `flex: *default*`{:.value}
-: Equivalent to `flex: 0 1 auto`{:.value}. Items will be sized according to their content size, but allow shrinking proportionally if the container is too small in order to avoid overflow.
+: 等价于 `flex: 0 1 auto`{:.value}。项目将根据其内容大小确定尺寸，但如果容器太小，则允许按比例收缩以避免溢出。
 
 `flex: auto`{:.value}
-: Equivalent to `flex: 1 1 auto`{:.value}. Items will initially be sized according to their content size and then proportionally shrink or grow to fill the container.
+: 等价于 `flex: 1 1 auto`{:.value}。项目最初根据其内容大小确定尺寸，然后按比例收缩或增长以填满容器。
 
 `flex: none`{:.value}
-: Equivalent to `flex: 0 0 auto`{:.value}. Items will be sized according to their content size, and neither shrink nor grow.
+: 等价于 `flex: 0 0 auto`{:.value}。项目根据其内容大小确定尺寸，既不收缩也不增长。
 
 `flex: <number ≥ 1> `{:.value}
-: Equivalent to `flex: <number> 1 0`{:.value}. Items will be sized proportionally to their given `<number>`{:.value} and fill the container. This enables the best performance.
+: 等价于 `flex: <number> 1 0`{:.value}。项目按其给定的 `<number>`{:.value} 按比例确定尺寸并填满容器。这可以实现最佳性能。
 
-When omitted from the `flex`{:.prop} shorthand, `flex-grow`{:.prop} and `flex-shrink`{:.prop} default to 1, while `flex-basis`{:.prop} defaults to 0. Note that this is different from their initial values.
+从 `flex`{:.prop} 简写中省略时，`flex-grow`{:.prop} 和 `flex-shrink`{:.prop} 默认为 1，而 `flex-basis`{:.prop} 默认为 0。请注意，这与它们的初始值不同。
 
-The flexbox sizing algorithm will also respect min- and max-sizing constraints given on the items.
+flexbox 尺寸计算算法也会遵循项目上给出的最小和最大尺寸约束。
 
 
-#### Individual flexible properties
+#### 单独的伸缩属性
 
-The flexible size properties can also be controlled individually.
+灵活尺寸属性也可以单独控制。
 
 `flex-grow`{:.prop}
 {:#flex-grow}
 
-Value: | \<number\>
-Initial: | 0
-Applies to: | flex items
-Inherited: | no
-Percentages: | N/A
+取值： | \<number\>
+初始值： | 0
+适用于： | flex 项目
+继承： | 否
+百分比： | 不适用
 
-Sets the grow factor, allowing items to be grown from their initial size to match the container size, thereby filling the container. The flex items will grow proportionally to their given factor.
+设置增长因子，允许项目从初始大小增长以匹配容器大小，从而填满容器。flex 项目将按其给定因子按比例增长。
 
 `flex-shrink`{:.prop}
 {:#flex-shrink}
 
-Value: | \<number\>
-Initial: | 1
-Applies to: | flex items
-Inherited: | no
-Percentages: | N/A
+取值： | \<number\>
+初始值： | 1
+适用于： | flex 项目
+继承： | 否
+百分比： | 不适用
 
-Sets the shrink factor, allowing items to shrink from their initial size to match the container size, thereby avoiding overflow. The flex items will shrink proportionally to their given factor.
+设置收缩因子，允许项目从初始大小收缩以匹配容器大小，从而避免溢出。flex 项目将按其给定因子按比例收缩。
 
 `flex-basis`{:.prop}
 {:#flex-basis}
 
-Value: | \<length\> \| \<percentage\> \| auto
-Initial: | auto
-Applies to: | flex items
-Inherited: | no
-Percentages: | relative to the flex container’s inner main size
+取值： | \<length\> \| \<percentage\> \| auto
+初始值： | auto
+适用于： | flex 项目
+继承： | 否
+百分比： | 相对于 flex 容器的内部主轴大小
 
-Sets the flex item's basis size. That is, this gives the initial size before the item is grown or shrunk using the above factors. When specified as `auto`{:.value}, the item's shrink-to-fit width will be used – or automatic block height in column layout. Otherwise, units are resolved the same way as for the [`width`{:.prop} property](visual_formatting_model_details.html#width). Note that shrink-to-fit width is not implemented for tables, so they will be treated as a zero-width box when `flex-basis`{:.prop} is `auto`{:.value}, instead, set a definite (non-auto) width or flex basis to ensure proper sizing.
+设置 flex 项目的基础大小。也就是说，这给出项目在使用上述因子被增长或收缩之前的初始大小。指定为 `auto`{:.value} 时，将使用项目的收缩适配宽度——或者在 column 布局中使用自动块高度。否则，单位的解析方式与 [`width`{:.prop} 属性](visual_formatting_model_details.html#width) 相同。请注意，收缩适配宽度未对表格实现，因此当 `flex-basis`{:.prop} 为 `auto`{:.value} 时，它们将被视为零宽度盒子；此时，请设置明确的（非 auto）宽度或 flex 基础大小以确保正确的尺寸。
 
 
-### Alignment
+### 对齐
 
-Alignment occurs after sizing all the flex items, and determines how any available space is distributed between items, within flex lines, and between flex lines.
+对齐发生在所有 flex 项目完成尺寸计算之后，决定任何可用空间如何在项目之间、flex 行内以及 flex 行之间分配。
 
-#### Margin 'auto' alignment
+#### 'margin' auto 对齐
 
-In cases where free space is available along either the main- or cross axis, flex items can be aligned by filling this space using `margin: auto`{:.value} along the desired direction(s). When there are multiple auto-margins along a single axis they will each be given an equal proportion of the available space.
+当主轴或交叉轴方向有可用空间时，可以通过在所需方向上使用 `margin: auto`{:.value} 填充该空间来对齐 flex 项目。当单个轴上存在多个 auto 外边距时，它们将各自获得可用空间的相等比例。
 
-Note that any free space filled by auto-margins will thereby leave no more space for alignment with `justify-content`{:.prop} or `align-self`{:.prop} along that axis.
+请注意，由 auto 外边距填充的任何可用空间将不再留下空间来在该轴上使用 `justify-content`{:.prop} 或 `align-self`{:.prop} 进行对齐。
 
-#### Main-axis alignment
+#### 主轴对齐
 
 `justify-content`{:.prop}
 {:#justify-content}
 
-Value: | flex-start \| flex-end \| center \| space-between \| space-around \| space-evenly
-Initial: | flex-start
-Applies to: | flex containers
-Inherited: | no
-Percentages: | N/A
+取值： | flex-start \| flex-end \| center \| space-between \| space-around \| space-evenly
+初始值： | flex-start
+适用于： | flex 容器
+继承： | 否
+百分比： | 不适用
 
-Determines the alignment of items along the main axis, that is, horizontal alignment in row layout.
+决定项目沿主轴的对齐方式，即在 row 布局中的水平对齐。
 
-#### Cross-axis alignment
+#### 交叉轴对齐
 
 `align-items`{:.prop}
 {:#align-items}
 
-Value: | flex-start \| flex-end \| center \| baseline \| space-around \| stretch
-Initial: | stretch
-Applies to: | flex containers
-Inherited: | no
-Percentages: | N/A
+取值： | flex-start \| flex-end \| center \| baseline \| space-around \| stretch
+初始值： | stretch
+适用于： | flex 容器
+继承： | 否
+百分比： | 不适用
 
-Determines the alignment of items along the cross axis, that is, vertical alignment in row layout.
+决定项目沿交叉轴的对齐方式，即在 row 布局中的垂直对齐。
 
 `align-self`{:.prop}
 {:#align-self}
 
-Value: | auto \| flex-start \| flex-end \| center \| baseline \| space-around \| stretch
-Initial: | auto
-Applies to: | flex items
-Inherited: | no
-Percentages: | N/A
+取值： | auto \| flex-start \| flex-end \| center \| baseline \| space-around \| stretch
+初始值： | auto
+适用于： | flex 项目
+继承： | 否
+百分比： | 不适用
 
-Override the cross-axis alignment specified on the parent container for this item only.
+仅为此项目覆盖父容器上指定的交叉轴对齐方式。
 
-#### Packing flex lines
+#### 打包 flex 行
 
 `align-content`{:.prop}
 {:#align-content}
 
-Value: | flex-start \| flex-end \| center \| space-between \| space-around \| space-evenly \| stretch
-Initial: | stretch
-Applies to: | multi-line flex containers
-Inherited: | no
-Percentages: | N/A
+取值： | flex-start \| flex-end \| center \| space-between \| space-around \| space-evenly \| stretch
+初始值： | stretch
+适用于： | 多行 flex 容器
+继承： | 否
+百分比： | 不适用
 
-Determines how any available space in the flex container is distributed between multiple flex lines.
+决定 flex 容器中的任何可用空间如何在多个 flex 行之间分配。
 
-#### Gaps between flex items
+#### flex 项目之间的间距
 {:#gap}
 
-`row-gap`{:.prop}, `column-gap`{:.prop}
+`row-gap`{:.prop}、`column-gap`{:.prop}
 
-Value: | \<length\> \| \<percentage\>
-Initial: | 0px
-Applies to: | flex containers and `table`{:.value} elements
-Inherited: | no
-Percentages: | relative to the height and width, respectively, of the initial flex container or table block size
+取值： | \<length\> \| \<percentage\>
+初始值： | 0px
+适用于： | flex 容器和 `table`{:.value} 元素
+继承： | 否
+百分比： | 分别相对于初始 flex 容器或表格块大小的高度和宽度
 
-Specifies the gap *between* flex items, as if adding a fixed-size margin between adjacent flex items. In RCSS, these properties can also be used on [tables](tables.html#gap).
+指定 flex 项目*之间*的间距，就像在相邻 flex 项目之间添加固定大小的外边距一样。在 RCSS 中，这些属性也可以用于[表格](tables.html#gap)。
 
 `gap`{:.prop}
 
-A shorthand property for setting both `row-gap`{:.prop} and `column-gap`{:.prop} properties, in that order. If only a single value is specified, it sets both gap properties to the given value.
+一个用于按顺序设置 `row-gap`{:.prop} 和 `column-gap`{:.prop} 属性的简写属性。如果只指定一个值，则两个间距属性都被设置为该值。

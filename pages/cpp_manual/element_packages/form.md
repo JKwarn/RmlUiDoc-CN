@@ -1,28 +1,28 @@
 ---
 layout: page
-title: Form controls
+title: 表单控件
 parent: cpp_manual/element_packages
 grandparent: cpp_manual
 next: tab_set
 ---
 
-RmlUi includes a fully-featured set of form controls. The full RML specification for these controls can be found [here]({{"pages/rml/forms.html"|relative_url}}). The available form controls are:
+RmlUi 包含一套功能全面的表单控件。这些控件的完整 RML 规范可以在[这里]({{"pages/rml/forms.html"|relative_url}})找到。可用的表单控件有：
 
-* [text and password fields](#text-field)
-* [text area](#text-area)
-* [radio button and checkbox](#radio-button-and-checkbox)
-* [drop-down selection list](#drop-down-select-box)
-* [range slider](#range-slider)
+* [文本和密码字段](#text-field)
+* [文本区域](#text-area)
+* [单选按钮和复选框](#radio-button-and-checkbox)
+* [下拉选择列表](#drop-down-select-box)
+* [范围滑块](#range-slider)
 
-Below is the hierarchy for the custom form elements included in RmlUi.
+下面是 RmlUi 中包含的自定义表单元素的层级。
 
 ![form_1.gif](form_1.gif)
 
-### Form control interface
+### 表单控件接口
 
-All form control elements are derived from the `Rml::ElementFormControl` interface. Each form control has two values associated with it; name and value. The name is used to identify the control. The value specifies the current setting of the control; the exact definition of the value depends on the control. When a group of form controls is submitted, the names and values of the controls become the parameters of the submission.
+所有表单控件元素都派生自 `Rml::ElementFormControl` 接口。每个表单控件都有两个与之关联的值；name 和 value。name 用于标识控件。value 指定控件的当前设置；value 的确切定义取决于控件。当提交一组表单控件时，控件的 name 和 value 成为提交的参数。
 
-The name of a form control can be retrieved and set using the `GetName()` and `SetName()` functions on `Rml::ElementFormControl`.
+可以使用 `Rml::ElementFormControl` 上的 `GetName()` 和 `SetName()` 函数获取和设置表单控件的名称。
 
 ```cpp
 // Returns the name of the form control.
@@ -34,7 +34,7 @@ Rml::String GetName() const;
 void SetName(const Rml::String& name);
 ```
 
-The value of a form control can be retrieved and set using the `GetValue()` and `SetValue()` functions.
+可以使用 `GetValue()` 和 `SetValue()` 函数获取和设置表单控件的值。
 
 ```cpp
 // Returns a string representation of the current value of the form control.
@@ -46,9 +46,9 @@ Rml::String GetValue() const;
 void SetValue(const Rml::String& value);
 ```
 
-The exact syntax of the value varies from control to control, but `GetValue()` will always return a value in a human-readable form.
+value 的确切语法因控件而异，但 `GetValue()` 始终返回人类可读形式的值。
 
-Form controls can be enabled and disabled dynamically as well. All controls start enabled.
+表单控件也可以动态启用和禁用。所有控件默认启用。
 
 ```cpp
 // Returns the disabled status of the form control.
@@ -60,36 +60,36 @@ bool IsDisabled() const;
 void SetDisabled(bool disable);
 ```
 
-#### Generic input interface
+#### 通用输入接口
 
-Most of the form controls are instanced through the `<input>`{:.tag} tag, with the `type`{:.attr} attribute determining how they operate. The possible values for `type`{:.tag} are:
+大多数表单控件通过 `<input>`{:.tag} 标签实例化，`type`{:.attr} 标记属性决定它们如何工作。`type`{:.tag} 的可能值有：
 
-* _text_: A single-line text field. This is the default.
-* _password_: Similar to text, but renders asterisks for all characters.
-* _radio_: A radio button.
-* _checkbox_: A checkbox button.
-* _range_: A slider.
-* _button_: A button.
-* _submit_: An element with button-like behaviour for submitting its parent form.
+* _text_：单行文本字段。这是默认值。
+* _password_：与 text 类似，但将所有字符渲染为星号。
+* _radio_：单选按钮。
+* _checkbox_：复选框按钮。
+* _range_：滑块。
+* _button_：按钮。
+* _submit_：具有按钮式行为、用于提交其父表单的元素。
 
-One interface is used to represent all such form controls regardless of their type. Their type can be changed even after they've been instanced.
+一个接口用于表示所有这些表单控件，无论其类型如何。它们的类型即使在实例化之后也可以更改。
 
-However, because they do not have a unique interface, they have no helper functions for accessing their attributes like the other form controls. Their attributes have to be accessed and mutated using `GetAttribute()` and `SetAttribute()`.
+然而，由于它们没有唯一接口，它们没有像其他表单控件那样的辅助函数来访问其标记属性（attribute）。它们的标记属性必须使用 `GetAttribute()` 和 `SetAttribute()` 访问和修改。
 
-### Text field
+### 文本字段
 
-The single-line text field control is specified in RML by the `<input type="text" />`{:.tag} tag. A password-style text field can be specified by the `<input type="password" />`{:.tag} tag. The interface to both of these elements is the `Rml::ElementFormControlInput` class.
+单行文本字段控件在 RML 中由 `<input type="text" />`{:.tag} 标签指定。密码样式的文本字段可以由 `<input type="password" />`{:.tag} 标签指定。这两个元素的接口都是 `Rml::ElementFormControlInput` 类。
 
-The size of a text field refers of the average number of characters visible across the field. The value can be set with the `size`{:.attr} attribute.
+文本字段的大小指的是字段中可见的平均字符数。该值可以通过 `size`{:.attr} 标记属性设置。
 
-The maximum number of characters allowed in a text field is set with the `maxlength`{:.attr} attribute.
+文本字段中允许的最大字符数通过 `maxlength`{:.attr} 标记属性设置。
 
-Placeholder text can be set with the `placeholder`{:.attr} attribute.
+占位符文本可以通过 `placeholder`{:.attr} 标记属性设置。
 
-#### Text selection
+#### 文本选择
 {:#text-selection}
 
-Input elements with text and password types are represented by the `Rml::ElementFormControlInput` class, which contains the following text selection interface.
+text 和 password 类型的输入元素由 `Rml::ElementFormControlInput` 类表示，该类包含以下文本选择接口。
 
 ```cpp
 /// Selects all text.
@@ -105,11 +105,11 @@ void SetSelectionRange(int selection_start, int selection_end);
 void GetSelection(int* selection_start, int* selection_end, String* selected_text) const;
 ```
 
-These methods are also available on `<textarea>`{:.tag} elements through the `Rml::ElementFormControlTextArea` class.
+这些方法也可以通过 `Rml::ElementFormControlTextArea` 类用于 `<textarea>`{:.tag} 元素。
 
-#### IME composition range
+#### IME 组合范围
 
-Similarly, `Rml::ElementFormControlInput` and `Rml::ElementFormControlTextArea` contain the following [IME](../ime.html) composition interface:
+类似地，`Rml::ElementFormControlInput` 和 `Rml::ElementFormControlTextArea` 包含以下 [IME](../ime.html) 组合接口：
 
 ```cpp
 /// Sets visual feedback used for the IME composition in the range.
@@ -119,13 +119,13 @@ Similarly, `Rml::ElementFormControlInput` and `Rml::ElementFormControlTextArea` 
 void SetCompositionRange(int range_start, int range_end);
 ```
 
-Note that a value change resets the composition range to zero. The visual feedback is in the form of a solid line.
+请注意，值的变化会将组合范围重置为零。视觉反馈以实线的形式呈现。
 
-### Text area
+### 文本区域
 
-The text area, or multi-line text field, is specified in RML with the `<textarea>`{:.tag} tag. Any loose text between the text area's opening and closing tag will become the initial value of the control. The interface to the text area is the `Rml::ElementFormControlTextArea` class.
+文本区域，即多行文本字段，在 RML 中用 `<textarea>`{:.tag} 标签指定。文本区域开闭标签之间的任何松散文本将成为控件的初始值。文本区域的接口是 `Rml::ElementFormControlTextArea` 类。
 
-The intrinsic dimensions of the text area is controlled by the `cols`{:.attr} and `rows`{:.attr} attributes, which dictate the number of characters visible horizontally and vertically. These values can also be set in C++ through the relevant methods.
+文本区域的固有尺寸由 `cols`{:.attr} 和 `rows`{:.attr} 标记属性控制，它们决定水平和垂直方向可见的字符数。这些值也可以在 C++ 中通过相关方法设置。
 
 ```cpp
 // Sets the number of characters visible across the text area.
@@ -145,7 +145,7 @@ void SetNumRows(int num_rows);
 int GetNumRows() const;
 ```
 
-Similarly to the single-line text field, the maximum number of characters in the text area can be limited with the `maxlength`{:.attr} attribute. It can be accessed in C++ using the `GetMaxLength()` function and changed with the `SetMaxLength()` function.
+与单行文本字段类似，文本区域中的最大字符数可以通过 `maxlength`{:.attr} 标记属性进行限制。在 C++ 中可以使用 `GetMaxLength()` 函数访问，并用 `SetMaxLength()` 函数更改。
 
 ```cpp
 // Sets the maximum length (in characters) of this text area.
@@ -157,7 +157,7 @@ void SetMaxLength(int max_length);
 int GetMaxLength() const;
 ```
 
-The word-wrapping state of the text area is set with the `wrap`{:.attr} attribute in RML. It can be changed in C++ with the `GetWordWrap()` and `SetWordWrap()` functions.
+文本区域的自动换行状态在 RML 中用 `wrap`{:.attr} 标记属性设置。可以在 C++ 中使用 `GetWordWrap()` 和 `SetWordWrap()` 函数更改。
 
 ```cpp
 // Enables or disables word-wrapping in the text area.
@@ -169,20 +169,20 @@ void SetWordWrap(bool word_wrap);
 bool GetWordWrap();
 ```
 
-Placeholder text can be set with the `placeholder`{:.attr} attribute.
+占位符文本可以通过 `placeholder`{:.attr} 标记属性设置。
 
-In addition, the methods from the [text selection interface](#text-selection) are also duplicated for the text area interface.
+此外，[文本选择接口](#text-selection)中的方法也复制到文本区域接口中。
 
-### Radio button and checkbox
+### 单选按钮和复选框
 
-The radio button (`<input type="radio" />`{:.tag}) and checkbox (`<input type="checkbox" />`{:.tag}) are two similar types of form control. Both only submit their value if they are checked. The radio button will, when checked, uncheck all other radio buttons with the same name. The interface for both controls is `Rml::ElementFormControlInput`.
+单选按钮（`<input type="radio" />`{:.tag}）和复选框（`<input type="checkbox" />`{:.tag}）是两种相似的表单控件类型。两者都只在其被选中时提交其值。单选按钮在被选中时会取消选中所有同名的其他单选按钮。两种控件的接口都是 `Rml::ElementFormControlInput`。
 
-The checked status of a checkbox or radio button defaults to false, but can be initialised to true with the `checked`{:.attr} attribute. To uncheck a checkbox, remove the `checked`{:.attr} attribute with `RemoveAttribute()`.
+复选框或单选按钮的选中状态默认为 false，但可以通过 `checked`{:.attr} 标记属性初始化为 true。要取消选中复选框，请使用 `RemoveAttribute()` 移除 `checked`{:.attr} 标记属性。
 
-### Drop-down select box
+### 下拉选择框
 
-The simple drop-down select control is specified in RML with the `<select>`{:.tag} tag. Individual options within the select box are specified with child `<option>`{:.tag} elements. The value of the select control is set to the value attribute of the currently selected option.
-The following RML fragment declares a select box:
+简单的下拉选择控件在 RML 中用 `<select>`{:.tag} 标签指定。选择框中的各个选项由子级 `<option>`{:.tag} 元素指定。选择控件的值设置为当前所选选项的 value 标记属性。
+以下 RML 片段声明了一个选择框：
 
 ```html
 <select name="graphics">
@@ -192,7 +192,7 @@ The following RML fragment declares a select box:
 </select>
 ```
 
-The select control's interface is the `Rml::ElementFormControlSelect` class. The total number of options in the select box can be queried with the `GetNumOptions()` method.
+选择控件的接口是 `Rml::ElementFormControlSelect` 类。选择框中的选项总数可以使用 `GetNumOptions()` 方法查询。
 
 ```cpp
 // Returns the number of options in the select control.
@@ -200,7 +200,7 @@ The select control's interface is the `Rml::ElementFormControlSelect` class. The
 int GetNumOptions() const;
 ```
 
-Individual options can be accessed with the `GetOption()` method.
+可以使用 `GetOption()` 方法访问各个选项。
 
 ```cpp
 // Returns one of the select control's option elements.
@@ -209,9 +209,9 @@ Individual options can be accessed with the `GetOption()` method.
 Rml::Element* GetOption(int index);
 ```
 
-`GetOption()` returns a pointer to the `<option>`{:.tag} element of the given index. The value of the given option can be obtained by retrieving its `value`{:.attr} attribute.
+`GetOption()` 返回给定索引的 `<option>`{:.tag} 元素的指针。可以通过检索其 `value`{:.attr} 标记属性来获取给定选项的值。
 
-The selected option can be accessed with the `GetSelection()` function and set with the `SetSelection()` function.
+可以使用 `GetSelection()` 函数访问所选选项，并使用 `SetSelection()` 函数设置它。
 
 ```cpp
 // Sets the index of the selection. If the new index lies outside of the bounds, it will be clamped.
@@ -223,7 +223,7 @@ void SetSelection(int selection);
 int GetSelection() const;
 ```
 
-Options can be procedurally added and removed with the `Add()`, `Remove()` and `RemoveAll()` functions.
+可以使用 `Add()`、`Remove()` 和 `RemoveAll()` 函数以编程方式添加和移除选项。
 
 ```cpp
 // Adds a new option to the select control.
@@ -247,7 +247,7 @@ void Remove(int index);
 void RemoveAll();
 ```
 
-The visibility of the select box can be controlled and retrieved with the following functions.
+选择框的可见性可以使用以下函数控制和检索。
 
 ```cpp
 // Shows the selection box.
@@ -264,27 +264,27 @@ bool IsSelectBoxVisible();
 ```
 
 
-#### Applying properties
+#### 应用样式属性（property）
 
-See the [style guide](../../style_guide.html#drop-down-selection-boxes) for documentation on applying properties to a select box.
-
-
-### Range slider
-
-The range control can be used to render a slider-based number field. It is specified in RML with the tag `<input type='range' />`{:.tag}. The range control's interface is the `Rml::ElementFormControlInput` class.
-
-The minimum and maximum values for the range are specified with the `min`{:.attr} and `max`{:.attr} attributes. The step of the range, or increments in which the value can be increased or decreased, is specified with the `step`{:.attr} attribute.
-
-#### Applying properties
-
-See the [style guide](../../style_guide.html#sliders) for documentation on applying properties to a range control.
+有关将样式属性应用于选择框的文档，请参阅[样式指南](../../style_guide.html#drop-down-selection-boxes)。
 
 
-### Form container
+### 范围滑块
 
-The form element is designed as a container element for form controls. Forms can be submitted, which bundles the name and value pairs of all descendant form controls into a single event. The form element is specified in RML with the `<form>`{:.tag} tag. It will generate a `submit`{:.evt} event when it is submitted; therefore it is usual to provide an inline event handler for `onsubmit`{:.attr}.
+范围控件可用于渲染基于滑块的数字字段。它在 RML 中用 `<input type='range' />`{:.tag} 标签指定。范围控件的接口是 `Rml::ElementFormControlInput` 类。
 
-The form element's interface is the `Rml::ElementForm` class. The form can be submitted by calling the `Submit()` function.
+范围的最小值和最大值用 `min`{:.attr} 和 `max`{:.attr} 标记属性指定。范围的步长（即值可以增加或减少的增量）用 `step`{:.attr} 标记属性指定。
+
+#### 应用样式属性（property）
+
+有关将样式属性应用于范围控件的文档，请参阅[样式指南](../../style_guide.html#sliders)。
+
+
+### 表单容器
+
+form 元素被设计为表单控件的容器元素。表单可以被提交，这将所有后代表单控件的 name 和 value 对捆绑到单个事件中。form 元素在 RML 中用 `<form>`{:.tag} 标签指定。它在被提交时将生成一个 `submit`{:.evt} 事件；因此通常为 `onsubmit`{:.attr} 提供一个内联事件处理器。
+
+form 元素的接口是 `Rml::ElementForm` 类。可以通过调用 `Submit()` 函数提交表单。
 
 ```cpp
 // Submits the form.
@@ -292,14 +292,14 @@ The form element's interface is the `Rml::ElementForm` class. The form can be su
 void Submit(const Rml::String& submit_value = "");
 ```
 
-The value of the submit_value parameter will become the value of the submit parameter on the submit event. This way, objects listening for event can distinguish between different kinds of submit actions.
+submit_value 参数的值将成为 submit 事件上 submit 参数的值。这样，监听事件的对象可以区分不同类型的提交动作。
 
 
-### Form submit button
+### 表单提交按钮
 
-The form submit button is specified in RML with the `<input type="submit" />`{:.tag} tag. The submit button will trigger a submit on its ancestor form when it is clicked, with a submit value equal to its `value`{:.attr} attribute. Its interface is the class `Rml::ElementFormControlInput`.
+表单提交按钮在 RML 中用 `<input type="submit" />`{:.tag} 标签指定。提交按钮在被点击时将触发其祖先表单上的提交，提交值等于其 `value`{:.attr} 标记属性。其接口是类 `Rml::ElementFormControlInput`。
 
 
-#### Applying properties
+#### 应用样式属性（property）
 
-See the [style guide](../../style_guide.html#drop-down-selection-boxes) for documentation on applying properties to a select box.
+有关将样式属性应用于选择框的文档，请参阅[样式指南](../../style_guide.html#drop-down-selection-boxes)。

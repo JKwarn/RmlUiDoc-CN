@@ -1,23 +1,23 @@
 ---
 layout: page
-title: Events
+title: 事件
 parent: lua_manual
 ---
 
-### Interface
+### 接口
 
-- [Event Lua API reference](api_reference.html#Event)
-- [Event C++ manual](../cpp_manual/events.html)
+- [Event Lua API 参考](api_reference.html#Event)
+- [Event C++ 手册](../cpp_manual/events.html)
 
-All properties and methods that are available for events are described in detail in the API reference. The event-specific interface is similar to the C++ interface, refer there for the full documentation.
+事件可用的所有属性与方法都在 API 参考中有详细描述。事件特有的接口与 C++ 接口类似，完整文档请参阅该手册。
 
 
-### Global variables
+### 全局变量
 
-When an event is fired and captured by a Lua script, three global variables are set up in the context of the called function.
+当事件被触发并被 Lua 脚本捕获时，会在被调用函数的上下文中设置三个全局变量。
 
-- `element` The element context in which the event fired.
-- `document` The document in which the event fired.
-- `event` The event object.
+- `element` 事件触发的元素上下文。
+- `document` 事件触发的文档。
+- `event` 事件对象。
 
-See usage details in [attaching to events](attaching_to_events.html) Lua documentation.
+有关用法详细信息，请参阅 Lua 文档中的[绑定事件](attaching_to_events.html)。

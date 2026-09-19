@@ -1,12 +1,12 @@
 ---
 layout: page
-title: Data grid
+title: 数据网格
 parent: cpp_manual/element_packages
 grandparent: cpp_manual
 status: deprecated
 status-desc: datagrid has been deprecated in favor of data bindings
 ---
 
-***NOTE***
+***注意***
 
-The datagrid and related functionality has been deprecated as of RmlUi 4.0 and removed in RmlUi 5.0. Instead, users are encouraged to use [data bindings](../../data_bindings.html) possibly combined with [RCSS tables](../../rcss/tables.html).
+datagrid 及相关功能自 RmlUi 4.0 起已被弃用，并在 RmlUi 5.0 中移除。建议用户改用[数据绑定](../../data_bindings.html)，可能还需要结合 [RCSS 表格](../../rcss/tables.html)。

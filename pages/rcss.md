@@ -1,56 +1,56 @@
 ---
 layout: page
-title: RCSS Cascading Style Sheets
+title: RCSS 层叠样式表
 short_title: RCSS
 ---
 
-This document defines the *RCSS Cascading Style Sheets* language. RCSS is based on the [CSS2 specification](http://www.w3.org/TR/REC-CSS2/), with certain elements removed or altered to suit the needs of RmlUi. In some cases, elements have been taken from the [CSS3 working draft](http://www.w3.org/Style/CSS/current-work). This document provides an overview of RCSS and the differences between RCSS and CSS, and should be read in conjunction with the CSS2 specification.
+本文档定义了 *RCSS 层叠样式表（RCSS Cascading Style Sheets）*语言。RCSS 基于 [CSS2 规范](http://www.w3.org/TR/REC-CSS2/)，移除或更改了部分元素以适应 RmlUi 的需求。在某些情况下，也采用了 [CSS3 工作草案](http://www.w3.org/Style/CSS/current-work) 中的元素。本文档概述了 RCSS 及其与 CSS 之间的差异，阅读时应结合 CSS2 规范。
 
-RCSS interacts with RML in an identical fashion to CSS and HTML. Style properties declared in a RCSS are attached selectively to elements defined in RML to affect layout, positioning and other style attributes (such as font, color, text decoration, etc).
+RCSS 与 RML 的交互方式与 CSS 和 HTML 完全相同。在 RCSS 中声明的样式属性会被选择性地附加到 RML 中定义的元素上，从而影响其布局、定位和其他样式属性（如字体、颜色、文本装饰等）。
 
-If you are familiar with CSS, a good place to start is the [property index](rcss/property_index.html), which outlines the properties and values supported in RCSS and the new functionality included. Next, read up on [decorators](rcss/decorators.html), the new, flexible way to skin elements.
+如果你熟悉 CSS，可以从[属性索引](rcss/property_index.html)开始，其中列出了 RCSS 支持的属性、取值以及包含的新功能。接下来，阅读[装饰器](rcss/decorators.html)——一种全新的、灵活的元素皮肤方案。
 
-If you are not, read through this documentation while consulting the CSS2 specification for detailed examples and technical details, or skip all this for now and play around with the samples!
+如果你不熟悉 CSS，请结合 CSS2 规范阅读本文档以获取详细示例和技术细节，或者暂时跳过所有内容，直接动手体验示例！
 
-### Contents
+### 目录
 
-0. [Syntax and basic data types](rcss/syntax.html)
-0. [Selectors](rcss/selectors.html)
-0. [Assigning property values, cascading, and inheritance](rcss/cascade.html)
-0. [Box model](rcss/box_model.html)
-0. [Visual formatting model](rcss/visual_formatting_model.html)
-0. [Visual formatting model details](rcss/visual_formatting_model_details.html)
-0. [Visual effects](rcss/visual_effects.html)
-0. [Colours, backgrounds, and rounded corners](rcss/colours_backgrounds.html)
-0. [Fonts](rcss/fonts.html)
-0. [Text](rcss/text.html)
-0. [Tables](rcss/tables.html)
-0. [User interface](rcss/user_interface.html)
-0. [Flexboxes](rcss/flexboxes.html)
-0. [Animations, transitions, and transforms](rcss/animations_transitions_transforms.html)
-0. [Custom properties and variables](rcss/custom_properties.html)
-0. [Media queries](rcss/media_queries.html)
-0. [Sprite sheets](rcss/sprite_sheets.html)
-0. [Decorators](rcss/decorators.html)
-    * [Image](rcss/decorators/image.html)
-    * [Tiled horizontal](rcss/decorators/tiled_horizontal.html)
-    * [Tiled vertical](rcss/decorators/tiled_vertical.html)
-    * [Tiled box](rcss/decorators/tiled_box.html)
-    * [Ninepatch](rcss/decorators/ninepatch.html)
-    * [Straight gradient](rcss/decorators/gradient.html)
-    * [Linear gradient](rcss/decorators/linear_gradient.html)
-    * [Radial gradient](rcss/decorators/radial_gradient.html)
-    * [Conic gradient](rcss/decorators/conic_gradient.html)
-    * [Shader](rcss/decorators/shader.html)
-    * [Text](rcss/decorators/text.html)
-0. [Masking](rcss/masking.html)
-0. [Filters](rcss/filters.html)
-0. [Font effects](rcss/font_effects.html)
+0. [语法和基本数据类型](rcss/syntax.html)
+0. [选择器](rcss/selectors.html)
+0. [属性值赋值、层叠与继承](rcss/cascade.html)
+0. [盒模型](rcss/box_model.html)
+0. [视觉格式化模型](rcss/visual_formatting_model.html)
+0. [视觉格式化模型细节](rcss/visual_formatting_model_details.html)
+0. [视觉效果](rcss/visual_effects.html)
+0. [颜色、背景与圆角](rcss/colours_backgrounds.html)
+0. [字体](rcss/fonts.html)
+0. [文本](rcss/text.html)
+0. [表格](rcss/tables.html)
+0. [用户界面](rcss/user_interface.html)
+0. [Flexbox 布局](rcss/flexboxes.html)
+0. [动画、过渡与变换](rcss/animations_transitions_transforms.html)
+0. [自定义属性与变量](rcss/custom_properties.html)
+0. [媒体查询](rcss/media_queries.html)
+0. [精灵表](rcss/sprite_sheets.html)
+0. [装饰器](rcss/decorators.html)
+    * [图像](rcss/decorators/image.html)
+    * [水平平铺](rcss/decorators/tiled_horizontal.html)
+    * [垂直平铺](rcss/decorators/tiled_vertical.html)
+    * [盒状平铺](rcss/decorators/tiled_box.html)
+    * [九宫格](rcss/decorators/ninepatch.html)
+    * [直线渐变](rcss/decorators/gradient.html)
+    * [线性渐变](rcss/decorators/linear_gradient.html)
+    * [径向渐变](rcss/decorators/radial_gradient.html)
+    * [锥形渐变](rcss/decorators/conic_gradient.html)
+    * [着色器](rcss/decorators/shader.html)
+    * [文本](rcss/decorators/text.html)
+0. [遮罩](rcss/masking.html)
+0. [滤镜](rcss/filters.html)
+0. [字体效果](rcss/font_effects.html)
     * [glow](rcss/font_effects/glow.html)
     * [outline](rcss/font_effects/outline.html)
     * [shadow](rcss/font_effects/shadow.html)
     * [blur](rcss/font_effects/blur.html)
 
-### Appendix
+### 附录
 
-* [Property index](rcss/property_index.html)
+* [属性索引](rcss/property_index.html)

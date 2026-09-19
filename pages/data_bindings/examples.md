@@ -1,15 +1,15 @@
 ---
 layout: page
-title: Data binding examples
+title: 数据绑定示例
 parent: data_bindings
 next: expressions
 ---
 
 {% raw %}
 
-Make sure to have a look at the `databinding` sample for more examples.
+务必查看 `databinding` 示例以获取更多示例。
 
-### Basic example
+### 基本示例
 
 ```html
 <h1>Simple data binding example</h1>
@@ -20,15 +20,15 @@ Make sure to have a look at the `databinding` sample for more examples.
 </div>
 ```
 
-The `data-model` attribute declares that all its children elements here belong to `my_model`.
-- When `{{title}}` is encountered, it is automatically replaced by the data variable `title` bound to its model. Furthermore, whenever the variable is modified its content is automatically updated.
-- The `data-if` attribute creates a data view which displays its content whenever its data variable evaluates to `true`.
-- The `data-value` attribute creates both a data view and a data controller, enabling a two-way binding. The view updates the element's value whenever the data is changed in the application. Contrarily, the controller listens to modifications to the element's value and modifies the data variable accordingly. Thus, whenever the user changes the text field, the `animal` variable is modified which results in the text contents of the `p` tag to reflect the new text.
+`data-model` 属性声明其所有子元素均隶属于 `my_model`。
+- 当遇到 `{{title}}` 时，它会自动被绑定到其模型的数据变量 `title` 所替换。此外，每当该变量被修改时，其内容也会自动更新。
+- `data-if` 属性会创建一个数据视图，当其数据变量的求值结果为 `true` 时显示其内容。
+- `data-value` 属性会同时创建一个数据视图和一个数据控制器，实现双向绑定。当应用程序中的数据发生变化时，视图会更新元素的值；反之，控制器会监听元素值的修改并相应地更新数据变量。因此，每当用户更改文本字段时，`animal` 变量都会被修改，从而使 `p` 标签的文本内容反映出新文本。
 
 
-#### Setting up the data model
+#### 设置数据模型
 
-The data model is first set up in C++. Using the above example, all that is needed is the following code.
+数据模型首先在 C++ 中设置。使用上述示例，只需以下代码即可。
 ```cpp
 using namespace Rml;
 
@@ -53,11 +53,11 @@ bool SetupDataBinding(Context* context, DataModelHandle& my_model)
 	return true;
 }
 ```
-The `SetupDataBinding` function should be called once before loading the document.
+应在加载文档之前调用一次 `SetupDataBinding` 函数。
 
-That's it! Now the basic example above will work as expected, assigning the input text to the `animal` data binding whenever changed, and updating the paragraph text.
+就是这样！现在上面的基本示例将按预期工作：每当输入文本发生变化时，将其赋值给 `animal` 数据绑定，并更新段落文本。
 
-We might want to do more though, and indeed, there is much more power available here. Let us add an `Update()` method which is called on every game loop iteration. This should be called after submitting input events to the context, but before the context update.
+不过，我们可能还想做更多的事情，实际上这里还有更强大的功能。让我们添加一个 `Update()` 方法，它在每次游戏循环迭代时被调用。该方法应在向上下文提交输入事件之后、上下文更新之前调用。
 ```cpp
 void Update(DataModelHandle my_model)
 {
@@ -68,10 +68,10 @@ void Update(DataModelHandle my_model)
 	}
 }
 ```
-Now the title is updated as well whenever the input text is changed. Note that we have to tell the model that the data has changed on the C++ side. This example is slightly contrived, as this behavior could easily be achieved without data bindings. However, it is easy to envision the power here, let us do a somewhat more involved example next to illustrate.
+现在，每当输入文本发生变化时，标题也会随之更新。请注意，我们必须从 C++ 侧告知模型数据已更改。这个示例略显牵强，因为这种行为即使不使用数据绑定也很容易实现。不过，我们可以很容易地预见到其强大之处，接下来让我们做一个更复杂的示例来说明。
 
 
-### Extended example
+### 扩展示例
 
 ```html
 <p>
@@ -91,9 +91,9 @@ Now the title is updated as well whenever the input text is changed. Note that w
 <h1 data-if="invaders.size == 0">It's all safe and sound, sir!</h1>
 ```
 
-Notice the comparisons and additions used in some places? These are *data expressions* and can be used in several places. This is built-in to RmlUi and supports the most common operators. In addition, they are extendible by user-provided functions.
+注意到某些地方使用的比较和加法运算了吗？这些就是*数据表达式*（data expression），可以在多个地方使用。这是 RmlUi 内置的功能，支持最常见的运算符。此外，它们还可以通过用户提供的函数进行扩展。
 
-Next, let us define the data we want to use for this model.
+接下来，让我们定义要用于该模型的数据。
 
 ```cpp
 using namespace Rml;
@@ -128,15 +128,15 @@ struct InvadersData {
 } invaders_data;
 ```
 
-Here we have simple plain-old-data (POD) types, but also containers, and even containers of structs. In fact, RmlUi can handle all of this no matter how deep you want to nest this. However, we need to tell RmlUi how to handle the various types. For this, we need to register types before we can bind them.
+这里有简单的普通旧数据（POD）类型，也有容器，甚至还有结构体容器。实际上，无论你想嵌套多深，RmlUi 都能处理所有这些情况。不过，我们需要告诉 RmlUi 如何处理各种类型。为此，我们需要在绑定类型之前先注册它们。
 
-There are three main data variable types supported in RmlUi:
+RmlUi 支持三种主要的数据变量类型：
 
-1. `Scalar`. A single value which can be read from and usually written to (but not necessarily).
-2. `Array`. A container which we can index into. The underlying type can be any data variable type.
-3. `Struct`. A collection of named members. Members can be any data variable type.
+1. `Scalar`（标量）。一个可读取、通常也可写入（但不一定）的单一值。
+2. `Array`（数组）。一个可以索引的容器。其底层类型可以是任何数据变量类型。
+3. `Struct`（结构体）。一组命名字段的集合。成员可以是任何数据变量类型。
 
-Arithmetic types (eg. `int`, `float`), as well as `Rml::String` are supported without the need to register them. Other types need to be registered first. The following C++ code demonstrates how to register the types for the above data, and bind the variables.
+算术类型（如 `int`、`float`）以及 `Rml::String` 无需注册即可支持。其他类型需要先注册。下面的 C++ 代码演示了如何为上述数据注册类型并绑定变量。
 
 ```cpp
 bool SetupDataBinding(Context* context, DataModelHandle& invaders_model)
@@ -179,7 +179,7 @@ bool SetupDataBinding(Context* context, DataModelHandle& invaders_model)
 ```
 
 
-Finally, we want to make some behaviors to make things interesting, such as spawning new invaders depending on the rate set by the user. The following should be run during the update loop of the application.
+最后，我们想让行为变得更有趣一些，例如根据用户设置的速率生成新的入侵者。以下代码应在应用程序的更新循环中运行。
 
 ```cpp
 void Update(DataModelHandle invaders_model)
@@ -223,8 +223,8 @@ void Update(DataModelHandle invaders_model)
 }
 ```
 
-This update loop spawns new invaders at regular intervals, determined by the `range` input slider. The `data-for` loop ensures that new invaders are displayed automatically. The data bindings further ensure that the sprite and color of the invaders are set to the given values.
+这个更新循环以固定的时间间隔生成新的入侵者，间隔由 `range` 输入滑块决定。`data-for` 循环确保新入侵者自动显示。数据绑定进一步确保入侵者的精灵图和颜色被设置为给定的值。
 
-A fleshed out version of this example is located in the included `databinding` sample, users are encouraged to check it out and have some fun with the little game.
+该示例的完整版本位于随附的 `databinding` 示例中，鼓励用户查看并在这个小游戏中体验一番。
 
 {% endraw %}

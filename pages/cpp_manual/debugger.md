@@ -1,65 +1,65 @@
 ---
 layout: page
-title: Debugger plugin
+title: 调试器插件
 parent: cpp_manual
 next: lottie
 ---
 
-RmlUi ships with a visual debugger plugin that you can use and modify to aid you in development. You can try it out on all the included samples, such as the _Rocket Invaders from Mars_ application, by pressing `F8`.
+RmlUi 附带一个可视化的调试器插件，你可以使用并修改它来辅助开发。你可以在所有随附的示例（例如 _Rocket Invaders from Mars_ 应用程序）中按 `F8` 试用它。
 
-### Tools
+### 工具
 
-The tools included with the debugger are the following.
+调试器附带的工具如下。
 
-#### Event log
+#### 事件日志
 
-The debugger puts in its own system interface layer to intercept the logging messages going out of RmlUi. The log beacon (a little exclamation mark) will become visible in the top-right corner of its context when a new log message has been sent. You can open the log by clicking on the beacon or opening the debugger and clicking on the `Event Log` button.
+调试器放入自己的系统接口层，以拦截从 RmlUi 发出的日志消息。当发送了新日志消息时，日志信标（一个小的感叹号）将变得可见，位于其上下文右上角。你可以通过点击信标打开日志，或打开调试器并点击 `Event Log` 按钮。
 
-#### Outline renderer
+#### 轮廓渲染器
 
-If you click on the `Outlines` button on the menu, the debugger will render red outlines around the bordered area of every element in the target context.
+如果你点击菜单上的 `Outlines` 按钮，调试器将在目标上下文中每个元素的边框区域周围渲染红色轮廓。
 
-#### Element info
+#### 元素信息
 
-If you click on the `Element Info` button the menu, the visual debugger will open. When this is open, mouse clicks on the target context will be intercepted; any element clicked on will become the debugger's active element. The debugger will show the following about the active element:
+如果你点击菜单上的 `Element Info` 按钮，可视化调试器将打开。打开后，对目标上下文的鼠标点击将被拦截；任何被点击的元素将成为调试器的活动元素。调试器将显示有关活动元素的以下信息：
 
-* The element's debug area painted directly on top of it: The content area (blue), padding (purple), border (grey), margin (yellow), and bounding box for the paint area (white outline).
-* The element's attributes.
-* The element's properties, and where they were declared.
-* The position and size of the element's primary box.
-* The full box model sizes, listed as:
+* 直接绘制在元素顶部的元素调试区域：内容区域（蓝色）、内边距（紫色）、边框（灰色）、外边距（黄色），以及绘制区域的边界框（白色轮廓）。
+* 元素的标记属性（attribute）。
+* 元素的样式属性（property），以及它们的声明位置。
+* 元素主框的位置和大小。
+* 完整的盒模型尺寸，列出为：
   * `box-x (px): margin-left|border-left|padding-left <content> padding-right|border-right|margin-right`
   * `box-y (px): margin-top|border-top|padding-top <content> padding-bottom|border-bottom|margin-bottom`
-* The ancestors of the element.
-* The children of the element.
+* 元素的祖先。
+* 元素的子元素。
 
-If the debugger picks up another click on the active element, the click will fall through to the element itself.
+如果调试器在活动元素上又捕捉到一次点击，该点击将穿透到元素本身。
 
-The element info dialog has some settings that can be toggled:
+元素信息对话框有一些可以切换的设置：
 
-* `*` `Select elements`. When this setting is disabled, the debugger will no longer intercept mouse clicks in the document, keeping the info on the currently selected element.
-* `D` `Draw element dimensions`. Toggle to enable or disable drawing the debug area of the selected element.
-* `U` `Update info continuously`. When enabled, the listed properties of the element will be refreshed automatically.
+* `*` `Select elements`（选择元素）。禁用此设置时，调试器将不再拦截文档中的鼠标点击，从而将信息保留在当前选中的元素上。
+* `D` `Draw element dimensions`（绘制元素尺寸）。切换是否绘制所选元素的调试区域。
+* `U` `Update info continuously`（持续更新信息）。启用后，所列出的元素样式属性（property）将自动刷新。
 
-All settings are enabled by default.
+所有设置默认启用。
 
-As these tools are all open source, we encourage you to add more features if you find the debugger doesn't give you the information you need. You can find the source for the debugger plugin in the `Source/Debugger/`{:.path} directory within your RmlUi installation.
+由于这些工具都是开源的，我们鼓励你在发现调试器无法提供所需信息时添加更多功能。你可以在 RmlUi 安装目录中的 `Source/Debugger/`{:.path} 目录下找到调试器插件的源码。
 
-The following image shows the debugger in action. An element is selected, its debug area is painted on top of it, and its properties and other useful information are listed to the right.
+下图展示了调试器的工作状态。选中了一个元素，其调试区域绘制在元素顶部，其样式属性（property）和其他有用信息列在右侧。
 
 ![Debugger screenshot](../../assets/images/debugger.png)
 
-#### Data models
+#### 数据模型
 
-When clicking the `Data Models` button, the data models window opens up. This window allows inspecting the values of all data variables in the data models of the context being debugged. The data variables are sectioned by each data model.
+点击 `Data Models` 按钮时，数据模型窗口会打开。此窗口允许检查正在调试的上下文中所有数据模型里所有数据变量的值。数据变量按每个数据模型分区显示。
 
 ![Debugger data models screenshot](../../assets/images/debugger-data-models.png)
 
-### Initialisation
+### 初始化
 
-To integrate the debugger into your application, link with `rmlui_debugger`{:.incl} or the imported CMake target `RmlUi::Debugger`{:.incl}. Then, include `<RmlUi/Debugger.h>`{:.incl} in a source file.
+要将调试器集成到你的应用程序中，请链接 `rmlui_debugger`{:.incl} 或导入的 CMake 目标 `RmlUi::Debugger`{:.incl}。然后在源文件中包含 `<RmlUi/Debugger.h>`{:.incl}。
 
-To start the debugger, call `Rml::Debugger::Initialise()` with the context you want the debugger menu rendered into.
+要启动调试器，请对你希望调试器菜单渲染进其中的上下文调用 `Rml::Debugger::Initialise()`。
 
 ```cpp
 // Initialises the debug plugin. The debugger will be loaded into the given context.
@@ -68,11 +68,11 @@ To start the debugger, call `Rml::Debugger::Initialise()` with the context you w
 bool Initialise(Rml::Context* context);
 ```
 
-The debugger's context is not necessarily the context being debugged, only the context it renders its elements into. When the debugger is initialised, however, it automatically begins debugging its context.
+调试器的上下文不一定是被调试的上下文，只是它渲染其元素的上下文。然而，当调试器初始化时，它会自动开始调试其所在的上下文。
 
-### Debugging another context
+### 调试另一个上下文
 
-To debug another context, call the `Rml::Debugger::SetContext()` method.
+要调试另一个上下文，请调用 `Rml::Debugger::SetContext()` 方法。
 
 ```cpp
 // Sets the context to be debugged.
@@ -81,11 +81,11 @@ To debug another context, call the `Rml::Debugger::SetContext()` method.
 bool SetContext(Rml::Context* context);
 ```
 
-The debugger will then be ready for debugging elements in the new context.
+调试器随后将准备好调试新上下文中的元素。
 
-### Controlling visibility
+### 控制可见性
 
-The `IsVisible()` and `SetVisible()` functions can be used to control the visibility of the debugger's elements.
+可以使用 `IsVisible()` 和 `SetVisible()` 函数控制调试器元素的可见性。
 
 ```cpp
 // Sets the visibility of the debugger.
@@ -97,9 +97,9 @@ void SetVisible(bool visibility);
 bool IsVisible();
 ```
 
-### Shutting down or restarting
+### 关闭或重启
 
-The debugger can be shutdown manually if desired using `Rml::Debugger::Shutdown()`.
+如果需要，可以使用 `Rml::Debugger::Shutdown()` 手动关闭调试器。
 
 ```cpp
 // Shuts down the debugger.
@@ -107,4 +107,4 @@ The debugger can be shutdown manually if desired using `Rml::Debugger::Shutdown(
 void Shutdown();
 ```
 
-The shutdown will automatically be handled during the call to `Rml::Shutdown()` so typically it does not need to be called. However, it can be useful it you want to re-initialise the debugger in another host context. After the shutdown it is possible to call `Rml::Debugger::Initialise()`  to start the debugger again.
+关闭操作将在调用 `Rml::Shutdown()` 期间自动处理，因此通常不需要调用它。但是，如果你想在另一个宿主上下文中重新初始化调试器，它会很有用。关闭后，可以再次调用 `Rml::Debugger::Initialise()` 来重新启动调试器。

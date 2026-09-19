@@ -1,27 +1,27 @@
 ---
 layout: page
-title: Contexts
+title: 上下文
 parent: cpp_manual
 next: events
 ---
 
-RmlUi contexts are independent collections of documents. All documents exist within a single context. Contexts are rendered, updated and given input independently of each other at the application's discretion.
+RmlUi 上下文是文档的独立集合。所有文档都存在于单个上下文之中。上下文由应用程序自行决定，彼此独立地进行渲染、更新和接收输入。
 
-### Uses of multiple contexts
+### 多上下文的用途
 
-Most games will feature a single context for the main interface. Multiple contexts could be used however for a number of different reasons.
+大多数游戏会为主要的界面使用单个上下文。然而，出于多种不同原因，也可以使用多个上下文。
 
-#### Multiple desktops
+#### 多桌面
 
-A second or subsequent context could be used to store alternative 'desktops' that the user could switch to, in a similar fashion to many Linux desktops. This could be very useful for interface-heavy games where the user may have several windows open at once, more than could fit easily onto one screen.
+可以使用第二个或后续的上下文来存储用户可以在其中切换的备选「桌面」，方式与许多 Linux 桌面类似。这对于界面繁多的游戏可能非常有用，这类游戏用户可能同时打开多个窗口，数量之多可能无法轻松放在一个屏幕上。
 
-#### In-world interfaces
+#### 世界内界面
 
-Computer terminals or consoles in a 3D game world could themselves be RmlUi contexts. As they wouldn't necessarily be viewed parallel to the screen, mouse input would need to be projected onto the surface. When the context was rendered, it would need to be transformed correctly to fit onto the surface or rendered onto a texture.
+3D 游戏世界中的计算机终端或控制台本身就可以是 RmlUi 上下文。由于它们不一定会与屏幕平行观看，因此需要将鼠标输入投影到表面上。渲染上下文时，需要正确变换以贴合表面，或渲染到纹理上。
 
-### Creating a context
+### 创建上下文
 
-To create a new context, use the `Rml::CreateContext()` function.
+要创建新上下文，请使用 `Rml::CreateContext()` 函数。
 
 ```cpp
 // Creates a new element context.
@@ -32,9 +32,9 @@ Rml::Context* CreateContext(const Rml::String& name,
                                      const Rml::Vector2i& dimensions);
 ```
 
-The context needs a unique string name and initial dimensions. The dimensions are used to generate relative lengths (for example, if a document has a percentage dimension), and sets the extents for the mouse cursor within the context.
+上下文需要一个唯一的字符串名称和初始尺寸。这些尺寸用于生成相对长度（例如，如果文档具有百分比尺寸），并设置上下文内鼠标光标的范围。
 
-To fetch a previously-constructed context, use the `GetContext()` function.
+要获取先前构建的上下文，请使用 `GetContext()` 函数。
 
 ```cpp
 // Fetches a previously constructed context by name.
@@ -43,9 +43,9 @@ To fetch a previously-constructed context, use the `GetContext()` function.
 Rml::Context* GetContext(const Rml::String& name);
 ```
 
-### Releasing a context
+### 释放上下文
 
-A context can be manually removed by calling the following function.
+可以通过调用以下函数手动移除上下文。
 
 ```cpp
 // Removes and destroys a context.
@@ -53,31 +53,31 @@ A context can be manually removed by calling the following function.
 // @return True if name is a valid context, false otherwise.
 bool RemoveContext(const Rml::String& name);
 ```
-All remaining contexts are destroyed during the call to `Rml::Shutdown()`.
+所有剩余的上下文都会在调用 `Rml::Shutdown()` 期间被销毁。
 
-### Update and rendering
+### 更新与渲染
 
-If a context is active, it should have `Update()` called on it after the frame's input events have been sent to it.
+如果上下文处于活动状态，则应在该帧的输入事件发送给它之后对其调用 `Update()`。
 
 ```cpp
 // Updates all elements in the context's documents.
 bool Update();
 ```
 
-The context update ensures that properties and computed values of all elements located in the context are updated, and layouting is performed on all documents that need it. Elements may not always report their correct size or position until the context is updated, as described on the [elements page](elements.html#validity-of-retrieved-values).
+上下文更新可确保上下文中所有元素的属性和计算值得到更新，并对所有需要的文档执行布局。在上下文更新之前，元素可能不会始终报告其正确的大小或位置，如[元素页面](elements.html#validity-of-retrieved-values)所述。
 
-To render a context, call `Render()` on it. Easy!
+要渲染上下文，请对其调用 `Render()`。就这么简单！
 
 ```cpp
 // Renders all visible elements in the context's documents.
 bool Render();
 ```
 
-See the [main loop documentation](main_loop.html) for how these calls fits into an application's main loop. See also [on-demand rendering](#on-demand-rendering) below, for utilities allowing the application to delay update and rendering, in case there is a desire to reduce resource consumption when idle.
+请参阅[主循环文档](main_loop.html)了解这些调用如何融入应用程序的主循环。另请参阅下面的[按需渲染](#on-demand-rendering)，其中提供了允许应用程序延迟更新和渲染的工具，以防希望在空闲时降低资源消耗。
 
-### Loading and creating documents
+### 加载与创建文档
 
-Documents are loaded through contexts. To load a document from an RML file into a context, call the `LoadDocument()` function on the appropriate context.
+文档通过上下文加载。要将文档从 RML 文件加载到上下文中，请在相应的上下文上调用 `LoadDocument()` 函数。
 
 ```cpp
 // Load a document into the context.
@@ -86,9 +86,9 @@ Documents are loaded through contexts. To load a document from an RML file into 
 ElementDocument* LoadDocument(const Rml::String& document_path);
 ```
 
-The `document_path` parameter will be given to RmlUi's [file interface](interfaces/file.html) to be open and read. If the document is loaded successfully, it will be added to the context and returned. Call `Show()` on the document to make it visible.
+`document_path` 参数将交给 RmlUi 的[文件接口](interfaces/file.html)打开并读取。如果文档加载成功，它将被添加到上下文中并返回。调用文档上的 `Show()` 使其可见。
 
-You can also load documents directly from a memory stream, this can be useful if you want to receive documents over the network or similar.
+你也可以直接从内存流加载文档，如果你希望通过网络或类似方式接收文档，这会很有用。
 
 ```cpp
 /// Load a document into the context.
@@ -98,7 +98,7 @@ You can also load documents directly from a memory stream, this can be useful if
 ElementDocument* LoadDocumentFromMemory(const String& document_rml, const String& source_url = "[document from memory]");
 ```
 
-To create a new, empty document you can populate dynamically, use the `CreateDocument()` function.
+要创建可以动态填充的新的空文档，请使用 `CreateDocument()` 函数。
 
 ```cpp
 /// Creates a new, empty document and places it into this context.
@@ -107,33 +107,33 @@ To create a new, empty document you can populate dynamically, use the `CreateDoc
 ElementDocument* CreateDocument(const String& instancer_name = "body");
 ```
 
-The context will attempt to instance an element using the instancer specified by the caller, 'body' by default. If an `Rml::ElementDocument` is instanced, it will be added to the context and returned.
+上下文将尝试使用调用方指定的 instancer 实例化一个元素，默认是 'body'。如果实例化出 `Rml::ElementDocument`，它将被添加到上下文中并返回。
 
-### Scrolling
+### 滚动
 
-The context can initiate scrolling in multiple ways:
+上下文可以通过多种方式发起滚动：
 
-- `ProcessMouseWheel()` may initiate a scroll action on the hover element's closest scrollable ancestor.
-- `ProcessMouseButtonDown()` can activate [autoscroll mode](#autoscroll) when the middle mouse button is submitted.
-- Further, an element's scrollbar can be dragged, or its scroll position programmatically set.
+- `ProcessMouseWheel()` 可以在悬停元素最近的、可滚动的祖先上发起滚动操作。
+- 当按下鼠标中键时，`ProcessMouseButtonDown()` 可以激活[自动滚动模式](#autoscroll)。
+- 此外，可以拖动元素的滚动条，或以编程方式设置其滚动位置。
 
-See the [input documentation](input.html#mouse-buttons) for more details on these functions. In some situations, a scroll action initiates [smooth scrolling](#smooth-scrolling). An element's closest scrollable ancestor is decided by scroll chaining, which can be controlled using the [`overflow-behavior`{:.prop} property](../rcss/user_interface.html#overscroll-behavior).
+有关这些函数的更多细节，请参阅[输入文档](input.html#mouse-buttons)。在某些情况下，滚动操作会发起[平滑滚动](#smooth-scrolling)。元素最近的、可滚动的祖先由滚动链决定，可以使用 [`overflow-behavior`{:.prop} 属性](../rcss/user_interface.html#overscroll-behavior) 控制。
 
-#### Autoscroll mode
+#### 自动滚动模式
 {:#autoscroll}
 
-Autoscroll mode is activated by pressing or holding the middle mouse button. This scrolls the document with a controllable velocity based on the mouse cursor's distance from its initial activation position.
+自动滚动模式通过按下或按住鼠标中键激活。这会以可控的速度滚动文档，速度基于鼠标光标距其初始激活位置的距离。
 
-#### Smooth scrolling
+#### 平滑滚动
 {:#smooth-scrolling}
 
-Smooth scrolling makes a given scroll action animate smoothly towards its destination. Smooth scrolling can be activated in several situations:
+平滑滚动使给定的滚动操作平滑地向其目标动画过渡。平滑滚动可以在几种情况下激活：
 
-- During a call to `Context::ProcessMouseWheel()`.
-- When clicking a scrollbar's arrow keys or track.
-- When calling any of the `Element::Scroll...()` methods using `ScrollBehavior::Smooth` or `ScrollBehavior::Auto`.
+- 在调用 `Context::ProcessMouseWheel()` 期间。
+- 当点击滚动条的箭头键或轨道时。
+- 当使用 `ScrollBehavior::Smooth` 或 `ScrollBehavior::Auto` 调用任何 `Element::Scroll...()` 方法时。
 
-The default smooth scroll behavior can be configured on the context, and is enabled by default. This affects all scroll actions with auto scroll behavior, including mouse wheel and scrollbar interaction.
+默认的平滑滚动行为可以在上下文上配置，并且默认启用。这会影响所有具有自动滚动行为的滚动操作，包括鼠标滚轮和滚动条交互。
 
 ```cpp
 /// Sets the default scroll behavior, such as for mouse wheel processing and scrollbar interaction.
@@ -141,29 +141,29 @@ The default smooth scroll behavior can be configured on the context, and is enab
 /// @param[in] speed_factor A factor for adjusting the final smooth scrolling speed, must be strictly positive, defaults to 1.0.
 void SetDefaultScrollBehavior(ScrollBehavior scroll_behavior, float speed_factor);
 ```
-By default, smooth scrolling is enabled. It can be disabled by setting the `scroll_behavior` to `ScrollBehavior::Instant`. The speed of the smooth scroll can also be adjusted using the `speed_factor` parameter.
+默认情况下，平滑滚动已启用。可以通过将 `scroll_behavior` 设置为 `ScrollBehavior::Instant` 来禁用它。平滑滚动的速度也可以使用 `speed_factor` 参数调整。
 
 
-### Mouse cursor
+### 鼠标光标
 
-Each context can propagate the mouse cursor name to the user through the [system interface](interfaces/system.html). The cursor name is set on an element through the  [`cursor`{:.prop} property](../rcss/user_interface.html#cursor). When the cursor name changes, the new name is sent though the interface. The client can then change the displayed cursor using the cursor facilities on their platform.
+每个上下文可以通过[系统接口](interfaces/system.html)将鼠标光标名称传播给用户。光标名称通过 [`cursor`{:.prop} 属性](../rcss/user_interface.html#cursor) 设置在元素上。当光标名称更改时，新名称将通过接口发送。客户端随后可以使用其平台上的光标工具更改显示的光标。
 
-The submitted cursor name is chosen in the following order.
+提交的光标名称按以下顺序选择。
 
-1. If the context is in autoscroll mode, submit one of the built-in cursor names listed below.
-2. Otherwise, if an element is being dragged, the cursor is taken from that element's `cursor`{:.prop} property.
-3. Otherwise, if an element is being hovered, the cursor is taken from that element's `cursor`{:.prop} property.
-4. Otherwise, an empty string is submitted.
+1. 如果上下文处于自动滚动模式，提交下面列出的内置光标名称之一。
+2. 否则，如果正在拖拽元素，则光标取自该元素的 `cursor`{:.prop} 属性。
+3. 否则，如果正在悬停元素，则光标取自该元素的 `cursor`{:.prop} 属性。
+4. 否则，提交空字符串。
 
-#### Built-in cursor names
+#### 内置光标名称
 {:#builtin-cursors}
 
-The following built-in cursor names are submitted to the system interface under specific conditions.
+以下内置光标名称在特定条件下提交给系统接口。
 
-|        Cursor name        | Description   |
+|        光标名称        | 说明   |
 |---------------------------|---------------|
-| `rmlui-scroll-idle`       | Autoscroll mode active, but scrolling is idle.                 |
-| `rmlui-scroll-up`         | Autoscroll mode active, scrolling in the given direction.      |
+| `rmlui-scroll-idle`       | 自动滚动模式激活，但滚动处于空闲状态。                 |
+| `rmlui-scroll-up`         | 自动滚动模式激活，沿给定方向滚动。      |
 | `rmlui-scroll-down`       | "                                                              |
 | `rmlui-scroll-left`       | "                                                              |
 | `rmlui-scroll-right`      | "                                                              |
@@ -173,21 +173,21 @@ The following built-in cursor names are submitted to the system interface under 
 | `rmlui-scroll-down-right` | "                                                              |
 
 
-#### Multiple contexts
+#### 多个上下文
 
-In the case of multiple contexts, it might be convenient for only a single context to handle the mouse cursor. The following function can be used to control this behavior:
+在使用多个上下文的情况下，可能方便仅由单个上下文处理鼠标光标。可以使用以下函数控制此行为：
 ```cpp
 /// Enable or disable handling of the mouse cursor from this context.
 /// When enabled, changes to the cursor name is transmitted through the system interface.
 /// @param[in] show True to enable mouse cursor handling, false to disable.
 void EnableMouseCursor(bool enable);
 ```
-By default it is enabled.
+默认情况下它是启用的。
 
-### Media themes
+### 媒体主题
 {:#themes}
 
-Media themes can be used to activate or deactivate parts of a style sheet in combination with [media queries](../rcss/media_queries.html), using the `theme`{:.prop} media feature.
+媒体主题可以与[媒体查询](../rcss/media_queries.html)结合使用，通过 `theme`{:.prop} 媒体特性来激活或停用样式表的部分内容。
 
 ```cpp
 /// Activate or deactivate a media theme. Themes can be used in RCSS media queries.
@@ -200,9 +200,9 @@ void ActivateTheme(const String& theme_name, bool activate);
 bool IsThemeActive(const String& theme_name) const;
 ```
 
-### Events
+### 事件
 
-Event listeners can be attached to a context (rather than an element) to receive events sent to all elements within that context. As with elements, call `AddEventListener()` to attach a listener and `RemoveEventListener()` to detach.
+事件监听器可以附加到上下文（而不是元素），以接收发送给该上下文内所有元素的事件。与元素一样，调用 `AddEventListener()` 附加监听器，调用 `RemoveEventListener()` 取消附加。
 
 ```cpp
 // Adds an event listener to the context's root element.
@@ -222,35 +222,35 @@ void RemoveEventListener(const Rml::String& event,
                          bool in_capture_phase = false);
 ```
 
-Note as for all raw pointers, they are non-owning. Thus, it is the user's responsibility to keep the event listener alive until it is removed, and then to clean it up.
+请注意，与所有原始指针一样，它们是非拥有型的。因此，用户有责任让事件监听器一直存活到被移除，然后将其清理。
 
-### Input
+### 输入
 
-See the section on [input](input.html) for detail on sending user input from your application into RmlUi contexts.
+有关将用户输入从你的应用程序发送到 RmlUi 上下文的细节，请参阅[输入](input.html)一节。
 
-### On-demand rendering (power saving mode)
+### 按需渲染（省电模式）
 {:#on-demand-rendering}
 
-In the graphics world we can roughly divide applications into two groups.
+在图形领域，我们可以大致将应用程序分为两类。
 
-1. Applications that aim to pump out as many frames as possible, as fast as possible, such as games.
-2. Other applications that only redraw their window when their contents change, to reduce CPU usage and power consumption.
+1. 尽可能快、尽可能多地输出帧的应用程序，例如游戏。
+2. 仅在其内容发生变化时重绘窗口的其他应用程序，以减少 CPU 使用和功耗。
 
-RmlUi provides utilities to handle either of these cases, to suit the target application's requirements. Users of RmlUi control their own update loop, thus, doing it the first way is as simple as running the context update and rendering in a loop, without delay. On the other hand, the second approach requires some support from the library side, because the application needs to know e.g. when animations are happening or when a text cursor should blink.
+RmlUi 提供了处理这两种情况的工具，以适应用户目标应用程序的需求。RmlUi 用户控制自己的更新循环，因此，采用第一种方式只需在循环中无延迟地运行上下文更新和渲染即可。另一方面，第二种方式需要库侧的一些支持，因为应用程序需要知道例如何时发生动画或文本光标何时应该闪烁。
 
-#### Loop update triggers
+#### 循环更新触发器
 
-During on-demand rendering, the application needs to update the user interface in the following situations:
+在按需渲染期间，应用程序需要在以下情况下更新用户界面：
 
-1. When time-dependent, library-internal changes affect the rendered output.
-2. When platform events are received.
-3. When the application wants to make their own changes to the document.
+1. 依赖时间、库内部的变化影响渲染输出时。
+2. 收到平台事件时。
+3. 应用程序想要自己对文档做出更改时。
 
-This feature is intended to assist in the first case. The second case depends on the user's platform, and is outside the responsibility of the library itself, but there are many examples in the [included backends](https://github.com/mikke89/RmlUi/tree/master/Backends). The last case is fully up to the user, it is their own responsibility to know when they need to make their own changes to the interface, and to decide how to proceed.
+此功能旨在协助第一种情况。第二种情况取决于用户的平台，不在库本身的责任范围内，但[随附的后端](https://github.com/mikke89/RmlUi/tree/master/Backends)中有许多示例。最后一种情况完全由用户负责，用户自己有责任知道何时需要对界面做出自己的更改，并决定如何进行。
 
-#### Update delay utilities
+#### 更新延迟工具
 
-Opting in to on-demand rendering requires explicit support by the code that drives the update loop. The feature consists of two functions which can be used to manipulate a time value.
+选择按需渲染需要驱动更新循环的代码提供显式支持。该功能由两个可用于操作时间值的函数组成。
 
 ```cpp
 // Updates the time until Update should get called again.
@@ -258,9 +258,9 @@ Opting in to on-demand rendering requires explicit support by the code that driv
 void RequestNextUpdate(double delay);
 ```
 
-This function is used by RmlUi and custom elements to set the delay until the user interface should be rendered again, unless platform events are received in-between. This is not a direct setter, it takes the minimum value of the already stored and the passed-in value.
+此函数由 RmlUi 和自定义元素使用，用于设置直到用户界面应再次渲染的延迟时间，除非其间收到平台事件。这不是直接的 setter，它取已存储的值和传入值中的最小值。
 
-The rendering loop can then use the following function to retrieve the value in the range zero to infinity.
+渲染循环随后可以使用以下函数获取零到无穷大范围内的值。
 
 ```cpp
 // Get the max delay until update and render should get called again
@@ -268,21 +268,21 @@ The rendering loop can then use the following function to retrieve the value in 
 double GetNextUpdateDelay() const;
 ```
 
-A returned value of zero means the rendering loop should not block for events, that is, render the next frame as soon as possible. This happens for example if an animation is playing. A non-zero, finite value means a delay in seconds until the update and render loop should be invoked again. Infinity means there is no reason to redraw the content at all unless a platform event is received. This is the usual case if there are no custom elements or running animations.
+返回值为零意味着渲染循环不应阻塞等待事件，即尽快渲染下一帧。例如，当动画正在播放时会发生这种情况。非零的有限值表示延迟若干秒后应再次调用更新和渲染循环。无穷大意味着除非收到平台事件，否则完全没有理由重绘内容。如果没有自定义元素或正在运行的动画，这通常是常态。
 
-You can see this in action by tweaking the `power_save` flag passed to `Backend::Process()` function in the [provided samples](https://github.com/mikke89/RmlUi/blob/master/Samples/basic/load_document/src/main.cpp). This is implemented in most of the [included backends](https://github.com/mikke89/RmlUi/tree/master/Backends), take a look at the `RmlUi_Backend_….cpp`{:.path} files to see how this functionality is integrated there.
+你可以通过调整传递给[随附示例](https://github.com/mikke89/RmlUi/blob/master/Samples/basic/load_document/src/main.cpp)中 `Backend::Process()` 函数的 `power_save` 标志来实际看到这一点。这在大多数[随附后端](https://github.com/mikke89/RmlUi/tree/master/Backends)中都有实现，请查看 `RmlUi_Backend_….cpp`{:.path} 文件以了解该功能是如何在那里集成的。
 
-### Custom contexts
+### 自定义上下文
 
-Contexts are created, like elements and decorators, through instancers. You can override the default context instancer if you want to create custom contexts. Generally, this is only required for adding support for scripting languages.
+上下文与元素和装饰器一样，通过 instancer 创建。如果你想创建自定义上下文，可以覆盖默认的上下文 instancer。通常，只有为了添加脚本语言支持时才需要这样做。
 
-#### Creating a custom context
+#### 创建自定义上下文
 
-A custom context is a class derived from `Rml::Context`. There are no virtual methods on `Rml::Context`, so it cannot be specialised.
+自定义上下文是派生自 `Rml::Context` 的类。`Rml::Context` 上没有虚方法，因此它不能被特化。
 
-#### Creating a custom context instancer
+#### 创建自定义上下文 instancer
 
-A custom context instancer needs to be registered with the RmlUi factory in order to override the default instancer. A custom context instancer needs to be derived from `Rml::ContextInstancer`, and implement the required virtual methods:
+自定义上下文 instancer 需要在 RmlUi factory 中注册，以便覆盖默认 instancer。自定义上下文 instancer 需要派生自 `Rml::ContextInstancer`，并实现必需的虚方法：
 
 ```cpp
 // Instances a context.
@@ -298,15 +298,15 @@ virtual void ReleaseContext(Rml::Context* context) = 0;
 virtual void Release() = 0;
 ```
 
-`InstanceContext()` will be called whenever a new context is requested. It takes a single parameter, name, the name of the new context. If a context can be created, it should be initialised and returned wrapped in a `ContextPtr` which is a unique pointer with a custom deleter. Otherwise, return nullptr.
+每当请求新上下文时，都会调用 `InstanceContext()`。它接受一个参数 name，即新上下文的名称。如果可以创建上下文，则应对其进行初始化并以包装在 `ContextPtr`（一种带有自定义删除器的 unique pointer）中的形式返回。否则，返回 nullptr。
 
-`ReleaseContext()` will be called whenever a context is released. The context instancer should destroy the context and free and resources allocated for it.
+每当释放上下文时，都会调用 `ReleaseContext()`。上下文 instancer 应销毁该上下文并释放为其分配的任何资源。
 
-`Release()` will be called when RmlUi is shut down. The instancer should delete itself if it was dynamically allocated.
+当 RmlUi 关闭时，会调用 `Release()`。如果 instancer 是动态分配的，则应删除自身。
 
-#### Registering an instancer
+#### 注册 instancer
 
-To register a custom instancer with RmlUi, call `RegisterContextInstancer()` on the RmlUi factory after RmlUi has been initialised.
+要向 RmlUi 注册自定义 instancer，请在 RmlUi 初始化之后调用 RmlUi factory 上的 `RegisterContextInstancer()`。
 
 ```cpp
 // The custom_instancer must be kept alive until after the call to Rml::Shutdown()
@@ -314,8 +314,8 @@ auto custom_instancer = std::make_unique<CustomContextInstancer>();
 Rml::Factory::RegisterContextInstancer(custom_instancer.get());
 ```
 
-Like for other instancers, it is the user's responsibility to manage the lifetime of the instancer. Thus, it must be kept alive until after the call to `Rml::Shutdown()`, and then cleaned up by the user.
+与其他 instancer 一样，管理 instancer 的生命周期是用户的责任。因此，它必须保持存活直到调用 `Rml::Shutdown()` 之后，然后由用户清理。
 
-#### Enumerating Contexts
+#### 枚举上下文
 
-All active contexts can be enumerated via the `Rml::GetNumContexts()` and `Rml::GetContext(int index)` function calls.
+所有活动上下文都可以通过 `Rml::GetNumContexts()` 和 `Rml::GetContext(int index)` 函数调用进行枚举。

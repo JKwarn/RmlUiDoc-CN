@@ -1,15 +1,15 @@
 ---
 layout: page
-title: Documents
+title: 文档
 parent: lua_manual
 next: contexts
 ---
 
-### Interface
+### 接口
 
-- [Document Lua API reference](api_reference.html#Document)
-- [Document C++ manual](../cpp_manual/documents.html)
+- [Document Lua API 参考](api_reference.html#Document)
+- [Document C++ 手册](../cpp_manual/documents.html)
 
-All properties and methods that are available for documents are described in detail in the API reference. The document-specific interface is similar to the C++ interface, refer there for the full documentation.
+文档可用的所有属性与方法都在 API 参考中有详细描述。文档特有的接口与 C++ 接口类似，完整文档请参阅该手册。
 
-Documents derive from elements, and so they inherit the [Element interface](elements.html#interface). 
+文档派生自元素，因此继承[元素接口](elements.html#interface)。

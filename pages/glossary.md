@@ -1,27 +1,27 @@
 ---
 layout: page
-title: Glossary
+title: 术语表
 ---
 
-### Basic Types
+### 基本类型
 
-* **CDATA** is a sequence of characters from the document character set and may include character entities.
-* **ID** tokens must begin with a letter ([A-Za-z]) and may be followed by any number of letters, digits ([0-9]), hyphens ("-"), underscores ("_"), colons (":"), and periods (".").
-* **IDREF** and IDREFS are references to ID tokens defined by other attributes. **IDREF** is a single token and **IDREFS** is a space-separated list of tokens.
-* **NUMBER** tokens must contain at least one digit ([0-9]).
+* **CDATA** 是来自文档字符集的一串字符，可以包含字符实体。
+* **ID** 标记必须以字母（[A-Za-z]）开头，后面可以跟任意数量的字母、数字（[0-9]）、连字符（"-"）、下划线（"_"）、冒号（":"）和句点（"."）。
+* **IDREF** 和 **IDREFS** 是对其他属性定义的 ID 标记的引用。**IDREF** 是单个标记，**IDREFS** 是以空格分隔的标记列表。
+* **NUMBER** 标记必须至少包含一个数字（[0-9]）。
 
 ### URI
 
-RmlUi uses URIs as specified by [RFC1630](http://www.w3.org/TR/1999/REC-html401-19991224/references.html#ref-RFC1630).
+RmlUi 使用 [RFC1630](http://www.w3.org/TR/1999/REC-html401-19991224/references.html#ref-RFC1630) 所规定的 URI。
 
-### Style information
+### 样式信息
 
-Style sheet data can be the content of the STYLE element and the value of the style attribute. If declared in the STYLE element it is resolved just as if it was an external style sheet. If it is the value of the style attribute then it can only include properties (ie, no rules) and these properties are applied directly to the element in which the attribute is defined.
+样式表数据可以是 STYLE 元素的内容，也可以是 style 属性的值。如果在 STYLE 元素中声明，其解析方式与外部样式表相同。如果是 style 属性的值，则只能包含属性（即不能包含规则），这些属性会直接应用于定义该属性的元素。
 
-### Case Information
+### 大小写信息
 
-* **CS** The value is case-sensitive (i.e., user agents interpret "a" and "A" differently).
-* **CI** The value is case-insensitive (i.e., user agents interpret "a" and "A" as the same).
-* **CN** The value is not subject to case changes, e.g., because it is a number or a character from the document character set.
-* **CA** The element or attribute definition itself gives case information.
-* **CT** Consult the type definition for details about case-sensitivity.
+* **CS** 该值区分大小写（即用户代理会将 “a” 和 “A” 解释为不同的字符）。
+* **CI** 该值不区分大小写（即用户代理会将 “a” 和 “A” 解释为相同的字符）。
+* **CN** 该值不受大小写变化的影响，例如因为它是数字或来自文档字符集的字符。
+* **CA** 元素或属性定义本身给出了大小写信息。
+* **CT** 有关大小写敏感性的详细信息，请查阅类型定义。

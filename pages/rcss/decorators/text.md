@@ -1,65 +1,65 @@
 ---
 layout: page
-title: Text decorator
+title: 文本装饰器
 parent: rcss/decorators
 grandparent: rcss
 ---
 
-The `text`{:.prop} decorator can render text in the background of an element. This can be particularly helpful when using icon fonts, and even allows using such fonts for generated elements.
+`text`{:.prop} 装饰器可以在元素的背景中渲染文本。这在使用图标字体时特别有用，甚至允许将此类字体用于生成元素。
 
 ```css
 decorator: text( <text> <color>? <align-x>? <align-y>? ) <paint-area>?;
 ```
-Values must be specified in the given order, except that alignment keywords can be given in any order. Any unspecified properties will be left at their default values.
+取值必须按给定的顺序指定，但对齐关键字可以按任意顺序给出。任何未指定的属性将保持其默认值。
 
-The font face will be inherited from the element it is being applied to. Thus, the appropriate font family and font size should be set on the element itself. However, the decorator can be colored independently. Further, the text can be freely aligned within the element.
+字体会从它被应用到的元素继承。因此，应在元素本身上设置适当的字体族和字体大小。但是，装饰器可以独立着色。此外，文本可以在元素内自由对齐。
 
-### Properties
+### 属性
 
 `text`{:.prop}
 
-Value: | \<string\>
-Initial: | N/A
-Percentages: | N/A
+取值： | \<string\>
+初始值： | 不适用
+百分比： | 不适用
 
-This property defines the text to be rendered. This decorator supports only a single line of text. Any [RML character entities](../../rml/syntax.html) will be decoded, so it is possible to refer to Unicode characters e.g. by `&#x1F30E;`.
+此属性定义要渲染的文本。此装饰器只支持单行文本。任何 [RML 字符实体](../../rml/syntax.html) 都会被解码，因此可以通过例如 `&#x1F30E;` 来引用 Unicode 字符。
 
 `color`{:.prop}
 
-Value: | \<color\> \| inherit-color
-Initial: | inherit-color
-Percentages: | N/A
+取值： | \<color\> \| inherit-color
+初始值： | inherit-color
+百分比： | 不适用
 
-Specifies the color the text should be rendered in. By default, it inherits the color from the element the decorator is being applied to.
+指定文本应渲染的颜色。默认情况下，它继承装饰器所应用元素的颜色。
 
 `align-x`{:.prop}
 
-Value: | left \| center \| right \| \<length-percentage\>
-Initial: | center
-Percentages: | relative to the specified paint area
+取值： | left \| center \| right \| \<length-percentage\>
+初始值： | center
+百分比： | 相对于指定的绘制区域
 
-Horizontally align or offset the text.
+水平对齐或偏移文本。
 
 `align-y`{:.prop}
 
-Value: | top \| center \| bottom \| \<length-percentage\>
-Initial: | center
-Percentages: | relative to the specified paint area
+取值： | top \| center \| bottom \| \<length-percentage\>
+初始值： | center
+百分比： | 相对于指定的绘制区域
 
-Vertically align or offset the text.
+垂直对齐或偏移文本。
 
 
 `paint-area`{:.prop}
 
-Value: | border-box \| padding-box \| content-box
-Initial: | padding-box
-Percentages: | N/A
+取值： | border-box \| padding-box \| content-box
+初始值： | padding-box
+百分比： | 不适用
 
-Declares the box area to render the decorator onto.
+声明渲染装饰器的盒区域。
 
-### Examples
+### 示例
 
-The following demonstrates some examples of using the `text`{:.prop} decorator.
+下面演示了使用 `text`{:.prop} 装饰器的一些示例。
 
 ```css
 .decorator1 {
@@ -86,7 +86,7 @@ sliderarrowdec { decorator: text("🔼"); }
 sliderarrowinc { decorator: text("🔽"); }
 ```
 
-Example output:
+示例输出：
 
 {:.center}
 ![text decorator](../../../assets/images/decorators/text.png)
